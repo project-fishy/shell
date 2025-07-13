@@ -30,16 +30,31 @@ Item {
                 anchors.bottomMargin: Config.border.thickness
                 anchors.leftMargin: Config.border.thickness
                 anchors.rightMargin: Config.border.thickness
-                AnimatedImage {
-                    anchors.fill: parent
-                    source: "root:/assets/eminem.gif"
-                    visible: !margins.playing
+
+                onPlayingChanged: {
+                    pl_img.opacity = playing ? 1 : 0;
                 }
 
                 AnimatedImage {
                     anchors.fill: parent
+                    source: "root:/assets/eminem.gif"
+                    // visible: !margins.playing
+                }
+
+                AnimatedImage {
+                    id: pl_img
+
+                    anchors.fill: parent
                     source: "root:/assets/eminem-swag.gif"
-                    visible: margins.playing
+                    speed: 1
+                    opacity: 0
+                    // visible: margins.playing
+                    Behavior on opacity {
+                        NumberAnimation {
+                            easing.type: Easing.Linear
+                            duration: 200
+                        }
+                    }
                 }
             }
         }
