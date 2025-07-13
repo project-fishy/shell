@@ -16,16 +16,34 @@ MouseArea {
     property bool isVisible: false
 
     // place it at whichever side
-    // TODO: this is probably not how its done
-    anchors.left: side == Config.panel.left ? parent.left : null
-    anchors.right: side == Config.panel.right ? parent.right : null
-    anchors.bottom: side == Config.panel.bottom ? parent.bottom : null
-    anchors.top: side == Config.panel.top ? parent.top : null
+    Binding on anchors.top {
+        value: root.parent.top
+        when: root.side == Config.panel.top
+    }
+    Binding on anchors.left {
+        value: root.parent.top
+        when: root.side == Config.panel.left
+    }
+    Binding on anchors.right {
+        value: root.parent.top
+        when: root.side == Config.panel.right
+    }
+    Binding on anchors.bottom {
+        value: root.parent.top
+        when: root.side == Config.panel.bottom
+    }
 
-    // center
-    anchors.horizontalCenter: !vertical ? parent.horizontalCenter : null
-    anchors.verticalCenter: vertical ? parent.verticalCenter : null
+    // centering
+    Binding on anchors.horizontalCenter {
+        when: !root.vertical
+        value: root.parent.horizontalCenter
+    }
+    Binding on anchors.verticalCenter {
+        when: root.vertical
+        value: root.parent.verticalCenter
+    }
 
+    // hide it right away
     implicitWidth: hiddenWidth
     implicitHeight: hiddenHeight
 
