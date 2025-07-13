@@ -32,8 +32,16 @@ MouseArea {
     hoverEnabled: true
     preventStealing: true
 
-    onEntered: root.isVisible = true
-    onExited: root.isVisible = false
+    onEntered: {
+        implicitHeight = loader.implicitHeight;
+        implicitWidth = loader.implicitWidth;
+    }
+    onExited: {
+        implicitHeight = hiddenHeight;
+        implicitWidth = hiddenWidth;
+    }
+
+    state: "closed"
 
     Loader {
         id: loader
@@ -42,13 +50,16 @@ MouseArea {
         anchors.fill: parent
     }
 
-    onIsVisibleChanged: {
-        if (root.isVisible) {
-            root.implicitHeight = loader.implicitHeight;
-            root.implicitWidth = loader.implicitWidth;
-        } else {
-            root.implicitHeight = root.hiddenHeight;
-            root.implicitWidth = root.hiddenWidth;
-        }
+    Behavior on implicitHeight {
+        Anim {}
+    }
+    Behavior on implicitWidth {
+        Anim {}
+    }
+
+    component Anim: NumberAnimation {
+        easing.type: Easing.BezierSpline
+        duration: 400
+        easing.bezierCurve: [0.38, 1.21, 0.22, 1, 1, 1]
     }
 }
