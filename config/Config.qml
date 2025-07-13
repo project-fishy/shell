@@ -6,6 +6,7 @@ import QtQuick
 Singleton {
     readonly property Borders border: Borders {}
     readonly property Bar bar: Bar {}
+    readonly property Panel panel: Panel {}
 
     component Borders: QtObject {
         property int thickness: 5
@@ -23,5 +24,12 @@ Singleton {
     component Tray: QtObject {
         property int iconSize: 20
         property int spacing: 5
+    }
+
+    component Panel: QtObject {
+        readonly property int right: 0
+        readonly property int left: 1
+        readonly property int top: 2
+        readonly property int bottom: 3
     }
 }
