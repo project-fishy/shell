@@ -2,11 +2,11 @@
 
 import Quickshell
 import QtQuick
-import "modules/drawers"
+import "modules/main_overlay"
 
 ShellRoot {
     // this is the entire thing pretty much
-    Drawers {}
+    MainOverlay {}
 
     // PanelWindow {
     //     screen: Quickshell.screens[0]
