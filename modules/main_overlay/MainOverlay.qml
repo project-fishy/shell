@@ -4,7 +4,7 @@ import Quickshell
 import Quickshell.Wayland
 import QtQuick
 import QtQuick.Effects
-import "../bar"
+import "../sidebar"
 import "../../widgets"
 import "../../config"
 
@@ -65,7 +65,7 @@ Variants {
             }
 
             // left bar thing
-            Bar {
+            Sidebar {
                 id: bar
                 screen: scope.modelData
             }
