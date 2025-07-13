@@ -48,6 +48,10 @@ Variants {
             anchors.left: true
             anchors.bottom: true
 
+            Panels {
+                id: panels
+            }
+
             Item {
                 anchors.fill: parent
                 layer.enabled: true
@@ -61,10 +65,6 @@ Variants {
                     bar: bar
                     color: Colors.current.background
                 }
-            }
-
-            Panels {
-                id: panels
             }
 
             Variants {

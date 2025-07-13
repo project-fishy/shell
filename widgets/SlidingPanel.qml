@@ -9,8 +9,8 @@ MouseArea {
     required property int side
     required property Component child
 
-    readonly property int hiddenWidth: vertical ? Config.border.thickness : loader.implicitWidth
-    readonly property int hiddenHeight: vertical ? loader.implicitHeight : Config.border.thickness
+    readonly property int hiddenWidth: vertical ? Config.border.thickness : loader.implicitWidth + Config.border.thickness * 2
+    readonly property int hiddenHeight: vertical ? loader.implicitHeight + Config.border.thickness * 2 : Config.border.thickness
     readonly property bool vertical: side === Config.panel.left || side === Config.panel.right
 
     property bool isVisible: false
@@ -51,21 +51,26 @@ MouseArea {
     preventStealing: true
 
     onEntered: {
-        implicitHeight = loader.implicitHeight;
-        implicitWidth = loader.implicitWidth;
+        implicitHeight = loader.implicitHeight + Config.border.thickness * 2 + Config.panel.outline;
+        implicitWidth = loader.implicitWidth + (Config.border.thickness + Config.panel.outline) * 2;
+        isVisible = true;
     }
     onExited: {
         implicitHeight = hiddenHeight;
         implicitWidth = hiddenWidth;
+        isVisible = false;
     }
 
     state: "closed"
 
-    Loader {
-        id: loader
-        sourceComponent: root.child
-        active: true
-        anchors.fill: parent
+    RoundedBg {
+        hasBorder: root.isVisible
+        Loader {
+            id: loader
+            sourceComponent: root.child
+            active: true
+            anchors.fill: parent
+        }
     }
 
     Behavior on implicitHeight {

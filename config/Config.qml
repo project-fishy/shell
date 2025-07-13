@@ -31,5 +31,6 @@ Singleton {
         readonly property int left: 1
         readonly property int top: 2
         readonly property int bottom: 3
+        readonly property int outline: 1
     }
 }
