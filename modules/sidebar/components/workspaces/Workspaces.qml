@@ -15,6 +15,9 @@ Item {
         return acc;
     })
 
+    readonly property int activeWsId: Hyprland.focusedWorkspace?.id ?? 1
+    readonly property int groupOffset: Math.floor((activeWsId - 1) / Config.bar.workspaces) * Config.bar.workspaces
+
     implicitHeight: layout.implicitHeight
     implicitWidth: layout.implicitWidth
 
@@ -30,7 +33,11 @@ Item {
             model: Config.bar.workspaces
 
             // selected: root.activeWS
-            Indicator {}
+            Indicator {
+
+                groupOffset: root.groupOffset
+                activeWsId: root.activeWsId
+            }
         }
     }
 }
