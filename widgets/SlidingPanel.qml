@@ -77,7 +77,7 @@ MouseArea {
 
     component Anim: NumberAnimation {
         easing.type: Easing.BezierSpline
-        duration: 400
+        duration: Animations.duration.normal
         easing.bezierCurve: [0.38, 1.21, 0.22, 1, 1, 1]
     }
 }
