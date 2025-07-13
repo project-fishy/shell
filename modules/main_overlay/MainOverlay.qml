@@ -38,6 +38,8 @@ Variants {
                 width: win.width - bar.implicitWidth - Config.border.thickness * 2
                 height: win.height - Config.border.thickness * 2
                 intersection: Intersection.Xor
+
+                regions: mouseRegions.instances
             }
 
             // take the full screen
@@ -46,21 +48,39 @@ Variants {
             anchors.left: true
             anchors.bottom: true
 
-            // idk if i want it above
-            aboveWindows: false
-
             Item {
                 anchors.fill: parent
                 layer.enabled: true
                 layer.effect: MultiEffect {
                     shadowEnabled: true
                     blurMax: 15
-                    shadowColor: "#333"
+                    shadowColor: Colors.current.background
                 }
 
                 Border {
                     bar: bar
                     color: Colors.current.background
+                }
+            }
+
+            Panels {
+                id: panels
+            }
+
+            Variants {
+                id: mouseRegions
+
+                model: panels.children
+
+                Region {
+                    required property Item modelData
+
+                    x: modelData.x
+                    y: modelData.y
+                    width: modelData.width
+                    height: modelData.height
+
+                    intersection: Intersection.Subtract
                 }
             }
 
