@@ -7,10 +7,15 @@ Singleton {
     readonly property Borders border: Borders {}
     readonly property Bar bar: Bar {}
     readonly property Panel panel: Panel {}
+    readonly property Slider slider: Slider {}
 
     component Borders: QtObject {
         property int thickness: 5
         property int radius: 10
+    }
+
+    component Slider: QtObject {
+        readonly property int thickness: 25
     }
 
     component Bar: QtObject {

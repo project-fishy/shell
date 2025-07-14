@@ -3,6 +3,7 @@ import QtQuick
 
 import "../../widgets"
 import "../../config"
+import "../dashboard"
 
 Item {
     id: root
@@ -12,6 +13,6 @@ Item {
     SlidingPanel {
         side: Config.panel.top
 
-        child: Eminem {}
+        child: Dashboard {}
     }
 }
