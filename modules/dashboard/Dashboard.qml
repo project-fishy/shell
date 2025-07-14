@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Io
 import "../../widgets"
 import "../../config"
+import "../../logic"
 
 Item {
     id: root
@@ -23,52 +24,33 @@ Item {
         anchors.bottom: slider_volume.top
     }
 
-    Process {
-        id: br
-
-        running: true
-        command: ["brightnessctl", "-m", "g"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.default_br = parseInt(this.text);
-                print(`${root.default_br}`);
-            }
-        }
-    }
-
-    Process {
-        id: vol
-
-        running: true
-        command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
-
-        stdout: StdioCollector {
-            onStreamFinished: {
-                root.default_vol = Math.floor(parseFloat(this.text.split(" ")[1]) * 100);
-                print(`${this.text}`);
-            }
-        }
-    }
-
     CustomSlider {
         id: slider_volume
 
         text: "brand_awareness"
-        perc: parseInt(root.default_vol)
-        command: ["wpctl", "set-volume", "-l", "1", "@DEFAULT_AUDIO_SINK@"]
+
+        from: 0
+        to: 1
+
+        value: Volume.current
+        onMoved: Volume.set(value)
 
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: slider_brightness.top
     }
 
+    // property string watching: proc.text
+
     CustomSlider {
         id: slider_brightness
 
         text: "brightness_5"
-        perc: 80
-        command: ["brightnessctl", "set"]
+        value: Brightness.current
+
+        onValueChanged: {
+            Brightness.set(value);
+        }
 
         anchors.left: parent.left
         anchors.right: parent.right
