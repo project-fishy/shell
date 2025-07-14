@@ -16,11 +16,18 @@ Item {
     property int default_vol
     property int default_br
 
+    Visualizer {
+        id: bars
+        anchors.top: parent.top
+        anchors.bottom: slider_volume.top
+        implicitWidth: 100
+    }
+
     Eminem {
         id: eminem
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.left: parent.left
+        anchors.left: bars.right
         anchors.bottom: slider_volume.top
     }
 
