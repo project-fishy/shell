@@ -32,8 +32,11 @@ Slider {
 
             radius: root.height / 2
 
+            // to-from  value
+            // 100      x
+
             CustomText {
-                text: root.pressed ? root.value : root.text
+                text: root.pressed ? Math.floor(root.value * 100 / (root.to - root.from)) : root.text
                 color: Colors.current.background
 
                 font.family: !root.pressed ? "Material Symbols Rounded" : "Monaspace Argon"
