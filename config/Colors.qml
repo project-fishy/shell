@@ -12,9 +12,10 @@ Singleton {
         text: "#c5bf99"
         text_color: "#afc9d0"
         background: "#13181a"
-        background_bright: ""
+        background_bright: "#192022"
         border: "#afc9d0"
         accent: "#7aa5b1"
+        dull: "#575f62"
         red: "#dd6470"
     }
 
@@ -25,6 +26,7 @@ Singleton {
         required property string background_bright
         required property string border
         required property string accent
+        required property string dull
         required property string red
     }
 }

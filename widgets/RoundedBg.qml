@@ -1,10 +1,12 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import Quickshell
 
 import "../config"
 
 CustomRect {
-    id: background
+    id: root
 
     required property bool hasBorder
 
@@ -15,13 +17,13 @@ CustomRect {
     bottomLeftRadius: Config.border.radius
 
     border {
-        color: background.hasBorder ? Colors.current.accent : Colors.current.background
+        color: root.hasBorder ? Colors.current.accent : Colors.current.background
         width: 1
     }
 
     Item {
         id: pads
-
+        anchors.fill: parent
         anchors.leftMargin: Config.border.thickness
         anchors.rightMargin: Config.border.thickness
         anchors.topMargin: Config.border.thickness
