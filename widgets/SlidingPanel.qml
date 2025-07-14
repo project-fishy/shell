@@ -21,15 +21,15 @@ MouseArea {
         when: root.side == Config.panel.top
     }
     Binding on anchors.left {
-        value: root.parent.top
+        value: root.parent.left
         when: root.side == Config.panel.left
     }
     Binding on anchors.right {
-        value: root.parent.top
+        value: root.parent.right
         when: root.side == Config.panel.right
     }
     Binding on anchors.bottom {
-        value: root.parent.top
+        value: root.parent.bottom
         when: root.side == Config.panel.bottom
     }
 
