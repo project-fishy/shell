@@ -51,7 +51,7 @@ Item {
         }
     }
 
-    Slider {
+    CustomSlider {
         id: slider_volume
 
         text: "brand_awareness"
@@ -63,7 +63,7 @@ Item {
         anchors.bottom: slider_brightness.top
     }
 
-    Slider {
+    CustomSlider {
         id: slider_brightness
 
         text: "brightness_5"
