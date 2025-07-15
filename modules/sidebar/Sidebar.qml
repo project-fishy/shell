@@ -7,7 +7,7 @@ import "components/tray"
 
 Item {
     id: root
-    required property var screen
+    required property ShellScreen screen
 
     anchors.top: parent.top
     anchors.left: parent.left
@@ -22,6 +22,9 @@ Item {
 
         Workspaces {
             id: ws
+
+            screen: root.screen
+
             anchors.top: parent.top
             anchors.topMargin: Config.bar.margins
         }

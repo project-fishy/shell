@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Hyprland
 
 import "../../../../widgets"
@@ -9,6 +10,10 @@ import "../../../../config"
 
 Item {
     id: root
+
+    required property ShellScreen screen
+    property HyprlandMonitor monitor: Hyprland.monitors.values.find(m => m.name == screen.name)
+    property list<HyprlandWorkspace> currentWorkspaces: Hyprland.workspaces.values.filter(w => w.monitor === root.monitor)
 
     readonly property var activeWS: Hyprland.workspaces.values.reduce((acc, curr) => {
         acc[curr.id] = curr.lastIpcObject.windows > 0;
@@ -23,6 +28,10 @@ Item {
 
     anchors.horizontalCenter: parent.horizontalCenter
 
+    // Component.onCompleted: {
+    //     print(monitor?.name + ":" + currentWorkspaces.map(w => w.name));
+    // }
+
     ColumnLayout {
         id: layout
 
@@ -30,14 +39,22 @@ Item {
         layer.smooth: true
 
         Repeater {
-            model: Config.bar.workspaces
+            model: root.currentWorkspaces
 
-            // selected: root.activeWS
             Indicator {
-
                 groupOffset: root.groupOffset
                 activeWsId: root.activeWsId
             }
+        }
+    }
+
+    Connections {
+        target: Hyprland
+
+        function onRawEvent(event: HyprlandEvent): void {
+            Hyprland.refreshMonitors();
+            Hyprland.refreshWorkspaces();
+            Hyprland.refreshToplevels();
         }
     }
 }

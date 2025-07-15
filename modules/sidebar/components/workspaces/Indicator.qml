@@ -12,35 +12,32 @@ Item {
     required property var index
     required property int activeWsId
     required property int groupOffset
+    required property HyprlandWorkspace modelData
 
-    property bool selected: root.activeWsId == root.index + 1
+    property bool selected: activeWsId == modelData.id
 
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
 
-    // looks better with this
-    // Layout.alignment: parent.horizontalCenter
-
     TextIcon {
         text: {
-            let items = Hyprland.toplevels.values.filter(i => i.workspace?.id === root.index + 1);
-            let windows = items.map(w => w.lastIpcObject.class);
+            let windows = Hyprland.toplevels.values.filter(i => i.workspace?.id === root.modelData.id);
+            let classes = windows.map(w => w.lastIpcObject.class);
 
-            // print(`ws:${root.index} - ${windows} / ${windows.length}`);
+            // print(`>>> WS:${root.modelData.id}, WINDOWS:${classes}`);
 
-            if (windows.includes("vivaldi-stable"))
+            if (classes.includes("vivaldi-stable"))
                 return "captive_portal";
-            else if (windows.includes("Code"))
+            else if (classes.includes("Code"))
                 return "code_blocks";
-            else if (windows.includes("Spotify"))
+            else if (classes.includes("Spotify"))
                 return "music_note";
             else
             // ovvupied but not cool
-            if (windows.length > 0)
+            if (classes.length > 0)
                 return "accessible";
             return root.selected ? "adjust" : "fiber_manual_record";
         }
-        // text: root.index + 1
 
         color: root.selected ? Colors.current.text_color : Colors.current.text
 
