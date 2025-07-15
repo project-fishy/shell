@@ -24,6 +24,10 @@ CustomText {
             return "";
         else if (modelData == "thunar")
             return "";
+        else if (modelData == "steam")
+            return "󰓓";
+        else if (modelData == "zen")
+            return "󰈹";
         else
             return "";
     }
