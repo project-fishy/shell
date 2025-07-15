@@ -12,7 +12,7 @@ Singleton {
     property int current
 
     function set(value: int): void {
-        Quickshell.execDetached(["brightnessctl", "s", value + "%"]);
+        Quickshell.execDetached(["brightnessctl", "s", value + "%", "-q"]);
     }
 
     Process {
