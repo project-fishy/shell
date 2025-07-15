@@ -49,7 +49,7 @@ Item {
         id: cava
 
         command: ["sh", "-c", `printf '[general]\nframerate=30\nbars=${root.bars}\nsleep_timer=3\n[output]\nchannels=mono\nmethod=raw\nraw_target=/dev/stdout\ndata_format=ascii\nascii_max_range=100' | cava -p /dev/stdin`]
-        running: true
+        running: root.height > 0
 
         stdout: StdioCollector {
             waitForEnd: false
