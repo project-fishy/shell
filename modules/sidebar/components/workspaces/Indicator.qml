@@ -19,6 +19,10 @@ MouseArea {
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
 
+    onClicked: {
+        modelData.activate();
+    }
+
     TextIcon {
         id: wsIcon
         text: `counter_${root.modelData.id}`
@@ -29,6 +33,10 @@ MouseArea {
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+
+        Behavior on color {
+            ColorAnimation {}
+        }
     }
     Column {
         id: layout
