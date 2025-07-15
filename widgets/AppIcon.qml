@@ -1,0 +1,32 @@
+import QtQuick
+import Quickshell
+
+import "../config"
+
+CustomText {
+    required property string modelData
+    property int size: 17
+
+    font.family: "MesloLGL Nerd Font Mono"
+    font.pointSize: size
+    color: Colors.current.text
+
+    anchors.horizontalCenter: parent.horizontalCenter
+    horizontalAlignment: Text.AlignHCenter
+    verticalAlignment: Text.AlignVCenter
+
+    text: {
+        if (modelData == "Spotify")
+            return "";
+        else if (modelData == "Code")
+            return "󰨞";
+        else if (modelData == "kitty")
+            return "";
+        else if (modelData == "thunar")
+            return "";
+        else
+            return "";
+    }
+}
+
+// "MesloLGL Nerd Font"

@@ -6,7 +6,7 @@ import Quickshell
 import "../../../../widgets"
 import "../../../../config"
 
-Item {
+MouseArea {
     id: root
 
     required property var index
@@ -20,28 +20,32 @@ Item {
     Layout.preferredHeight: childrenRect.height
 
     TextIcon {
-        text: {
-            let windows = Hyprland.toplevels.values.filter(i => i.workspace?.id === root.modelData.id);
-            let classes = windows.map(w => w.lastIpcObject.class);
-
-            // print(`>>> WS:${root.modelData.id}, WINDOWS:${classes}`);
-
-            if (classes.includes("vivaldi-stable"))
-                return "captive_portal";
-            else if (classes.includes("Code"))
-                return "code_blocks";
-            else if (classes.includes("Spotify"))
-                return "music_note";
-            else
-            // ovvupied but not cool
-            if (classes.length > 0)
-                return "accessible";
-            return root.selected ? "adjust" : "fiber_manual_record";
-        }
+        id: wsIcon
+        text: `counter_${root.modelData.id}`
 
         color: root.selected ? Colors.current.text_color : Colors.current.text
 
+        anchors.horizontalCenter: parent.horizontalCenter
+
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+    }
+    Column {
+        id: layout
+
+        anchors.top: wsIcon.bottom
+        anchors.horizontalCenter: wsIcon.horizontalCenter
+
+        spacing: -7
+
+        Repeater {
+            id: wIcons
+            property var windows: Hyprland.toplevels.values.filter(i => i.workspace?.id === root.modelData.id)
+            property var classes: windows.map(w => w.lastIpcObject.class)
+
+            model: classes
+
+            AppIcon {}
+        }
     }
 }
