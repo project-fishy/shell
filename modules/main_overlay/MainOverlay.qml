@@ -1,12 +1,15 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
+import Quickshell.Services.SystemTray
 import Quickshell.Wayland
 import QtQuick
 import QtQuick.Effects
 import "../sidebar"
 import "../../widgets"
+import "../../logic"
 import "../../config"
+import "../sidebar/components/tray"
 
 // this supposedly avoids multihead problems
 Variants {
@@ -39,7 +42,7 @@ Variants {
                 height: win.height - Config.border.thickness * 2
                 intersection: Intersection.Xor
 
-                regions: mouseRegions.instances
+                regions: Helper.flatten([mouseRegions.instances, contextRegions.instances])
             }
 
             // take the full screen
@@ -81,6 +84,33 @@ Variants {
                     height: modelData.height
 
                     intersection: Intersection.Subtract
+                }
+            }
+
+            Variants {
+                id: contextRegions
+
+                model: trayMenus.children
+
+                Region {
+                    required property Item modelData
+
+                    x: modelData.x
+                    y: modelData.y
+                    width: modelData.width
+                    height: modelData.height
+
+                    intersection: Intersection.Subtract
+                }
+            }
+
+            Item {
+                id: trayMenus
+                Repeater {
+
+                    model: SystemTray.items.values
+
+                    ContextMenu {}
                 }
             }
 
