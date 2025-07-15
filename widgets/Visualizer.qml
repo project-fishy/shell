@@ -16,6 +16,14 @@ Item {
         for (const v of volumes) {}
     }
 
+    onHeightChanged: {
+        let running = height > 0;
+        cava.running = running;
+        if (!running)
+            for (var i = 0; i < volumes.length; i++)
+                volumes[i] = 0;
+    }
+
     Row {
         id: row
         anchors.fill: parent
@@ -49,7 +57,7 @@ Item {
         id: cava
 
         command: ["sh", "-c", `printf '[general]\nframerate=30\nbars=${root.bars}\nsleep_timer=3\n[output]\nchannels=mono\nmethod=raw\nraw_target=/dev/stdout\ndata_format=ascii\nascii_max_range=100' | cava -p /dev/stdin`]
-        running: root.height > 0
+        running: false
 
         stdout: StdioCollector {
             waitForEnd: false
