@@ -86,9 +86,13 @@ Item {
                 for (const i of tray.layout.children) {
                     let iconTop = tray.y + i.y;
                     let iconBot = iconTop + i.height;
+
                     if (iconTop < pos.y && pos.y < iconBot) {
+                        let menuHeight = menus.children.find(c => c.modelData?.id == i.modelData.id).height;
+                        menus_.yPos = iconTop + menuHeight > root.height ? root.height - menuHeight : iconTop;
+
                         menus_.current = i.modelData.id;
-                        menus_.yPos = iconTop;
+
                         found = true;
                         break;
                     }

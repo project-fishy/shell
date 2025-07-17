@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Services.SystemTray
 
 import "../../../../widgets"
+import "../../../../config"
 
 Item {
     id: root
@@ -15,7 +16,7 @@ Item {
 
     visible: shown
 
-    x: 200
+    x: Config.bar.width
 
     CustomRect {
         color: "#0f0"
