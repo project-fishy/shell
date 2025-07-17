@@ -42,7 +42,7 @@ Variants {
                 height: win.height - Config.border.thickness * 2
                 intersection: Intersection.Xor
 
-                regions: Helper.flatten([mouseRegions.instances, contextRegions.instances])
+                regions: Helper.flatten([mouseRegions.instances, [bar.menus.mouseRegion]])
             }
 
             // take the full screen
@@ -87,32 +87,22 @@ Variants {
                 }
             }
 
-            Variants {
-                id: contextRegions
+            // Variants {
+            //     id: contextRegions
 
-                model: trayMenus.children
+            //     model: bar.menus.items
 
-                Region {
-                    required property Item modelData
+            //     Region {
+            //         required property var modelData
 
-                    x: modelData.x
-                    y: modelData.y
-                    width: modelData.width
-                    height: modelData.height
+            //         x: modelData.x
+            //         y: modelData.y
+            //         width: modelData.width
+            //         height: modelData.height
 
-                    intersection: Intersection.Subtract
-                }
-            }
-
-            Item {
-                id: trayMenus
-                Repeater {
-
-                    model: SystemTray.items.values
-
-                    ContextMenu {}
-                }
-            }
+            //         intersection: Intersection.Subtract
+            //     }
+            // }
 
             // left bar thing
             Sidebar {

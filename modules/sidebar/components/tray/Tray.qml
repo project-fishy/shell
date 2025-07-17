@@ -6,16 +6,16 @@ import Quickshell.Services.SystemTray
 Item {
     id: root
 
-    readonly property Repeater items: items
+    readonly property Column layout: layout_
 
     clip: true
     visible: width > 0 && height > 0
 
-    implicitHeight: layout.implicitHeight
-    implicitWidth: layout.implicitWidth
+    implicitHeight: layout_.implicitHeight
+    implicitWidth: layout_.implicitWidth
 
     Column {
-        id: layout
+        id: layout_
 
         spacing: Config.bar.tray.spacing
 

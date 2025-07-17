@@ -9,6 +9,8 @@ Item {
     id: root
     required property ShellScreen screen
 
+    property ContextMenus menus: menus_
+
     anchors.top: parent.top
     anchors.left: parent.left
     anchors.bottom: parent.bottom
@@ -37,8 +39,18 @@ Item {
         // }
 
         Tray {
+            id: tray
+
             anchors.bottom: clock.top
             anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        ContextMenus {
+            id: menus_
+
+            tray: tray
+            yPos: 50
+            current: ""
         }
 
         Clock {
@@ -59,6 +71,32 @@ Item {
         Power {
             id: power
             anchors.bottom: parent.bottom
+        }
+
+        MouseArea {
+            id: mouseHandler
+
+            anchors.fill: parent
+            hoverEnabled: true
+
+            // check where the mouse is
+            onPositionChanged: pos => {
+                // tray
+                let found = false;
+                for (const i of tray.layout.children) {
+                    let iconTop = tray.y + i.y;
+                    let iconBot = iconTop + i.height;
+                    if (iconTop < pos.y && pos.y < iconBot) {
+                        menus_.current = i.modelData.id;
+                        menus_.yPos = iconTop;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    menus_.current = "";
+                }
+            }
         }
     }
 

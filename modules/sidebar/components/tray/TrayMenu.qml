@@ -8,8 +8,12 @@ Item {
     id: root
 
     required property SystemTrayItem modelData
+    required property bool shown
+
     implicitHeight: layout.implicitHeight
     implicitWidth: layout.implicitWidth
+
+    visible: shown
 
     x: 200
 
