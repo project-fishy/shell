@@ -14,6 +14,7 @@ Variants {
     model: Quickshell.screens
 
     Scope {
+        required property ShellScreen modelData
 
         CustomWindow {
             id: root
@@ -29,6 +30,7 @@ Variants {
             name: "widgets"
 
             Video {
+                loops: MediaPlayer.Infinite
                 anchors.fill: parent
                 source: "root:/assets/elden-cut.mp4"
                 muted: true
