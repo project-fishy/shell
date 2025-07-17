@@ -36,9 +36,8 @@ Variants {
             name: "widgets" // idk
 
             // animated wallpaper
-            // TODO: unload when fullscreen
             Loader {
-                active: Charge.charging
+                active: Charge.charging && !Hypr.hasFullscreen(scope.modelData)
                 anchors.fill: parent
 
                 sourceComponent: VideoBG {}

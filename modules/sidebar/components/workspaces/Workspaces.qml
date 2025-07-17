@@ -7,23 +7,18 @@ import Quickshell.Hyprland
 
 import "../../../../widgets"
 import "../../../../config"
+import "../../../../logic"
 
 // workspaces section from the sidebar
 Item {
     id: root
 
     required property ShellScreen screen
-    // TODO: move to hyprland wrapper
-    property HyprlandMonitor monitor: Hyprland.monitors.values.find(m => m.name == screen.name)
-    property list<HyprlandWorkspace> currentWorkspaces: Hyprland.workspaces.values.filter(w => w.monitor === root.monitor)
 
-    readonly property var activeWS: Hyprland.workspaces.values.reduce((acc, curr) => {
-        acc[curr.id] = curr.lastIpcObject.windows > 0;
-        return acc;
-    })
+    property HyprlandMonitor monitor: Hypr.monitorFor(screen)
+    property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen)
 
-    readonly property int activeWsId: Hyprland.focusedWorkspace?.id ?? 1
-    readonly property int groupOffset: Math.floor((activeWsId - 1) / Config.bar.workspaces) * Config.bar.workspaces
+    readonly property int groupOffset: Math.floor((Hypr.currentWorkspace.id - 1) / Config.bar.workspaces) * Config.bar.workspaces
 
     implicitHeight: layout.implicitHeight
     implicitWidth: layout.implicitWidth
@@ -42,19 +37,7 @@ Item {
 
             Indicator {
                 groupOffset: root.groupOffset
-                activeWsId: root.activeWsId
             }
-        }
-    }
-
-    // TODO: move to hyprland wrapper
-    Connections {
-        target: Hyprland
-
-        function onRawEvent(event: HyprlandEvent): void {
-            Hyprland.refreshMonitors();
-            Hyprland.refreshWorkspaces();
-            Hyprland.refreshToplevels();
         }
     }
 }

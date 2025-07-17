@@ -5,6 +5,7 @@ import Quickshell
 
 import "../../../../widgets"
 import "../../../../config"
+import "../../../../logic"
 
 // a single workspace indicator
 // with window icons
@@ -16,11 +17,10 @@ import "../../../../config"
 MouseArea {
     id: root
 
-    required property int activeWsId // XXX: avoid this maybe?
     required property int groupOffset
     required property HyprlandWorkspace modelData
 
-    property bool selected: activeWsId == modelData.id // XXX: and this
+    readonly property bool selected: modelData.active
 
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
@@ -56,7 +56,7 @@ MouseArea {
 
         Repeater {
             id: wIcons
-            property var windows: Hyprland.toplevels.values.filter(i => i.workspace?.id === root.modelData.id)
+            property var windows: Hypr.windowsForWorkspace(root.modelData)
             property var classes: windows.map(w => w.lastIpcObject.class)
 
             model: classes // TODO: inject more properties?
