@@ -35,7 +35,7 @@ Singleton {
     readonly property string icon_text: {
         if (charging) {
             if (current == 100)
-                return "battery full";
+                return "battery_full";
             else if (current >= 90)
                 return "battery_charging_90";
             else if (current >= 80)
