@@ -16,11 +16,13 @@ Variants {
     model: Quickshell.screens
 
     Scope {
+        id: scope
         required property ShellScreen modelData
 
         CustomWindow {
             id: root
             aboveWindows: false
+            screen: scope.modelData
 
             // fill the whole screen
             anchors.bottom: true
@@ -34,18 +36,13 @@ Variants {
             name: "widgets" // idk
 
             // animated wallpaper
-            // TODO: unload when fullscreen and on battery?
-            // Video {
-            //     loops: MediaPlayer.Infinite
-            //     anchors.fill: parent
-            //     source: "root:/assets/elden-cut.mp4"
-            //     muted: true
+            // TODO: unload when fullscreen
+            Loader {
+                active: Charge.charging
+                anchors.fill: parent
 
-            //     Component.onCompleted: {
-            //         play();
-            //     }
-            //     // TODO: async?
-            // }
+                sourceComponent: VideoBG {}
+            }
 
             // clock
             // HACK: make better align
@@ -89,6 +86,20 @@ Variants {
                     anchors.top: parent.top
                 }
             }
+        }
+    }
+
+    component VideoBG: Video {
+        id: vid
+
+        anchors.fill: parent
+
+        source: "root:/assets/elden-cut.mp4"
+        loops: MediaPlayer.Infinite
+        muted: true
+
+        Component.onCompleted: {
+            play();
         }
     }
 }
