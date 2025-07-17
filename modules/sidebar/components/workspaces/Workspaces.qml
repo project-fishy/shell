@@ -14,9 +14,10 @@ Item {
     id: root
 
     required property ShellScreen screen
+    property ColumnLayout layout: layout_ // expose for mouse clicks
 
-    property HyprlandMonitor monitor: Hypr.monitorFor(screen)
-    property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen)
+    readonly property HyprlandMonitor monitor: Hypr.monitorFor(screen)
+    readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen)
 
     readonly property int groupOffset: Math.floor((Hypr.currentWorkspace.id - 1) / Config.bar.workspaces) * Config.bar.workspaces
 
@@ -27,7 +28,7 @@ Item {
 
     // icons layout
     ColumnLayout {
-        id: layout
+        id: layout_
 
         layer.enabled: true
         layer.smooth: true

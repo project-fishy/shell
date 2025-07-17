@@ -1,6 +1,7 @@
 import Quickshell
 import QtQuick
 import "../../config"
+import "../../logic"
 import "components"
 import "components/workspaces"
 import "components/tray"
@@ -81,27 +82,51 @@ Item {
             anchors.fill: parent
             hoverEnabled: true
 
-            // check where the mouse is
-            onPositionChanged: pos => {
-                // tray
-                let found = false;
-                for (const i of tray.layout.children) {
-                    let iconTop = tray.y + i.y;
-                    let iconBot = iconTop + i.height;
-
-                    if (iconTop < pos.y && pos.y < iconBot) {
-                        let menuHeight = menus.children.find(c => c.modelData?.id == i.modelData.id).height;
-                        menus_.yPos = iconTop + menuHeight > root.height ? root.height - menuHeight : iconTop;
-
-                        menus_.current = i.modelData.id;
-
-                        found = true;
-                        break;
+            // handle clicks
+            onClicked: event => {
+                if (event.button == Qt.LeftButton) {
+                    // workspaces
+                    let ws = checkWithinWorkspace(event);
+                    if (ws != null) {
+                        ws.modelData.activate();
+                        return;
                     }
                 }
-                if (!found) {
+            }
+
+            // handle movement
+            onPositionChanged: pos => {
+
+                // tray
+                let icon = checkWithinTrayIcon(pos);
+                if (icon != null) {
+                    let menuHeight = menus_.children.find(c => c.modelData?.id == icon.modelData.id).height;
+                    let iconTop = tray.y + icon.y;
+
+                    // set context menu info
+                    menus_.yPos = iconTop + menuHeight > root.height ? root.height - menuHeight : iconTop;
+                    menus_.current = icon.modelData.id;
+
+                    return;
+                } else
                     menus_.current = "";
+            }
+
+            // TODO: generalize probably
+            function checkWithinWorkspace(pos): Indicator {
+                for (const w of ws.layout.children) {
+                    if (Helper.checkInBounds(w, pos, ws.x, ws.y))
+                        return w;
                 }
+                return null;
+            }
+
+            function checkWithinTrayIcon(pos): TrayIcon {
+                for (const i of tray.layout.children) {
+                    if (Helper.checkInBounds(i, pos, tray.x, tray.y))
+                        return i;
+                }
+                return null;
             }
         }
     }

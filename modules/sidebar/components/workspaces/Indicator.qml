@@ -9,12 +9,9 @@ import "../../../../logic"
 
 // a single workspace indicator
 // with window icons
-
-// [ ] remove mouse stuff
-// [ ] handle in sidebar
 // [ ] animations?
 // [ ] better color?
-MouseArea {
+Item {
     id: root
 
     required property int groupOffset
@@ -24,10 +21,6 @@ MouseArea {
 
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
-
-    onClicked: {
-        modelData.activate();
-    }
 
     // workspace icon
     TextIcon {
@@ -45,6 +38,7 @@ MouseArea {
             ColorAnimation {}
         }
     }
+
     // window icons
     Column {
         id: layout
