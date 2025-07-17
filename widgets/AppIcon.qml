@@ -28,6 +28,8 @@ CustomText {
             return "󰓓";
         else if (modelData == "zen")
             return "󰈹";
+        else if (modelData == "vesktop")
+            return "";
         else
             return "";
     }
