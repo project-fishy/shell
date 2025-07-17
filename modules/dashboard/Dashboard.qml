@@ -60,6 +60,10 @@ Item {
             Brightness.set(value);
         }
 
+        onPressedChanged: {
+            Brightness.suppressUpdates = pressed;
+        }
+
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
