@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris
 
+// eminem gif
 Item {
     id: margins
 

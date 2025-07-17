@@ -10,6 +10,8 @@ import "../../widgets"
 import "../../logic"
 import "../../config"
 
+// this is a background window that holds
+// the wallpaper and widgets (if any)
 Variants {
     model: Quickshell.screens
 
@@ -20,26 +22,33 @@ Variants {
             id: root
             aboveWindows: false
 
+            // fill the whole screen
             anchors.bottom: true
             anchors.top: true
             anchors.left: true
             anchors.right: true
 
+            // don't reserve space
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
-            name: "widgets"
+            name: "widgets" // idk
 
-            Video {
-                loops: MediaPlayer.Infinite
-                anchors.fill: parent
-                source: "root:/assets/elden-cut.mp4"
-                muted: true
+            // animated wallpaper
+            // TODO: unload when fullscreen and on battery?
+            // Video {
+            //     loops: MediaPlayer.Infinite
+            //     anchors.fill: parent
+            //     source: "root:/assets/elden-cut.mp4"
+            //     muted: true
 
-                Component.onCompleted: {
-                    play();
-                }
-            }
+            //     Component.onCompleted: {
+            //         play();
+            //     }
+            //     // TODO: async?
+            // }
 
+            // clock
+            // HACK: make better align
             Item {
                 implicitHeight: 300
                 anchors.top: parent.top
@@ -56,8 +65,9 @@ Variants {
                 }
             }
 
+            // now playing
+            // HACK: this is bad
             Item {
-                // TODO: this is bad
 
                 implicitHeight: 100
                 implicitWidth: 1700

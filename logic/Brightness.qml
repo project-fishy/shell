@@ -5,13 +5,15 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Hyprland
 
+// brightness wrapper
+// TODO: second monitor thing?
 Singleton {
     id: root
 
     property HyprlandMonitor activeMonitor: Hyprland.monitors?.values.find(m => m.active)
-    property int current
+    property int current // get from here
 
-    function set(value: int): void {
+    function set(value: int): void { // set here
         Quickshell.execDetached(["brightnessctl", "s", value + "%", "-q"]);
     }
 

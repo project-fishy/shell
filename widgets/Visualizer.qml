@@ -3,19 +3,19 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Io
-
 import "../config"
 
+// jumping bars thing.
+// FIXME: bars at 0 volume disappear?
 Item {
     id: root
 
-    property int bars: 5
-    property list<int> volumes
+    property int bars: 5 // how many of bars there will be
+    property list<int> volumes // cava values
 
-    onVolumesChanged: {
-        for (const v of volumes) {}
-    }
-
+    // stops cava to clear the output
+    // HACK: theres better ways to clear probably
+    // TODO: make it stop when audio is paused for some time
     onHeightChanged: {
         let running = height > 0;
         cava.running = running;
@@ -24,8 +24,10 @@ Item {
                 volumes[i] = 0;
     }
 
+    // the bars are stored in a row.
     Row {
         id: row
+
         anchors.fill: parent
         spacing: 3
 
@@ -36,6 +38,7 @@ Item {
 
             anchors.fill: parent
 
+            // single bar
             Rectangle {
                 required property int modelData
 
@@ -53,6 +56,7 @@ Item {
         }
     }
 
+    // cava process
     Process {
         id: cava
 

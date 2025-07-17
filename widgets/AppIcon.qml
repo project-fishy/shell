@@ -3,6 +3,7 @@ import Quickshell
 
 import "../config"
 
+// uses mono font because non-mono have weird alignment
 CustomText {
     required property string modelData
     property int size: 17

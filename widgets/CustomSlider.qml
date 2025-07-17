@@ -6,19 +6,20 @@ import Quickshell.Io
 import "../widgets"
 import "../config"
 
+// wrapper for Slider, adds animations and whatnot
 Slider {
     id: root
 
-    required property string text
+    required property string text // the icon on the knob
 
-    from: 0
-    to: 100
+    from: 0 // this is gonna be 0-100, if you want
+    to: 100 // anything other than that - handle outside
 
     implicitHeight: Config.slider.thickness
 
     // override elements (https://doc.qt.io/qt-6/qml-qtquick-controls-slider-members.html)
-
-    handle: Item {
+    // the knob you drag
+    handle: CustomRect {
         id: knob
 
         implicitWidth: root.height
@@ -26,29 +27,25 @@ Slider {
 
         x: root.visualPosition * (root.availableWidth - width)
 
-        CustomRect {
-            anchors.fill: parent
-            color: Colors.current.text_color
+        color: Colors.current.text_color
 
-            radius: root.height / 2
+        radius: root.height / 2
 
-            // to-from  value
-            // 100      x
+        CustomText {
+            text: root.pressed ? Math.floor(root.value * 100 / (root.to - root.from)) : root.text
+            color: Colors.current.background
 
-            CustomText {
-                text: root.pressed ? Math.floor(root.value * 100 / (root.to - root.from)) : root.text
-                color: Colors.current.background
+            font.family: !root.pressed ? "Material Symbols Rounded" : "Monaspace Argon"
+            font.pointSize: root.pressed ? 10 : 20
 
-                font.family: !root.pressed ? "Material Symbols Rounded" : "Monaspace Argon"
-                font.pointSize: root.pressed ? 10 : 20
-
-                horizontalAlignment: Text.AlignHCenter
-                anchors.centerIn: parent
-            }
+            horizontalAlignment: Text.AlignHCenter
+            anchors.centerIn: parent
         }
     }
 
+    // bar thingy
     background: Item {
+        // left part
         CommonRect {
             id: filled
 
@@ -56,12 +53,13 @@ Slider {
 
             anchors.left: parent.left
 
-            implicitWidth: knob.x + root.height / 2
+            implicitWidth: knob.x + root.height / 2 // can't anchor :(
 
             topRightRadius: 0
             bottomRightRadius: 0
         }
 
+        // right part
         CommonRect {
             id: bar
 

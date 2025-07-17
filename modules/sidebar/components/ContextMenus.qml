@@ -5,11 +5,15 @@ import Quickshell
 import Quickshell.Services.SystemTray
 import "tray"
 
+// generates and contains context menus for the sidebar
 Item {
     id: root
 
     required property Tray tray
-    required property string current
+    required property string current // currently open menu, empty if none
+    property int yPos // vertical position of current menu
+
+    // create mouse region for opened menu
     property Region mouseRegion: Region {
         property Item target: root.children.find(t => t.modelData?.id == root.current) ?? null
 
@@ -21,8 +25,7 @@ Item {
         intersection: Intersection.Subtract
     }
 
-    property int yPos
-
+    // create menus
     Repeater {
 
         model: SystemTray.items

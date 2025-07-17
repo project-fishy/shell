@@ -8,10 +8,12 @@ import Quickshell.Hyprland
 import "../../../../widgets"
 import "../../../../config"
 
+// workspaces section from the sidebar
 Item {
     id: root
 
     required property ShellScreen screen
+    // TODO: move to hyprland wrapper
     property HyprlandMonitor monitor: Hyprland.monitors.values.find(m => m.name == screen.name)
     property list<HyprlandWorkspace> currentWorkspaces: Hyprland.workspaces.values.filter(w => w.monitor === root.monitor)
 
@@ -28,10 +30,7 @@ Item {
 
     anchors.horizontalCenter: parent.horizontalCenter
 
-    // Component.onCompleted: {
-    //     print(monitor?.name + ":" + currentWorkspaces.map(w => w.name));
-    // }
-
+    // icons layout
     ColumnLayout {
         id: layout
 
@@ -48,6 +47,7 @@ Item {
         }
     }
 
+    // TODO: move to hyprland wrapper
     Connections {
         target: Hyprland
 

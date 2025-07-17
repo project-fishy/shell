@@ -2,6 +2,7 @@ pragma Singleton
 
 import Quickshell
 
+// time wrapper
 Singleton {
     readonly property string time: {
         Qt.formatDateTime(clock.date, "hh\nmm");

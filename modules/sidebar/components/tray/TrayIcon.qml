@@ -5,6 +5,9 @@ import QtQuick
 import Quickshell
 import Quickshell.Widgets
 
+// a single tray icon
+// XXX:     remove all mouse related stuff,
+//          that's handled by the bar
 MouseArea {
     id: root
 
@@ -12,6 +15,7 @@ MouseArea {
 
     implicitWidth: Config.bar.tray.iconSize
     implicitHeight: Config.bar.tray.iconSize
+
     acceptedButtons: Qt.LeftButton | Qt.RightButton
 
     onClicked: event => {
@@ -21,14 +25,16 @@ MouseArea {
             menu.open;
     }
 
+    // XXX: remove this too
     QsMenuAnchor {
         id: menu
 
         menu: root.modelData.menu
-        // anchor.window: icon.horizontalCenter
         anchor.window: this.QsWindow.window
     }
 
+    // the icon
+    // stolen from caelestia
     IconImage {
         id: icon
 

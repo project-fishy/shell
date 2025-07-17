@@ -5,24 +5,25 @@ import Quickshell.Services.SystemTray
 import "../../../../widgets"
 import "../../../../config"
 
+// context menu loader
+// i think these are made in modules/sidebar/components/ContextMenus.qml
+// and wrapped in SlidingPanels or something similar
 Item {
     id: root
 
     required property SystemTrayItem modelData
-    required property bool shown
+    required property bool shown // supposed to be used for cool animations
 
     implicitHeight: layout.implicitHeight
     implicitWidth: layout.implicitWidth
 
     visible: shown
 
+    // place next to sidebar
     x: Config.bar.width
 
-    CustomRect {
-        color: Colors.current.background
-        anchors.fill: parent
-    }
-
+    // this loads menu items from modelData
+    // items are children
     QsMenuOpener {
         id: opener
 
@@ -32,30 +33,45 @@ Item {
         }
     }
 
+    // bg
+    CustomRect {
+        color: Colors.current.background
+        anchors.fill: parent
+    }
+
+    // items
     Column {
         id: layout
         anchors.fill: parent
+
         Repeater {
             id: items
 
             model: opener.children.values
 
+            // single entry
+            // TODO: handle separators better
             CustomText {
                 id: entry
                 required property QsMenuEntry modelData
 
-                text: modelData.isSeparator ? "------" : modelData.text ?? "wtf"
                 color: Colors.current.text
+                text: modelData.isSeparator ? "------" : modelData.text ?? "wtf"
 
+                // HACK: maybe don't make that many, just one per menu?
                 MouseArea {
                     anchors.fill: parent
+                    hoverEnabled: true
+
+                    // mouse events
                     onPressed: event => {
                         entry.modelData.triggered();
                     }
-                    hoverEnabled: true
+
                     onEntered: {
                         parent.color = Colors.current.accent;
                     }
+
                     onExited: {
                         parent.color = Colors.current.text;
                     }

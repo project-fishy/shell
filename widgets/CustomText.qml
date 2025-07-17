@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import "../config"
 
+// wrapper for Text, adds animations and whatnot
 Text {
     id: root
 

@@ -4,6 +4,7 @@ import "../../../config"
 import "../../../widgets"
 import "../../../logic"
 
+// sidebar clock
 Column {
     id: root
 

@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import "../../../config"
 
+// power button
 Rectangle {
     anchors.left: parent.left
     anchors.right: parent.right
