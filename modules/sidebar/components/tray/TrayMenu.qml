@@ -19,7 +19,7 @@ Item {
     x: Config.bar.width
 
     CustomRect {
-        color: "#0f0"
+        color: Colors.current.background
         anchors.fill: parent
     }
 
@@ -45,7 +45,7 @@ Item {
                 required property QsMenuEntry modelData
 
                 text: modelData.isSeparator ? "------" : modelData.text ?? "wtf"
-                color: "#f00"
+                color: Colors.current.text
 
                 MouseArea {
                     anchors.fill: parent
@@ -54,10 +54,10 @@ Item {
                     }
                     hoverEnabled: true
                     onEntered: {
-                        parent.color = "#00f";
+                        parent.color = Colors.current.accent;
                     }
                     onExited: {
-                        parent.color = "#f00";
+                        parent.color = Colors.current.text;
                     }
                 }
             }
