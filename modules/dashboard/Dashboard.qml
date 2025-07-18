@@ -8,22 +8,31 @@ import "../../widgets"
 import "../../config"
 import "../../logic"
 
+// this is supposed to be the panel at the top of the screen
+// with a lot of controls.
 Item {
     id: root
-    implicitWidth: 640
+    implicitWidth: 640 // TODO: probably reverse idk
     implicitHeight: 480
 
-    property int default_vol
-    property int default_br
+    // bars
+    Visualizer {
+        id: bars
+        anchors.top: parent.top
+        anchors.bottom: slider_volume.top
+        implicitWidth: 100
+    }
 
+    // eminem gif
     Eminem {
         id: eminem
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.left: parent.left
+        anchors.left: bars.right
         anchors.bottom: slider_volume.top
     }
 
+    // volume
     CustomSlider {
         id: slider_volume
 
@@ -40,8 +49,7 @@ Item {
         anchors.bottom: slider_brightness.top
     }
 
-    // property string watching: proc.text
-
+    // brightness
     CustomSlider {
         id: slider_brightness
 
@@ -50,6 +58,10 @@ Item {
 
         onValueChanged: {
             Brightness.set(value);
+        }
+
+        onPressedChanged: {
+            Brightness.suppressUpdates = pressed;
         }
 
         anchors.left: parent.left

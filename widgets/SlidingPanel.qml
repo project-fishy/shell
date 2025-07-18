@@ -3,12 +3,15 @@ import Quickshell
 import Quickshell.Wayland
 import "../config"
 
+// the cool slidy thing wrapper.
 MouseArea {
     id: root
 
-    required property int side
-    required property Component child
+    required property int side // from Config.panel.[...] determines where it will be placed
+    // TODO: offset?
+    required property Component child // TODO: rename to sourceComponent? for consistency?
 
+    // determine some properties
     readonly property int hiddenWidth: vertical ? Config.border.thickness : loader.implicitWidth + Config.border.thickness * 2
     readonly property int hiddenHeight: vertical ? loader.implicitHeight + Config.border.thickness * 2 : Config.border.thickness
     readonly property bool vertical: side === Config.panel.left || side === Config.panel.right
@@ -33,7 +36,7 @@ MouseArea {
         when: root.side == Config.panel.bottom
     }
 
-    // centering
+    // centering // TODO: offset
     Binding on anchors.horizontalCenter {
         when: !root.vertical
         value: root.parent.horizontalCenter
@@ -47,9 +50,11 @@ MouseArea {
     implicitWidth: hiddenWidth
     implicitHeight: hiddenHeight
 
-    hoverEnabled: true
-    preventStealing: true
+    hoverEnabled: true // mouse detection
+    preventStealing: true // TODO: idk if i need this
 
+    // show/hide
+    // TODO: make functions probably
     onEntered: {
         implicitHeight = loader.implicitHeight + Config.border.thickness * 2 + Config.panel.outline;
         implicitWidth = loader.implicitWidth + (Config.border.thickness + Config.panel.outline) * 2;
@@ -61,8 +66,8 @@ MouseArea {
         isVisible = false;
     }
 
-    state: "closed"
-
+    // child loader
+    // wrap it in the bg for now
     RoundedBg {
         hasBorder: root.isVisible
         Loader {
@@ -73,6 +78,7 @@ MouseArea {
         }
     }
 
+    // animations
     Behavior on implicitHeight {
         Anim {}
     }

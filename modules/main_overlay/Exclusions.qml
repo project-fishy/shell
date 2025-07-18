@@ -5,6 +5,7 @@ import QtQuick
 import "../../widgets"
 import "../../config"
 
+// this reserves space for the borders and sidebar
 Scope {
     id: root
     required property var screen
@@ -13,7 +14,7 @@ Scope {
     // make windows avoid the left panel
     ExclusionZone {
         anchors.left: true
-        exclusiveZone: root.bar.implicitWidth// + Config.border.thickness
+        exclusiveZone: root.bar.implicitWidth
     }
 
     // avoid the other borders
@@ -34,7 +35,7 @@ Scope {
         name: "exclusion"
         exclusiveZone: Config.border.thickness
 
-        // removes weird unclockable zones on top and bottom
+        // removes weird unclickable zones on top and bottom
         implicitHeight: 0
         implicitWidth: 0
     }

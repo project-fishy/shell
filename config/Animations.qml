@@ -3,6 +3,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 
+// numbers regarding animations
 Singleton {
     readonly property Duration duration: Duration {}
 

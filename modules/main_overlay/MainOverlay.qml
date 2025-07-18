@@ -1,12 +1,17 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
+import Quickshell.Services.SystemTray
 import Quickshell.Wayland
 import QtQuick
 import QtQuick.Effects
 import "../sidebar"
 import "../../widgets"
+import "../../logic"
 import "../../config"
+import "../sidebar/components/tray"
+
+// this holds most of the elements drawn above windows
 
 // this supposedly avoids multihead problems
 Variants {
@@ -16,6 +21,7 @@ Variants {
         id: scope
         required property var modelData
 
+        // reserve space
         Exclusions {
             screen: scope.modelData
             bar: bar
@@ -24,12 +30,13 @@ Variants {
         // fullscreen container
         CustomWindow {
             id: win
-
-            screen: scope.modelData
             name: "main"
 
+            // replicate on every monitor
+            screen: scope.modelData
+
+            // we have exclusions at home
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
-            // surfaceFormat.opaque: false
 
             // make a big hole in the middle so we can click things
             mask: Region {
@@ -39,7 +46,8 @@ Variants {
                 height: win.height - Config.border.thickness * 2
                 intersection: Intersection.Xor
 
-                regions: mouseRegions.instances
+                // reserve clickable space for context menus and panels
+                regions: Helper.flatten([mouseRegions.instances, [bar.menus.mouseRegion]])
             }
 
             // take the full screen
@@ -48,12 +56,20 @@ Variants {
             anchors.left: true
             anchors.bottom: true
 
+            // TODO: make a container that avoids the bar and put
+            // context menus and panels in it
+
+            // sliding panels
             Panels {
                 id: panels
             }
 
+            // border container
             Item {
                 anchors.fill: parent
+
+                // border shadows
+                // it does look better with them
                 layer.enabled: true
                 layer.effect: MultiEffect {
                     shadowEnabled: true
@@ -61,12 +77,14 @@ Variants {
                     shadowColor: Colors.current.background
                 }
 
+                // border
                 Border {
-                    bar: bar
-                    color: Colors.current.background
+                    bar: bar                            // XXX: remove bar?
+                    color: Colors.current.background    // XXX: and this?
                 }
             }
 
+            // generates mouse regions for panels
             Variants {
                 id: mouseRegions
 

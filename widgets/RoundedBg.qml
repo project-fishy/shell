@@ -2,25 +2,28 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import Quickshell
-
 import "../config"
 
+// this is supposed to be the background of a SlidingPanel
 CustomRect {
     id: root
 
-    required property bool hasBorder
+    required property bool hasBorder // whether to draw the border or not
 
-    // color: "#0f0"
     color: Colors.current.background
+
     anchors.fill: parent
+
+    // TODO: we probably want the other sides too right?
     bottomRightRadius: Config.border.radius
     bottomLeftRadius: Config.border.radius
 
     border {
         color: root.hasBorder ? Colors.current.accent : Colors.current.background
-        width: 1
+        width: 1 // TODO: move to config
     }
 
+    // TODO: this doesnt work
     Item {
         id: pads
         anchors.fill: parent

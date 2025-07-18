@@ -3,6 +3,7 @@ pragma Singleton
 import Quickshell
 import QtQuick
 
+// numbers regarding element placement
 Singleton {
     readonly property Borders border: Borders {}
     readonly property Bar bar: Bar {}

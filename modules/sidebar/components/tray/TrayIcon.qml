@@ -5,30 +5,17 @@ import QtQuick
 import Quickshell
 import Quickshell.Widgets
 
-MouseArea {
+// a single tray icon
+Item {
     id: root
 
     required property SystemTrayItem modelData
 
     implicitWidth: Config.bar.tray.iconSize
     implicitHeight: Config.bar.tray.iconSize
-    acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-    onClicked: event => {
-        if (event.button === Qt.LeftButton)
-            modelData.activate();
-        else if (modelData.hasMenu)
-            menu.open;
-    }
-
-    QsMenuAnchor {
-        id: menu
-
-        menu: root.modelData.menu
-        // anchor.window: icon.horizontalCenter
-        anchor.window: this.QsWindow.window
-    }
-
+    // the icon
+    // stolen from caelestia
     IconImage {
         id: icon
 
