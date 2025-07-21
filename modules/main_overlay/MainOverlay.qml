@@ -22,10 +22,10 @@ Variants {
         required property var modelData
 
         // reserve space
-        Exclusions {
-            screen: scope.modelData
-            bar: bar
-        }
+        // Exclusions {
+        //     screen: scope.modelData
+        //     bar: bar
+        // }
 
         // fullscreen container
         CustomWindow {
@@ -40,14 +40,14 @@ Variants {
 
             // make a big hole in the middle so we can click things
             mask: Region {
-                x: bar.implicitWidth + Config.border.thickness
-                y: Config.border.thickness
-                width: win.width - bar.implicitWidth - Config.border.thickness * 2
-                height: win.height - Config.border.thickness * 2
+                x: 0
+                y: 0
+                width: win.width
+                height: win.height
                 intersection: Intersection.Xor
 
                 // reserve clickable space for context menus and panels
-                regions: Helper.flatten([mouseRegions.instances, [bar.menus.mouseRegion]])
+                regions: mouseRegions.instances
             }
 
             // take the full screen
@@ -62,6 +62,7 @@ Variants {
             // sliding panels
             Panels {
                 id: panels
+                screen: scope.modelData
             }
 
             // generates mouse regions for panels
@@ -80,12 +81,6 @@ Variants {
 
                     intersection: Intersection.Subtract
                 }
-            }
-
-            // left bar thing
-            Sidebar {
-                id: bar
-                screen: scope.modelData
             }
         }
     }

@@ -5,12 +5,14 @@ import "../../widgets"
 import "../../config"
 import "../../logic"
 import "../dashboard"
+import "../sidebar/components/workspaces"
 
 // contains all sliding panels
 Item {
     id: root
 
     anchors.fill: parent
+    required property ShellScreen screen
 
     // the dashboard
     TripleToast {
@@ -31,5 +33,24 @@ Item {
             }
         }
         fullComponent: Dashboard {}
+    }
+
+    // the workspaces
+    TripleToast {
+        anchors.left: parent.left
+        collapseTo: Config.toast.left
+        anchors.verticalCenter: parent.verticalCenter
+
+        compactConponent: Item {
+            implicitWidth: Config.toast.size
+            implicitHeight: ws.height
+            Workspaces {
+                id: ws
+                screen: root.screen
+            }
+        }
+
+        ignoreClicks: true
+        fullComponent: Item {}
     }
 }

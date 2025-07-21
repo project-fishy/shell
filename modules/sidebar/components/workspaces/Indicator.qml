@@ -11,7 +11,7 @@ import "../../../../logic"
 // with window icons
 // [ ] animations?
 // [ ] better color?
-Item {
+MouseArea {
     id: root
 
     required property int groupOffset
@@ -21,6 +21,8 @@ Item {
 
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
+
+    onClicked: modelData.activate()
 
     // workspace icon
     TextIcon {

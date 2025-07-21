@@ -14,6 +14,8 @@ Item { // container for margins, placement
 
     required property int collapseTo
     property int secondAnchor: -1
+    property bool ignoreClicks: false
+
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
     readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width
@@ -87,10 +89,28 @@ Item { // container for margins, placement
     MouseArea {
         id: mous
         hoverEnabled: true
+        propagateComposedEvents: true
 
+        // wacky woohoo event magic (makes children clickable and all that)
         onEntered: root.state = Config.toast.state_peek
         onExited: root.state = Config.toast.state_hidden
-        onClicked: root.state = Config.toast.state_shown
+        onPressed: event => {
+            if (!root.ignoreClicks)
+                root.state = Config.toast.state_shown;
+            event.accepted = false;
+        }
+        onReleased: event => {
+            event.accepted = false;
+        }
+        onClicked: event => {
+            event.accepted = false;
+        }
+        onPressAndHold: event => {
+            event.accepted = false;
+        }
+        onPositionChanged: event => {
+            event.accepted = false;
+        }
 
         // wacky woohoo binding magic
         anchors.left: compactLoader.left
