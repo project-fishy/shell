@@ -98,25 +98,25 @@ Item { // container for margins, placement
         // wacky woohoo binding magic
         anchors.left: compactLoader.left
         Binding on anchors.left {
-            when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left || root.switchMouseAnchors && !root.onHorizEdges
+            when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown
             value: root.left
             restoreMode: Binding.RestoreBindingOrValue
         }
         anchors.right: compactLoader.right
         Binding on anchors.right {
-            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right || root.switchMouseAnchors && root.onHorizEdges
+            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown
             value: root.right
             restoreMode: Binding.RestoreBindingOrValue
         }
         anchors.top: compactLoader.top
         Binding on anchors.top {
-            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top || root.switchMouseAnchors && !root.onHorizEdges
+            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown
             value: root.top
             restoreMode: Binding.RestoreBindingOrValue
         }
         anchors.bottom: compactLoader.bottom
         Binding on anchors.bottom {
-            when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom || root.switchMouseAnchors && root.onHorizEdges
+            when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown
             value: root.bottom
             restoreMode: Binding.RestoreBindingOrValue
         }
@@ -124,8 +124,6 @@ Item { // container for margins, placement
 
     component ContentLoader: Loader {
         active: true
-
-        anchors.margins: root.marg
 
         Binding on anchors.top {
             when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom
