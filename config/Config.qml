@@ -9,6 +9,22 @@ Singleton {
     readonly property Bar bar: Bar {}
     readonly property Panel panel: Panel {}
     readonly property Slider slider: Slider {}
+    readonly property Toasts toast: Toasts {}
+
+    component Toasts: QtObject {
+        property int size: 20
+        property int interactible_size: 5
+        property int margins: 5
+
+        readonly property string state_hidden: "hidden"
+        readonly property string state_peek: "peek"
+        readonly property string state_shown: "shown"
+
+        readonly property int right: 0
+        readonly property int left: 1
+        readonly property int top: 2
+        readonly property int bottom: 3
+    }
 
     component Borders: QtObject {
         property int thickness: 5

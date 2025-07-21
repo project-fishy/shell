@@ -78,10 +78,10 @@ Variants {
                 }
 
                 // border
-                Border {
-                    bar: bar                            // XXX: remove bar?
-                    color: Colors.current.background    // XXX: and this?
-                }
+                // Border {
+                //     bar: bar                            // XXX: remove bar?
+                //     color: Colors.current.background    // XXX: and this?
+                // }
             }
 
             // generates mouse regions for panels
@@ -99,6 +99,32 @@ Variants {
                     height: modelData.height
 
                     intersection: Intersection.Subtract
+                }
+            }
+
+            // new dashboard
+            TripleToast {
+                anchors.right: parent.right
+                anchors.top: parent.top
+
+                collapseTo: Config.toast.top
+                secondAnchor: Config.toast.right
+
+                compactConponent: Item {
+                    implicitHeight: Config.toast.size
+                    implicitWidth: 200
+
+                    CustomText {
+                        text: Time.format("hh:mm")
+                        anchors.centerIn: parent
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+
+                fullComponent: Rectangle {
+                    implicitHeight: 400
+                    implicitWidth: 400
+                    color: Colors.current.error
                 }
             }
 

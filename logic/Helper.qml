@@ -17,4 +17,8 @@ Singleton {
 
         return itemTop < pos.y && pos.y < itemBot;
     }
+
+    function clamp(num: real, min: real, max: real): real {
+        return Math.min(Math.max(num, min), max);
+    }
 }
