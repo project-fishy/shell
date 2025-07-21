@@ -9,7 +9,7 @@ Text {
 
     renderType: Text.NativeRendering
     textFormat: Text.PlainText
-    color: Colors.current.text
+    color: Colors.current.tertiary
     font.family: "Monaspace Argon"
     font.pointSize: 10
 

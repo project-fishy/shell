@@ -55,7 +55,7 @@ Item {
                 id: entry
                 required property QsMenuEntry modelData
 
-                color: Colors.current.text
+                color: Colors.current.tertiary
                 text: modelData.isSeparator ? "------" : modelData.text ?? "wtf"
 
                 // HACK: maybe don't make that many, just one per menu?
@@ -69,11 +69,11 @@ Item {
                     }
 
                     onEntered: {
-                        parent.color = Colors.current.accent;
+                        parent.color = Colors.current.primary;
                     }
 
                     onExited: {
-                        parent.color = Colors.current.text;
+                        parent.color = Colors.current.tertiary;
                     }
                 }
             }

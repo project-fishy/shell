@@ -27,7 +27,7 @@ Item {
         id: wsIcon
         text: `counter_${root.modelData.id}`
 
-        color: root.selected ? Colors.current.text_color : Colors.current.text
+        color: root.selected ? Colors.current.primary : Colors.current.tertiary
 
         anchors.horizontalCenter: parent.horizontalCenter
 

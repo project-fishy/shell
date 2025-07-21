@@ -19,7 +19,7 @@ CustomRect {
     bottomLeftRadius: Config.border.radius
 
     border {
-        color: root.hasBorder ? Colors.current.accent : Colors.current.background
+        color: root.hasBorder ? Colors.current.primary : Colors.current.background
         width: 1 // TODO: move to config
     }
 

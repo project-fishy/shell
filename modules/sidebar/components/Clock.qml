@@ -8,7 +8,7 @@ import "../../../logic"
 Column {
     id: root
 
-    property string text_color: Colors.current.text
+    property string text_color: Colors.current.tertiary
     spacing: 10
 
     CustomText {

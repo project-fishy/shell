@@ -37,7 +37,7 @@ Variants {
 
             // animated wallpaper
             Loader {
-                active: Charge.charging && !Hypr.hasFullscreen(scope.modelData)
+                active: Charge.charging && !Hypr.hasFullscreen(scope.modelData) && false
                 anchors.fill: parent
 
                 sourceComponent: VideoBG {}
@@ -75,8 +75,8 @@ Variants {
                     readonly property list<MprisPlayer> plrs: Mpris.players.values
                     readonly property MprisPlayer plr: plrs.find(p => p.identity === "Spotify") ?? plrs[0]
 
-                    text: plr.trackTitle + "\n" + plr.trackArtist || "ZXC Gnida"
-                    color: Colors.current.text
+                    text: plr?.trackTitle + "\n" + plr?.trackArtist ?? "ZXC Gnida"
+                    color: Colors.current.tertiary
 
                     font.pointSize: 15
                     font.family: "Monaspace Radon"

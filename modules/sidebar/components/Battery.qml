@@ -14,7 +14,7 @@ Column {
     // icon
     TextIcon {
         text: Charge.icon_text
-        color: Colors.current.text_color
+        color: Colors.current.primary
         CustomText {
             text: Charge.current + "%"
             font.pointSize: 8

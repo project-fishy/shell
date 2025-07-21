@@ -46,7 +46,7 @@ Item {
                 implicitWidth: (root.width - row.spacing * (root.bars - 1)) / root.bars
                 implicitHeight: modelData * root.height / 100
 
-                color: Colors.current.accent
+                color: Colors.current.primary
                 radius: implicitWidth / 2
 
                 Behavior on implicitHeight {
