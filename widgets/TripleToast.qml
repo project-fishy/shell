@@ -59,15 +59,16 @@ Item { // container for margins, placement
     state: Config.toast.state_peek
 
     CustomRect {
-        anchors.fill: parent
-        color: "#f00"
-    }
-
-    CustomRect {
         id: background
 
         anchors.fill: compactLoader
-        color: "#00f"
+        Binding on anchors.fill {
+            when: root.state == Config.toast.state_shown
+            value: fullLoader
+        }
+
+        color: Colors.current.background
+        radius: 10
     }
 
     ContentLoader {
@@ -89,11 +90,6 @@ Item { // container for margins, placement
         onEntered: root.state = Config.toast.state_peek
         onExited: root.state = Config.toast.state_hidden
         onClicked: root.state = Config.toast.state_shown
-
-        CustomRect {
-            anchors.fill: parent
-            color: "#0f0"
-        }
 
         // wacky woohoo binding magic
         anchors.left: compactLoader.left
@@ -148,10 +144,16 @@ Item { // container for margins, placement
     }
 
     Behavior on implicitHeight {
-        NumberAnimation {}
+        Anim {}
     }
 
     Behavior on implicitWidth {
-        NumberAnimation {}
+        Anim {}
+    }
+
+    component Anim: NumberAnimation {
+        easing.type: Easing.BezierSpline
+        duration: Animations.duration.normal
+        easing.bezierCurve: [0.38, 1.21, 0.22, 1, 1, 1]
     }
 }
