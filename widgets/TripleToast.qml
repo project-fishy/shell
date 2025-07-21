@@ -56,7 +56,7 @@ Item { // container for margins, placement
         }
     ]
 
-    state: Config.toast.state_peek
+    state: Config.toast.state_hidden
 
     CustomRect {
         id: background
