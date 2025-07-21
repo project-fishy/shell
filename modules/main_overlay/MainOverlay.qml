@@ -64,26 +64,6 @@ Variants {
                 id: panels
             }
 
-            // border container
-            Item {
-                anchors.fill: parent
-
-                // border shadows
-                // it does look better with them
-                layer.enabled: true
-                layer.effect: MultiEffect {
-                    shadowEnabled: true
-                    blurMax: 15
-                    shadowColor: Colors.current.background
-                }
-
-                // border
-                // Border {
-                //     bar: bar                            // XXX: remove bar?
-                //     color: Colors.current.background    // XXX: and this?
-                // }
-            }
-
             // generates mouse regions for panels
             Variants {
                 id: mouseRegions
@@ -99,32 +79,6 @@ Variants {
                     height: modelData.height
 
                     intersection: Intersection.Subtract
-                }
-            }
-
-            // new dashboard
-            TripleToast {
-                anchors.right: parent.right
-                anchors.top: parent.top
-
-                collapseTo: Config.toast.top
-                secondAnchor: Config.toast.right
-
-                compactConponent: Item {
-                    implicitHeight: Config.toast.size
-                    implicitWidth: 200
-
-                    CustomText {
-                        text: Time.format("hh:mm")
-                        anchors.centerIn: parent
-                        horizontalAlignment: Text.AlignHCenter
-                    }
-                }
-
-                fullComponent: Rectangle {
-                    implicitHeight: 400
-                    implicitWidth: 400
-                    color: Colors.current.error
                 }
             }
 

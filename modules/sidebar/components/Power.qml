@@ -9,5 +9,5 @@ Rectangle {
 
     implicitHeight: 30
 
-    color: Colors.current.background_bright
+    color: Colors.current.background
 }

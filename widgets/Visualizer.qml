@@ -16,8 +16,8 @@ Item {
     // stops cava to clear the output
     // HACK: theres better ways to clear probably
     // TODO: make it stop when audio is paused for some time
-    onHeightChanged: {
-        let running = height > 0;
+    onVisibleChanged: {
+        let running = visible;
         cava.running = running;
         if (!running)
             for (var i = 0; i < volumes.length; i++)

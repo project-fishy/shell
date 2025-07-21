@@ -79,6 +79,7 @@ Item { // container for margins, placement
 
     ContentLoader {
         id: fullLoader
+        visible: root.state == Config.toast.state_shown
 
         sourceComponent: root.fullComponent
     }
@@ -140,6 +141,16 @@ Item { // container for margins, placement
 
         Behavior on opacity {
             NumberAnimation {}
+        }
+
+        Binding on anchors.horizontalCenter {
+            value: root.horizontalCenter
+            when: root.onHorizEdges && !root.onCorner
+        }
+
+        Binding on anchors.verticalCenter {
+            value: root.verticalCenter
+            when: !root.onHorizEdges && !root.onCorner
         }
     }
 

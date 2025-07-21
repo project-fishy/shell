@@ -3,6 +3,7 @@ import QtQuick
 
 import "../../widgets"
 import "../../config"
+import "../../logic"
 import "../dashboard"
 
 // contains all sliding panels
@@ -12,9 +13,23 @@ Item {
     anchors.fill: parent
 
     // the dashboard
-    SlidingPanel {
-        side: Config.panel.top
+    TripleToast {
+        anchors.top: parent.top
+        collapseTo: Config.toast.top
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        child: Dashboard {}
+        compactConponent: Item {
+            implicitHeight: Config.toast.size
+            implicitWidth: 200
+
+            CustomText {
+                text: Time.format("ddd, dd MMM hh:mm")
+                color: Colors.current.on_background
+                anchors.fill: parent
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+            }
+        }
+        fullComponent: Dashboard {}
     }
 }

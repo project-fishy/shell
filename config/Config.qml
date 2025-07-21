@@ -12,9 +12,9 @@ Singleton {
     readonly property Toasts toast: Toasts {}
 
     component Toasts: QtObject {
-        property int size: 20
+        property int size: 35
         property int interactible_size: 5
-        property int margins: 5
+        property int margins: 3
 
         readonly property string state_hidden: "hidden"
         readonly property string state_peek: "peek"

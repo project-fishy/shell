@@ -10,7 +10,7 @@ CustomText {
 
     font.family: "MesloLGL Nerd Font Mono"
     font.pointSize: size
-    color: Colors.current.tertiary
+    color: Colors.current.on_background
 
     anchors.horizontalCenter: parent.horizontalCenter
     horizontalAlignment: Text.AlignHCenter
