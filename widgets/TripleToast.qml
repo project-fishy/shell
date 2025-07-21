@@ -16,20 +16,18 @@ Item { // container for margins, placement
     property int secondAnchor: -1
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
+    readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width
 
     readonly property int marg: Config.toast.margins
 
-    // FIXME: ONLY GOD KNOWS IF THIS CAN BE DONE WITH ANCHORS
+    // I ASKED
     states: [
         State {
             // hidden
             name: Config.toast.state_hidden
             PropertyChanges {
-                root.implicitWidth: root.onHorizEdges ? compactLoader.width + root.marg * 2 : Config.toast.interactible_size
                 root.implicitHeight: root.onHorizEdges ? Config.toast.interactible_size : compactLoader.height + root.marg * 2
-
-                mous.implicitWidth: compactLoader.width + (root.onCorner ? root.marg : 0)
-                mous.implicitHeight: root.onHorizEdges ? Config.toast.interactible_size : compactLoader.height + (root.onCorner ? root.marg : 0)
+                root.implicitWidth: root.onHorizEdges ? compactLoader.width + root.marg * 2 : Config.toast.interactible_size
                 fullLoader.opacity: 0
                 compactLoader.opacity: 1
             }
@@ -40,8 +38,6 @@ Item { // container for margins, placement
             PropertyChanges {
                 root.implicitWidth: compactLoader.width + root.marg * 2
                 root.implicitHeight: compactLoader.height + root.marg * 2
-                mous.implicitWidth: root.onHorizEdges ? compactLoader.width + (root.onCorner ? root.marg : 0) : Helper.clamp(root.width, 0, compactLoader.width + root.marg)
-                mous.implicitHeight: root.onHorizEdges ? Helper.clamp(root.height, 0, compactLoader.height + root.marg) : compactLoader.height + (root.onCorner ? root.marg : 0)
                 fullLoader.opacity: 0
                 compactLoader.opacity: 1
             }
@@ -60,26 +56,30 @@ Item { // container for margins, placement
         }
     ]
 
-    state: Config.toast.state_hidden
+    state: Config.toast.state_peek
+
+    CustomRect {
+        anchors.fill: parent
+        color: "#f00"
+    }
 
     CustomRect {
         id: background
 
-        anchors.fill: parent
-        anchors.margins: root.marg
+        anchors.fill: compactLoader
         color: "#00f"
+    }
 
-        ContentLoader {
-            id: compactLoader
+    ContentLoader {
+        id: compactLoader
+        anchors.margins: root.marg
+        sourceComponent: root.compactConponent
+    }
 
-            sourceComponent: root.compactConponent
-        }
+    ContentLoader {
+        id: fullLoader
 
-        ContentLoader {
-            id: fullLoader
-
-            sourceComponent: root.fullComponent
-        }
+        sourceComponent: root.fullComponent
     }
 
     MouseArea {
@@ -92,44 +92,55 @@ Item { // container for margins, placement
 
         CustomRect {
             anchors.fill: parent
-            // color: "#0f0"
+            color: "#0f0"
         }
 
+        // wacky woohoo binding magic
+        anchors.left: compactLoader.left
         Binding on anchors.left {
-            when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left
+            when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left || root.switchMouseAnchors && !root.onHorizEdges
             value: root.left
+            restoreMode: Binding.RestoreBindingOrValue
         }
+        anchors.right: compactLoader.right
         Binding on anchors.right {
-            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right
+            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right || root.switchMouseAnchors && root.onHorizEdges
             value: root.right
+            restoreMode: Binding.RestoreBindingOrValue
         }
+        anchors.top: compactLoader.top
         Binding on anchors.top {
-            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top
+            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top || root.switchMouseAnchors && !root.onHorizEdges
             value: root.top
+            restoreMode: Binding.RestoreBindingOrValue
         }
+        anchors.bottom: compactLoader.bottom
         Binding on anchors.bottom {
-            when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom
+            when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom || root.switchMouseAnchors && root.onHorizEdges
             value: root.bottom
+            restoreMode: Binding.RestoreBindingOrValue
         }
     }
 
     component ContentLoader: Loader {
         active: true
 
+        anchors.margins: root.marg
+
         Binding on anchors.top {
-            when: root.collapseTo == Config.toast.bottom
+            when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom
             value: parent.top
         }
         Binding on anchors.bottom {
-            when: root.collapseTo == Config.toast.top
+            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top
             value: parent.bottom
         }
         Binding on anchors.left {
-            when: root.collapseTo == Config.toast.right
+            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right
             value: parent.left
         }
         Binding on anchors.right {
-            when: root.collapseTo == Config.toast.left
+            when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left
             value: parent.right
         }
 
