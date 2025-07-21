@@ -36,12 +36,12 @@ Variants {
             name: "widgets" // idk
 
             // animated wallpaper
-            Loader {
-                active: Charge.charging && !Hypr.hasFullscreen(scope.modelData) && false
-                anchors.fill: parent
+            // Loader {
+            //     active: Charge.charging && !Hypr.hasFullscreen(scope.modelData) && false
+            //     anchors.fill: parent
 
-                sourceComponent: VideoBG {}
-            }
+            //     sourceComponent: VideoBG {}
+            // }
 
             // clock
             // HACK: make better align
@@ -88,17 +88,17 @@ Variants {
         }
     }
 
-    component VideoBG: Video {
-        id: vid
+    // component VideoBG: Video {
+    //     id: vid
 
-        anchors.fill: parent
+    //     anchors.fill: parent
 
-        source: "root:/assets/elden-cut.mp4"
-        loops: MediaPlayer.Infinite
-        muted: true
+    //     source: "root:/assets/elden-cut.mp4"
+    //     loops: MediaPlayer.Infinite
+    //     muted: true
 
-        Component.onCompleted: {
-            play();
-        }
-    }
+    //     Component.onCompleted: {
+    //         play();
+    //     }
+    // }
 }
