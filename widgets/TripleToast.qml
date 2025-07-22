@@ -86,7 +86,7 @@ Item { // container for margins, placement
     }
 
     function peek() {
-        if (state == Config.toast.state_hidden || peek_timer.running) {
+        if (state == Config.toast.state_hidden || peek_timer.running || !root.overshadowed) {
             state = Config.toast.state_peek;
             peek_timer.restart();
         }
