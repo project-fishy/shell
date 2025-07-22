@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Hyprland
@@ -25,16 +26,17 @@ MouseArea {
     onClicked: modelData.activate()
 
     // workspace icon
-    TextIcon {
+    CustomText {
         id: wsIcon
-        text: `counter_${root.modelData.id}`
+        text: 0 < root.modelData.id && root.modelData.id <= 10 ? "一二三四五六七八九十"[root.modelData.id - 1] : root.modelData.id
 
-        color: root.selected ? Colors.current.primary : Colors.current.on_background
+        color: root.selected ? Colors.current.on_primary_container : Colors.current.on_background
 
         anchors.horizontalCenter: parent.horizontalCenter
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        font.pointSize: 12
 
         Behavior on color {
             ColorAnimation {}
@@ -57,7 +59,9 @@ MouseArea {
 
             model: classes // TODO: inject more properties?
 
-            AppIcon {}
+            AppIcon {
+                color: wsIcon.color
+            }
         }
     }
 }

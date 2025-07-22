@@ -26,6 +26,33 @@ Item {
 
     anchors.horizontalCenter: parent.horizontalCenter
 
+    CustomRect {
+        id: slider
+        property Item selected: layout_.children.find(c => c.selected ?? false)
+        property real marg: 5
+
+        x: selected.x - marg
+        y: selected.y - marg
+        implicitWidth: selected.width + marg * 2
+        implicitHeight: selected.height + marg * 2
+
+        color: Colors.current.primary_container
+        radius: width / 2
+
+        Behavior on x {
+            Anim {}
+        }
+        Behavior on y {
+            Anim {}
+        }
+        Behavior on implicitWidth {
+            Anim {}
+        }
+        Behavior on implicitHeight {
+            Anim {}
+        }
+    }
+
     // icons layout
     ColumnLayout {
         id: layout_
@@ -40,5 +67,11 @@ Item {
                 groupOffset: root.groupOffset
             }
         }
+    }
+
+    component Anim: NumberAnimation {
+        easing.type: Easing.BezierSpline
+        duration: Animations.duration.normal
+        easing.bezierCurve: [0.38, 1.21, 0.22, 1, 1, 1]
     }
 }
