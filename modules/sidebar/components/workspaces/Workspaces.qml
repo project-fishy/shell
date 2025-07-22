@@ -36,7 +36,7 @@ Item {
         implicitWidth: selected.width + marg * 2
         implicitHeight: selected.height + marg * 2
 
-        color: Colors.current.primary_container
+        color: Colors.current.primary
         radius: width / 2
 
         Behavior on x {

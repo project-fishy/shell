@@ -30,7 +30,7 @@ MouseArea {
         id: wsIcon
         text: 0 < root.modelData.id && root.modelData.id <= 10 ? "一二三四五六七八九十"[root.modelData.id - 1] : root.modelData.id
 
-        color: root.selected ? Colors.current.on_primary_container : Colors.current.on_background
+        color: root.selected ? Colors.current.on_primary : Colors.current.on_background
 
         anchors.horizontalCenter: parent.horizontalCenter
 

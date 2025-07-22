@@ -17,9 +17,9 @@ CustomText {
     verticalAlignment: Text.AlignVCenter
 
     text: {
-        if (modelData == "Spotify")
+        if (["Spotify", "spotify"].includes(modelData))
             return "";
-        else if (modelData == "Code")
+        else if (["Code", "code"].includes(modelData))
             return "󰨞";
         else if (modelData == "kitty")
             return "";
@@ -27,10 +27,12 @@ CustomText {
             return "";
         else if (modelData == "steam")
             return "󰓓";
-        else if (modelData == "zen")
+        else if (["zen", "vivaldi-stable"].includes(modelData))
             return "󰈹";
         else if (modelData == "vesktop")
             return "";
+        else if (["org.telegram.desktop"].includes(modelData))
+            return "";
         else
             return "";
     }

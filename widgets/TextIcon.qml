@@ -5,8 +5,9 @@ CustomText {
     property real fill
     property int grade: -25
 
+    color: Colors.current.secondary
     font.family: "Material Symbols Rounded"
-    font.pointSize: 20
+    font.pointSize: 17
     font.variableAxes: ({
             // TODO: copy this to appicons?
             FILL: fill.toFixed(1),
