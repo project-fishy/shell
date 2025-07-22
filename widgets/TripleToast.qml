@@ -22,6 +22,7 @@ Item { // container for margins, placement
     property string publicState: Config.toast.state_hidden
 
     readonly property int marg: Config.toast.margins
+    readonly property MouseArea mouseArea: mous
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
     readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width
@@ -98,7 +99,7 @@ Item { // container for margins, placement
         repeat: false
 
         onTriggered: {
-            if (root.state == Config.toast.state_peek && !mous.containsMouse)
+            if (root.state == Config.toast.state_peek && !mous.containsMouse && root.overshadowed)
                 root.state = Config.toast.state_hidden;
         }
     }
@@ -137,7 +138,7 @@ Item { // container for margins, placement
 
         // wacky woohoo event magic (makes children clickable and all that)
         onEntered: root.state = Config.toast.state_peek
-        onExited: root.state = Config.toast.state_hidden
+        onExited: root.state = root.overshadowed ? Config.toast.state_hidden : Config.toast.state_peek
         onPressed: event => {
             if (!root.ignoreClicks && event.button == root.expandOn)
                 root.state = Config.toast.state_shown;
