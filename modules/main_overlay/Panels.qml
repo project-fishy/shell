@@ -48,10 +48,11 @@ Item {
 
         compactConponent: Item {
             implicitWidth: Config.toast.size
-            implicitHeight: ws.height
+            implicitHeight: ws.height + Config.toast.protrusions
             Workspaces {
                 id: ws
                 screen: root.screen
+                anchors.centerIn: parent
             }
         }
 
@@ -99,7 +100,7 @@ Item {
 
         compactConponent: Item {
             implicitHeight: Config.toast.size
-            implicitWidth: dashIcons.width + 10
+            implicitWidth: dashIcons.width + Config.toast.protrusions
 
             Row {
                 id: dashIcons
@@ -216,17 +217,38 @@ Item {
         collapseTo: Config.toast.top
         anchors.right: dashboard.left
 
-        syncWith: power
+        syncWith: player
         ignoreClicks: true
 
         compactConponent: Item {
             implicitHeight: Config.toast.size
-            implicitWidth: icons.width
+            implicitWidth: icons.width + Config.toast.protrusions
             Tray {
                 id: icons
                 anchors.centerIn: parent
             }
         }
+        fullComponent: Item {}
+    }
+
+    // player
+    TripleToast {
+        id: player
+
+        anchors.top: parent.top
+        anchors.right: tray.left
+        collapseTo: Config.toast.top
+        syncWith: power
+
+        compactConponent: Item {
+            implicitHeight: Config.toast.size
+            implicitWidth: childrenRect.width + Config.toast.protrusions
+            CustomText {
+                anchors.centerIn: parent
+                text: Player.now_playing
+            }
+        }
+
         fullComponent: Item {}
     }
 }

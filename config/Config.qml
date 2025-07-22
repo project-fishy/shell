@@ -15,6 +15,7 @@ Singleton {
         property int size: 35
         property int interactible_size: 5
         property int margins: 3
+        property int protrusions: 20
 
         readonly property string state_hidden: "hidden"
         readonly property string state_peek: "peek"
