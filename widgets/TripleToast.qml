@@ -16,6 +16,9 @@ Item { // container for margins, placement
     property int secondAnchor: -1
     property var expandOn: Qt.LeftButton
     property bool ignoreClicks: false
+    property Item syncWith
+    property bool internalIsSyncing: false
+    property string publicState: Config.toast.state_hidden
 
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
@@ -59,7 +62,14 @@ Item { // container for margins, placement
         }
     ]
 
-    state: Config.toast.state_hidden
+    state: publicState
+
+    onStateChanged: {
+        if (syncWith && state != Config.toast.state_shown)
+            syncWith.state = state;
+
+        root.internalIsSyncing = false;
+    }
 
     CustomRect {
         id: background

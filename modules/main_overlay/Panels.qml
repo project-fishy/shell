@@ -6,6 +6,7 @@ import "../../config"
 import "../../logic"
 import "../dashboard"
 import "../sidebar/components/workspaces"
+import "../sidebar/components/tray"
 
 // contains all sliding panels
 Item {
@@ -16,6 +17,8 @@ Item {
 
     // the dashboard
     TripleToast {
+        id: calendar
+
         anchors.top: parent.top
         collapseTo: Config.toast.top
         anchors.horizontalCenter: parent.horizontalCenter
@@ -37,6 +40,8 @@ Item {
 
     // the workspaces
     TripleToast {
+        id: workspaces
+
         anchors.left: parent.left
         collapseTo: Config.toast.left
         anchors.verticalCenter: parent.verticalCenter
@@ -51,6 +56,89 @@ Item {
         }
 
         ignoreClicks: true
+        fullComponent: Item {}
+    }
+
+    // tray and stuff
+    TripleToast {
+        id: power
+
+        anchors.top: parent.top
+        collapseTo: Config.toast.top
+        anchors.right: parent.right
+        secondAnchor: Config.toast.right
+
+        syncWith: dashboard
+
+        compactConponent: Item {
+            implicitHeight: Config.toast.size
+            implicitWidth: Config.toast.size
+
+            TextIcon {
+                color: Colors.current.error
+                text: "power_settings_new"
+                anchors.fill: parent
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+        fullComponent: Item {
+            implicitHeight: 300
+            implicitWidth: 300
+        }
+    }
+
+    TripleToast {
+        id: dashboard
+
+        anchors.top: parent.top
+        collapseTo: Config.toast.top
+        anchors.right: power.left
+
+        syncWith: tray
+
+        compactConponent: Item {
+            implicitHeight: Config.toast.size
+            implicitWidth: dashIcons.width + 10
+
+            Row {
+                id: dashIcons
+                anchors.centerIn: parent
+                spacing: 5
+                TextIcon {
+                    text: "network_wifi_3_bar"
+                }
+                TextIcon {
+                    text: "bluetooth"
+                }
+                TextIcon {
+                    text: "brand_awareness"
+                }
+            }
+        }
+        fullComponent: Item {
+            implicitHeight: 300
+            implicitWidth: 300
+        }
+    }
+    TripleToast {
+        id: tray
+
+        anchors.top: parent.top
+        collapseTo: Config.toast.top
+        anchors.right: dashboard.left
+
+        syncWith: power
+        ignoreClicks: true
+
+        compactConponent: Item {
+            implicitHeight: Config.toast.size
+            implicitWidth: icons.width
+            Tray {
+                id: icons
+                anchors.centerIn: parent
+            }
+        }
         fullComponent: Item {}
     }
 }
