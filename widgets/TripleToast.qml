@@ -14,6 +14,7 @@ Item { // container for margins, placement
 
     required property int collapseTo
     property int secondAnchor: -1
+    property var expandOn: Qt.LeftButton
     property bool ignoreClicks: false
 
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
@@ -90,12 +91,13 @@ Item { // container for margins, placement
         id: mous
         hoverEnabled: true
         propagateComposedEvents: true
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         // wacky woohoo event magic (makes children clickable and all that)
         onEntered: root.state = Config.toast.state_peek
         onExited: root.state = Config.toast.state_hidden
         onPressed: event => {
-            if (!root.ignoreClicks)
+            if (!root.ignoreClicks && event.button == root.expandOn)
                 root.state = Config.toast.state_shown;
             event.accepted = false;
         }
