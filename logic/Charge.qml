@@ -26,9 +26,9 @@ Singleton {
     readonly property string draw: {
         let cr = Math.floor(battery.changeRate);
         if (cr > 0)
-            return `Charging: ${cr}W`;
+            return `${cr}W`;
         else
-            return `Draw: ${cr * -1}W`;
+            return `${cr * -1}W`;
     }
 
     // for use with TextIcon
