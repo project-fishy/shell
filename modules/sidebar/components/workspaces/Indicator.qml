@@ -15,7 +15,6 @@ import "../../../../logic"
 MouseArea {
     id: root
 
-    required property int groupOffset
     required property HyprlandWorkspace modelData
 
     readonly property bool selected: modelData.active

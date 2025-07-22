@@ -18,6 +18,7 @@ Item {
     // the dashboard
     TripleToast {
         id: calendar
+        screen: root.screen
 
         anchors.top: parent.top
         collapseTo: Config.toast.top
@@ -41,6 +42,7 @@ Item {
     // the workspaces
     TripleToast {
         id: workspaces
+        screen: root.screen
 
         anchors.left: parent.left
         collapseTo: Config.toast.left
@@ -49,6 +51,7 @@ Item {
         compactConponent: Item {
             implicitWidth: Config.toast.size
             implicitHeight: ws.height + Config.toast.protrusions
+
             Workspaces {
                 id: ws
                 screen: root.screen
@@ -58,11 +61,20 @@ Item {
 
         ignoreClicks: true
         fullComponent: Item {}
+
+        Connections {
+            target: Hypr
+            function onCurrentWorkspaceChanged() {
+                if (Hypr.currentWorkspace.monitor === Hypr.monitorFor(root.screen))
+                    workspaces.peek();
+            }
+        }
     }
 
     // tray and stuff
     TripleToast {
         id: power
+        screen: root.screen
 
         anchors.top: parent.top
         collapseTo: Config.toast.top
@@ -91,6 +103,7 @@ Item {
 
     TripleToast {
         id: dashboard
+        screen: root.screen
 
         anchors.top: parent.top
         collapseTo: Config.toast.top
@@ -212,6 +225,7 @@ Item {
     }
     TripleToast {
         id: tray
+        screen: root.screen
 
         anchors.top: parent.top
         collapseTo: Config.toast.top
@@ -234,6 +248,7 @@ Item {
     // player
     TripleToast {
         id: player
+        screen: root.screen
 
         anchors.top: parent.top
         anchors.right: tray.left
@@ -246,6 +261,7 @@ Item {
             CustomText {
                 anchors.centerIn: parent
                 text: Player.now_playing
+                color: Player.color
             }
         }
 

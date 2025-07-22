@@ -16,10 +16,7 @@ Item {
     required property ShellScreen screen
     property ColumnLayout layout: layout_ // expose for mouse clicks
 
-    readonly property HyprlandMonitor monitor: Hypr.monitorFor(screen)
     readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen)
-
-    readonly property int groupOffset: Math.floor((Hypr.currentWorkspace.id - 1) / Config.bar.workspaces) * Config.bar.workspaces
 
     implicitHeight: layout.implicitHeight
     implicitWidth: layout.implicitWidth
@@ -28,13 +25,20 @@ Item {
 
     CustomRect {
         id: slider
-        property Item selected: layout_.children.find(c => c.selected ?? false)
-        property real marg: 5
 
-        x: selected.x - marg
-        y: selected.y - marg
-        implicitWidth: selected.width + marg * 2
-        implicitHeight: selected.height + marg * 2
+        property real marg: 5
+        // HACK: is this hacky? probably. does it work? hell yeah
+        property Item selected: {
+            let indicators = layout_.children.filter(c => c instanceof Indicator);
+            let index = root.currentWorkspaces.findIndex(w => w.active);
+
+            return indicators[index];
+        }
+
+        x: selected?.x - marg ?? 0
+        y: selected?.y - marg ?? 0
+        implicitWidth: selected?.width + marg * 2 ?? 0
+        implicitHeight: selected?.height + marg * 2 ?? 0
 
         color: Colors.current.primary
         radius: width / 2
@@ -61,11 +65,11 @@ Item {
         layer.smooth: true
 
         Repeater {
-            model: root.currentWorkspaces
-
-            Indicator {
-                groupOffset: root.groupOffset
+            model: ScriptModel {
+                values: [...root.currentWorkspaces]
             }
+
+            Indicator {}
         }
     }
 

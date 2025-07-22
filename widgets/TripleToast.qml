@@ -11,6 +11,7 @@ Item { // container for margins, placement
 
     required property Component compactConponent
     required property Component fullComponent
+    required property ShellScreen screen
 
     required property int collapseTo
     property int secondAnchor: -1
@@ -20,11 +21,16 @@ Item { // container for margins, placement
     property bool internalIsSyncing: false
     property string publicState: Config.toast.state_hidden
 
+    readonly property int marg: Config.toast.margins
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
     readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width
+    readonly property bool overshadowed: {
+        let ws = Hypr.workspacesForScreen(screen).find(w => w.active);
+        let windows = Hypr.windowsForWorkspace(ws);
 
-    readonly property int marg: Config.toast.margins
+        return windows.length > 0; // TODO: get positions?
+    }
 
     // I ASKED
     states: [
@@ -69,6 +75,32 @@ Item { // container for margins, placement
             syncWith.state = state;
 
         root.internalIsSyncing = false;
+    }
+
+    onOvershadowedChanged: {
+        if (state == Config.toast.state_hidden && !overshadowed)
+            state = Config.toast.state_peek;
+        else if (state == Config.toast.state_peek && overshadowed)
+            state = Config.toast.state_hidden;
+    }
+
+    function peek() {
+        if (state == Config.toast.state_hidden || peek_timer.running) {
+            state = Config.toast.state_peek;
+            peek_timer.restart();
+        }
+    }
+
+    Timer {
+        id: peek_timer
+
+        interval: 1000
+        repeat: false
+
+        onTriggered: {
+            if (root.state == Config.toast.state_peek && !mous.containsMouse)
+                root.state = Config.toast.state_hidden;
+        }
     }
 
     CustomRect {
