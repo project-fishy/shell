@@ -7,7 +7,7 @@ import Quickshell.Services.SystemTray
 Item {
     id: root
 
-    readonly property Column layout: layout_
+    readonly property Row layout: layout_
 
     clip: true
     visible: width > 0 && height > 0
@@ -17,7 +17,7 @@ Item {
     implicitWidth: layout_.implicitWidth
 
     // TODO: add outline? or bg?
-    Column {
+    Row {
         id: layout_
 
         spacing: Config.bar.tray.spacing
