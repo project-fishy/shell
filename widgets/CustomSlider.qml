@@ -49,7 +49,7 @@ Slider {
         CommonRect {
             id: filled
 
-            color: Colors.current.primary_fixed_dim
+            color: Colors.current.primary
 
             anchors.left: parent.left
 
@@ -76,8 +76,8 @@ Slider {
     component CommonRect: CustomRect {
         anchors.verticalCenter: parent.verticalCenter
 
-        implicitHeight: root.height
+        implicitHeight: root.height / 2
 
-        radius: Config.slider.thickness / 2
+        radius: implicitHeight / 2
     }
 }
