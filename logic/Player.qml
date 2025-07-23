@@ -11,6 +11,6 @@ Singleton {
     property MprisPlayer current: hasAny ? all.find(p => p.identity == "Spotify") ?? all[0] : null
     property var all: Mpris.players.values
 
-    readonly property string now_playing: `${current?.trackTitle} - ${current?.trackArtist}` ?? "nothing"
+    readonly property string now_playing: current ? `${current?.trackTitle} - ${current?.trackArtist}` : "nothing"
     readonly property string color: current?.isPlaying ? Colors.current.secondary : Colors.current.on_background
 }
