@@ -1,15 +1,12 @@
-pragma ComponentBehavior: Bound
-
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
 
-import "../../../../widgets"
-import "../../../../config"
-import "../../../../logic"
+import "../../config"
+import "../../widgets"
+import "../../logic"
 
-// workspaces section from the sidebar
 Item {
     id: root
 
@@ -18,10 +15,11 @@ Item {
 
     readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen)
 
-    implicitHeight: layout.implicitHeight
-    implicitWidth: layout.implicitWidth
+    implicitHeight: layout.implicitHeight + Config.toast.protrusions
+    implicitWidth: Config.toast.size
+    anchors.centerIn: parent
 
-    anchors.horizontalCenter: parent.horizontalCenter
+    // anchors.horizontalCenter: parent.horizontalCenter
 
     CustomRect {
         id: slider
@@ -36,10 +34,10 @@ Item {
             return indicators[index];
         }
 
-        x: selected?.x - marg ?? 0
-        y: selected?.y - marg ?? 0
+        y: selected?.y + marg ?? 0
         implicitWidth: selected?.width + marg * 2 ?? 0
         implicitHeight: selected?.height + marg * 2 ?? 0
+        anchors.horizontalCenter: root.horizontalCenter
 
         color: Colors.current.primary
         radius: width / 2
@@ -64,6 +62,7 @@ Item {
 
         layer.enabled: true
         layer.smooth: true
+        anchors.centerIn: parent
 
         Repeater {
             model: ScriptModel {

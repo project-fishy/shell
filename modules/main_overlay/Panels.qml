@@ -5,8 +5,9 @@ import "../../widgets"
 import "../../config"
 import "../../logic"
 import "../dashboard"
-import "../sidebar/components/workspaces"
-import "../sidebar/components/tray"
+import "../calendar"
+import "../workspaces"
+import "../dashboard/components/tray"
 
 // contains all sliding panels
 Item {
@@ -36,7 +37,7 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
             }
         }
-        fullComponent: Dashboard {}
+        fullComponent: Calendar {}
     }
 
     // the workspaces
@@ -48,15 +49,8 @@ Item {
         collapseTo: Config.toast.left
         anchors.verticalCenter: parent.verticalCenter
 
-        compactConponent: Item {
-            implicitWidth: Config.toast.size
-            implicitHeight: ws.height + Config.toast.protrusions
-
-            Workspaces {
-                id: ws
-                screen: root.screen
-                anchors.centerIn: parent
-            }
+        compactConponent: WorkspacesCompact {
+            screen: root.screen
         }
 
         ignoreClicks: true

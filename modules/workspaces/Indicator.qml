@@ -4,9 +4,9 @@ import QtQuick.Layouts
 import Quickshell.Hyprland
 import Quickshell
 
-import "../../../../widgets"
-import "../../../../config"
-import "../../../../logic"
+import "../../widgets"
+import "../../config"
+import "../../logic"
 
 // a single workspace indicator
 // with window icons
