@@ -7,6 +7,6 @@ import "modules/desktop"
 
 ShellRoot {
     // this is the entire thing pretty much
-    Desktop {}
+    // Desktop {}
     MainOverlay {}
 }
