@@ -29,8 +29,9 @@ Item {
         property real marg: 5
         // HACK: is this hacky? probably. does it work? hell yeah
         property Item selected: {
-            let indicators = layout_.children.filter(c => c instanceof Indicator);
-            let index = root.currentWorkspaces.findIndex(w => w.active);
+            let indicators = layout_.children.filter(c => c instanceof Indicator).sort((a, b) => a.y - b.y);
+            let workspaces = root.currentWorkspaces.sort((a, b) => a.id - b.id);
+            let index = workspaces.findIndex(w => w.active);
 
             return indicators[index];
         }
