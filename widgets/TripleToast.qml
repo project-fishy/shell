@@ -81,7 +81,7 @@ Item { // container for margins, placement
     onOvershadowedChanged: {
         if (state == Config.toast.state_hidden && !overshadowed)
             state = Config.toast.state_peek;
-        else if (state == Config.toast.state_peek && overshadowed)
+        else if (state == Config.toast.state_peek && overshadowed && !peek_timer.running)
             state = Config.toast.state_hidden;
     }
 
