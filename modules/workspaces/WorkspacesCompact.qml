@@ -13,7 +13,8 @@ Item {
     required property ShellScreen screen
     property ColumnLayout layout: layout_ // expose for mouse clicks
 
-    readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen)
+    readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen).filter(w => w.name && w.name != "").sort((a, b) => a.id - b.id)
+    readonly property list<Indicator> indicators: layout_.children.filter(c => c instanceof Indicator).sort((a, b) => a.y - b.y)
 
     implicitHeight: layout.implicitHeight + Config.toast.protrusions
     implicitWidth: Config.toast.size
@@ -26,12 +27,11 @@ Item {
 
         property real marg: 5
         // HACK: is this hacky? probably. does it work? hell yeah
-        property Item selected: {
-            let indicators = layout_.children.filter(c => c instanceof Indicator).sort((a, b) => a.y - b.y);
-            let workspaces = root.currentWorkspaces.filter(w => w.name && w.name != "").sort((a, b) => a.id - b.id);
-            let index = workspaces.findIndex(w => w.active);
+        property Item selected
 
-            return indicators[index];
+        Binding on selected {
+            when: root.currentWorkspaces.some(w => w.active)
+            value: root.indicators[root.currentWorkspaces.findIndex(w => w.active)]
         }
 
         y: selected?.y + marg ?? 0
