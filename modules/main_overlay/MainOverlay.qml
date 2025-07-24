@@ -5,12 +5,9 @@ import Quickshell.Services.SystemTray
 import Quickshell.Wayland
 import QtQuick
 import QtQuick.Effects
-import "../sidebar"
 import "../../widgets"
 import "../../logic"
 import "../../config"
-
-// import "../sidebar/components/tray"
 
 // this holds most of the elements drawn above windows
 

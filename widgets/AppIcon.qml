@@ -5,6 +5,7 @@ import "../config"
 
 // uses mono font because non-mono have weird alignment
 CustomText {
+    id: root
     required property string modelData
     property int size: 17
 
@@ -13,8 +14,8 @@ CustomText {
     color: Colors.current.on_background
 
     Binding on anchors.horizontalCenter {
-        when: parent
-        value: parent.horizontalCenter
+        when: root.parent != undefined
+        value: root.parent.horizontalCenter
     }
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
