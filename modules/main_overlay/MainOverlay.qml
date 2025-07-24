@@ -9,7 +9,8 @@ import "../sidebar"
 import "../../widgets"
 import "../../logic"
 import "../../config"
-import "../sidebar/components/tray"
+
+// import "../sidebar/components/tray"
 
 // this holds most of the elements drawn above windows
 

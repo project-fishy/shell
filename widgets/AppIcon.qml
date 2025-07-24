@@ -12,7 +12,10 @@ CustomText {
     font.pointSize: size
     color: Colors.current.on_background
 
-    anchors.horizontalCenter: parent.horizontalCenter
+    Binding on anchors.horizontalCenter {
+        when: parent
+        value: parent.horizontalCenter
+    }
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
 
@@ -33,6 +36,10 @@ CustomText {
             return "";
         else if (["org.telegram.desktop"].includes(modelData))
             return "";
+        else if (["com-atlauncher-App"].includes(modelData))
+            return "󰍳";
+        else if (["TradingView"].includes(modelData))
+            return "";
         else
             return "";
     }

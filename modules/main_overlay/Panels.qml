@@ -145,7 +145,8 @@ Item {
             implicitHeight: Config.toast.size
             implicitWidth: childrenRect.width + Config.toast.protrusions
             CustomText {
-                anchors.centerIn: parent
+                x: Config.toast.protrusions / 2
+                anchors.verticalCenter: parent.verticalCenter
                 text: Player.now_playing
                 color: Player.color
             }
