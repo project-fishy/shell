@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 
 import "../../logic"
+import "../../widgets"
 
 Item {
     id: root
@@ -14,6 +15,7 @@ Item {
     // readonly property string cachePath: "/home/desant/fishycache"
 
     anchors.fill: parent
+    property list<string> paths
 
     states: [
         State {
@@ -34,23 +36,54 @@ Item {
     //     implicitWidth: 50
     //     // color: Matugen.wallpapers[0].schemes[0].foreground
     // }
-    Column {
+    // Column {
+    //     anchors.fill: parent
+    //     Repeater {
+    //         model: Matugen.wallpapers
+    //         Row {
+    //             id: paper
+    //             required property Matugen.Wallpaper modelData
+    //             Repeater {
+    //                 model: paper.modelData.schemes
+    //                 Rectangle {
+    //                     required property Matugen.Scheme modelData
+    //                     implicitHeight: 50
+    //                     implicitWidth: 50
+    //                     color: modelData.primary
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    Grid {
         anchors.fill: parent
+        columns: 2
+
         Repeater {
-            model: Matugen.wallpapers
-            Row {
-                id: paper
-                required property Matugen.Wallpaper modelData
-                Repeater {
-                    model: paper.modelData.schemes
-                    Rectangle {
-                        required property Matugen.Scheme modelData
-                        implicitHeight: 50
-                        implicitWidth: 50
-                        color: modelData.primary
-                    }
-                }
+            model: root.paths
+
+            CachedImage {
+                required property string modelData
+                path: modelData
+
+                width: root.width / 2
+                height: 70
+
+                // Rectangle {
+                //     color: "#0f0"
+                //     anchors.fill: parent
+                // }
             }
+        }
+    }
+
+    Process {
+        id: scraper
+        running: true
+        command: ["sh", "-c", "ls /home/desant/Pictures/pixiv+"]
+        stdout: StdioCollector {
+            onStreamFinished: root.paths = this.text.split("\n").filter(p => p != "").map(p => "/home/desant/Pictures/pixiv+/" + p)
         }
     }
 
