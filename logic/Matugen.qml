@@ -21,7 +21,6 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                // print("wallpapers\n" + this.text);
                 root.rawNames = this.text.split("\n").filter(l => l != "");
             }
         }
@@ -30,27 +29,16 @@ Singleton {
     Variants {
         id: wallpaperGenerator
 
-        // model: ScriptModel {
-        //     values: [...root.rawNames]
-        // }
         model: Array.from(root.rawNames)
-
-        // Component.onCompleted: print(instances[0].schemes[0].background)
 
         Wallpaper {}
     }
+
     FileView {
+        id: cacheFile
+
         watchChanges: true
         path: "/home/desant/fishycache/schemes.json"
-
-        // onFileChanged: reload()
-        // onAdapterUpdated: writeAdapter()
-
-        // JsonAdapter {
-        //     id: cache_
-
-        //     property list<Json
-        // }
     }
 
     component Wallpaper: QtObject {
@@ -62,8 +50,6 @@ Singleton {
 
         readonly property Variants schemeGenerator: Variants {
             model: "scheme-content scheme-expressive scheme-fidelity scheme-fruit-salad scheme-monochrome scheme-neutral scheme-rainbow scheme-tonal-spot".split(" ")
-
-            // Component.onCompleted: print("created wallpaper " + wp.path)
 
             Scheme {
                 pic: wp.path
@@ -83,54 +69,21 @@ Singleton {
         property string foreground
 
         Component.onCompleted: {
-            // print("seeking themes for " + sc.pic);
-            // mat.running = true;
-            // mat.exec(["matugen", "image", `${sc.pic}`, "--dry-run", "-j", "hex"]);
-            // mat.startDetached();
             mat.running = true;
         }
 
         readonly property Process mat: Process {
-            // command: ["matugen", "image", sc.pic, "--dry-run", "-j", "hex"]
-            command: ["sh", "-c", `matugen image ${sc.pic} --dry-run -j hex -t ${modelData} | jq -r '.colors.dark | .primary, .secondary, .tertiary, .background, .on_background'`]
+            command: ["sh", "-c", `matugen image ${sc.pic} --dry-run -j hex -t ${sc.modelData} | jq -r '.colors.dark | .primary, .secondary, .tertiary, .background, .on_background'`]
 
             stdout: StdioCollector {
                 onStreamFinished: {
-                    // print("matugen got\n" + this.text);
                     let lines = this.text.split("\n");
-                    // print(`got colors for ${sc.modelData}\n${this.text}`);
+
                     sc.primary = lines[0];
                     sc.secondary = lines[1];
                     sc.tertiary = lines[2];
                     sc.background = lines[3];
                     sc.foreground = lines[4];
-                    // sc.jq.exec(["jq", "-r", ".colors.dark | .primary, .secondary, .tertiary, .background, .on_background", this.text]);
-                }
-            }
-
-            stderr: StdioCollector {
-
-                onStreamFinished: {}
-                // print(sc.mat.command + " " + this.text);
-            }
-        }
-
-        readonly property Process jq: Process {
-            stdout: StdioCollector {
-                onStreamFinished: {
-                    let lines = this.text.split("\n");
-                    // print(`got colors for ${sc.modelData}\n${this.text}`);
-                    sc.primary = lines[0];
-                    sc.secondary = lines[1];
-                    sc.tertiary = lines[2];
-                    sc.background = lines[3];
-                    sc.foreground = lines[4];
-                }
-            }
-
-            stderr: StdioCollector {
-                onStreamFinished: {
-                    print(sc.jq.command + " " + this.text);
                 }
             }
         }
