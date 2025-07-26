@@ -166,13 +166,13 @@ Item { // container for margins, placement
         }
         anchors.right: compactLoader.right
         Binding on anchors.right {
-            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown
+            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown
             value: root.right
             restoreMode: Binding.RestoreBindingOrValue
         }
         anchors.top: compactLoader.top
         Binding on anchors.top {
-            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown
+            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown
             value: root.top
             restoreMode: Binding.RestoreBindingOrValue
         }
