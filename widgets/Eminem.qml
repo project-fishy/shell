@@ -1,14 +1,13 @@
 import QtQuick
 import Quickshell
-import Quickshell.Services.Mpris
+
+import "../logic"
 
 // eminem gif
 Item {
     id: margins
 
-    readonly property list<MprisPlayer> plrs: Mpris.players.values
-    readonly property MprisPlayer plr: plrs.find(p => p.identity === "Spotify") ?? plrs[0]
-    property bool playing: plrs.some(p => p.isPlaying) ?? false
+    property bool playing: Player.current?.isPlaying ?? false
 
     onPlayingChanged: {
         pl_img.opacity = playing ? 1 : 0;
