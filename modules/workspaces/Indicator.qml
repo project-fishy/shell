@@ -60,6 +60,7 @@ MouseArea {
 
             AppIcon {
                 color: wsIcon.color
+                anchors.horizontalCenter: layout.horizontalCenter
             }
         }
     }

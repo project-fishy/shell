@@ -13,10 +13,6 @@ CustomText {
     font.pointSize: size
     color: Colors.current.on_background
 
-    Binding on anchors.horizontalCenter {
-        when: root.parent != undefined
-        value: root.parent.horizontalCenter
-    }
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
 
