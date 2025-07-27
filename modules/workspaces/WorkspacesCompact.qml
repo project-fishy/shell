@@ -1,5 +1,3 @@
-pragma ComponentBehavior: Bound
-
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -15,23 +13,25 @@ Item {
     required property ShellScreen screen
     property ColumnLayout layout: layout_ // expose for mouse clicks
 
-    readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen).filter(w => w.name && w.name != "") // need this or else slider breaks
-    readonly property list<Indicator> indicators: layout_.children.filter(c => c instanceof Indicator)
+    readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen).filter(w => w.name && w.name != "").sort((a, b) => a.id - b.id)
+    readonly property list<Indicator> indicators: layout_.children.filter(c => c instanceof Indicator).sort((a, b) => a.y - b.y)
 
     implicitHeight: layout.implicitHeight + Config.toast.protrusions
     implicitWidth: Config.toast.size
     anchors.centerIn: parent
 
+    // anchors.horizontalCenter: parent.horizontalCenter
+
     CustomRect {
         id: slider
 
         property real marg: 5
+        // HACK: is this hacky? probably. does it work? hell yeah
         property Item selected
 
-        // could just do a straight binding but this avoids warnings
         Binding on selected {
             when: root.currentWorkspaces.some(w => w.active)
-            value: root.indicators.find(i => i.modelData === root.currentWorkspaces.find(w => w.active))
+            value: root.indicators[root.currentWorkspaces.findIndex(w => w.active)]
         }
 
         y: selected?.y + marg ?? 0
