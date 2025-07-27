@@ -10,6 +10,8 @@ import "../wallpapers" as Wallpapers
 StackView {
     id: root
 
+    required property TripleToast toast
+
     implicitHeight: 300
     implicitWidth: 300
 
@@ -17,12 +19,24 @@ StackView {
 
     Component {
         id: wallpapers
-        Wallpapers.Menu {}
+        Wallpapers.Menu {
+            stackview: root
+        }
+    }
+
+    Connections {
+        target: root.toast
+
+        function onStateChanged() {
+            print(root.toast.state);
+            if (root.toast.state == Config.toast.state_hidden)
+                while (root.depth != 1)
+                    root.pop();
+        }
     }
 
     // HACK: this is not readable
     component Menu: Item {
-        anchors.fill: parent
         Item {
             id: first_row
             anchors.top: parent.top
