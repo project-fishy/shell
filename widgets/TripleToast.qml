@@ -17,9 +17,13 @@ Item { // container for margins, placement
     property int secondAnchor: -1
     property var expandOn: Qt.LeftButton
     property bool ignoreClicks: false
-    property Item syncWith
-    property bool internalIsSyncing: false
-    property string publicState: Config.toast.state_hidden
+
+    property TripleToast syncWith
+    property Timer debounceTimer: hide_debounce_timer
+    property bool hasSyncedLeft: false
+    property bool hasSyncedRight: false
+    property bool hasSyncedTop: false
+    property bool hasSyncedBottom: false
 
     readonly property int marg: Config.toast.margins
     readonly property MouseArea mouseArea: mous
@@ -69,13 +73,34 @@ Item { // container for margins, placement
         }
     ]
 
-    state: publicState
+    state: Config.toast.state_hidden
+
+    Component.onCompleted: {
+        // decide initial state
+        root.state = root.overshadowed ? Config.toast.state_hidden : Config.toast.state_peek;
+
+        // detect any synced neighbors for mouse area
+        if (root.syncWith) {
+            let crawl = root.syncWith;
+            while (crawl !== root) {
+                if (crawl.anchors.right == root.left || root.anchors.left == crawl.right) {
+                    root.hasSyncedLeft = true;
+                } else if (crawl.anchors.left == root.right || root.anchors.right == crawl.left) {
+                    root.hasSyncedRight = true;
+                } else if (crawl.anchors.top == root.bottom || root.anchors.bottom == crawl.top) {
+                    root.hasSyncedBottom = true;
+                } else if (crawl.anchors.bottom == root.top || root.anchors.top == crawl.bottom) {
+                    root.hasSyncedTop = true;
+                }
+
+                crawl = crawl.syncWith;
+            }
+        }
+    }
 
     onStateChanged: {
         if (syncWith && state != Config.toast.state_shown)
             syncWith.state = state;
-
-        root.internalIsSyncing = false;
     }
 
     onOvershadowedChanged: {
@@ -101,6 +126,33 @@ Item { // container for margins, placement
         onTriggered: {
             if (root.state == Config.toast.state_peek && !mous.containsMouse && root.overshadowed)
                 root.state = Config.toast.state_hidden;
+        }
+    }
+
+    // HACK: this is probably super hacky :(
+    Timer {
+        id: hide_debounce_timer
+
+        interval: 15 // lower than 10 doesnt work
+        repeat: false
+
+        onTriggered: {
+            // see if any synced toasts have the mouse
+            let hide = !mous.containsMouse;
+
+            if (root.syncWith) {
+                let crawl = root.syncWith;
+                while (crawl !== root) {
+                    if (crawl.mouseArea.containsMouse) {
+                        hide = false;
+                        break;
+                    }
+                    crawl = crawl.syncWith;
+                }
+            }
+
+            if (hide)
+                root.state = root.overshadowed ? Config.toast.state_hidden : Config.toast.state_peek;
         }
     }
 
@@ -132,14 +184,21 @@ Item { // container for margins, placement
 
     MouseArea {
         id: mous
+
         hoverEnabled: true
         propagateComposedEvents: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton
 
         // wacky woohoo event magic (makes children clickable and all that)
-        onEntered: root.state = Config.toast.state_peek
-        onExited: root.state = root.overshadowed ? Config.toast.state_hidden : Config.toast.state_peek
+        onEntered: {
+            root.state = Config.toast.state_peek;
+        }
+        onExited: {
+            // HACK?: need to debounce because synced toasts take like 10ms to update
+            hide_debounce_timer.restart();
+        }
         onPressed: event => {
+            // TODO: hide shown (expanded/opened/full) synced
             if (!root.ignoreClicks && event.button == root.expandOn)
                 root.state = Config.toast.state_shown;
             event.accepted = false;
@@ -160,25 +219,25 @@ Item { // container for margins, placement
         // wacky woohoo binding magic
         anchors.left: compactLoader.left
         Binding on anchors.left {
-            when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown
+            when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown || root.hasSyncedLeft
             value: root.left
             restoreMode: Binding.RestoreBindingOrValue
         }
         anchors.right: compactLoader.right
         Binding on anchors.right {
-            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown
+            when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right || root.switchMouseAnchors && !root.onHorizEdges || root.state == Config.toast.state_shown || root.hasSyncedRight
             value: root.right
             restoreMode: Binding.RestoreBindingOrValue
         }
         anchors.top: compactLoader.top
         Binding on anchors.top {
-            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown
+            when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown || root.hasSyncedTop
             value: root.top
             restoreMode: Binding.RestoreBindingOrValue
         }
         anchors.bottom: compactLoader.bottom
         Binding on anchors.bottom {
-            when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown
+            when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom || root.switchMouseAnchors && root.onHorizEdges || root.state == Config.toast.state_shown || root.hasSyncedBottom
             value: root.bottom
             restoreMode: Binding.RestoreBindingOrValue
         }
