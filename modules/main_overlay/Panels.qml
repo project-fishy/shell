@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import Quickshell
 import QtQuick
 
@@ -106,7 +108,9 @@ Item {
         syncWith: tray
 
         compactConponent: DashboardCompact {}
-        fullComponent: DashboardFull {}
+        fullComponent: DashboardFull {
+            toast: dashboard
+        }
     }
 
     TripleToast {
