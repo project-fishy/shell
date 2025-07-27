@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import Quickshell
@@ -134,15 +136,16 @@ StackView {
             anchors.right: parent.right
             anchors.margins: 5
 
-            Button {
+            DashButton {
                 text: "wallpaper"
                 icon_text: "photo_frame"
 
-                onClicked: root.push(wallpapers.createObject(null))
+                onClicked: root.push(wallpapers.createObject(root))
             }
         }
     }
-    component Button: MouseArea {
+
+    component DashButton: MouseArea {
         required property string icon_text
         required property string text
 
