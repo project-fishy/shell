@@ -1,198 +1,184 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
+import QtQuick.Controls
 import Quickshell
+import Quickshell.Widgets
 import Quickshell.Io
 
 import "../../logic"
 import "../../widgets"
 
-Item {
+ClippingRectangle {
     id: root
 
-    // property string rawData
-    // property var papers: paperVariants.instances
-    // readonly property string cachePath: "/home/desant/fishycache"
-
-    anchors.fill: parent
     property list<string> paths
+    property Item focused
+    required property StackView stackview
 
-    states: [
-        State {
-            name: "wallpapers"
-        },
-        State {
-            name: "themes"
-        },
-        State {
-            name: "done"
-        }
-    ]
+    implicitHeight: parent.height
+    implicitWidth: parent.width
+    color: "transparent"
+    radius: 10
 
-    state: "wallpapers"
+    Flickable {
+        id: flickable
 
-    // Rectangle {
-    //     implicitHeight: 50
-    //     implicitWidth: 50
-    //     // color: Matugen.wallpapers[0].schemes[0].foreground
-    // }
-    // Column {
-    //     anchors.fill: parent
-    //     Repeater {
-    //         model: Matugen.wallpapers
-    //         Row {
-    //             id: paper
-    //             required property Matugen.Wallpaper modelData
-    //             Repeater {
-    //                 model: paper.modelData.schemes
-    //                 Rectangle {
-    //                     required property Matugen.Scheme modelData
-    //                     implicitHeight: 50
-    //                     implicitWidth: 50
-    //                     color: modelData.primary
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    Grid {
         anchors.fill: parent
-        columns: 2
+        contentWidth: grid.width
+        contentHeight: grid.height
+        flickableDirection: Flickable.VerticalFlick
 
-        Repeater {
-            model: root.paths
+        states: [
+            State {
+                name: "wallpapers"
+                PropertyChanges {
+                    grid.opacity: 1
+                    scheme_loader.active: false
+                    contentWidth: grid.width
+                    contentHeight: grid.height
+                }
+            },
+            State {
+                name: "themes"
+                PropertyChanges {
+                    grid.opacity: 0
+                    scheme_loader.active: true
+                    contentHeight: scheme_loader.height
+                    contentWidth: scheme_loader.width
+                }
+            },
+            State {
+                name: "done"
+            }
+        ]
 
-            CachedImage {
-                required property string modelData
-                path: modelData
+        state: "wallpapers"
 
-                width: root.width / 2
-                height: 70
+        Grid {
+            id: grid
 
-                // Rectangle {
-                //     color: "#0f0"
-                //     anchors.fill: parent
-                // }
+            width: root.width
+            height: childrenRect.height
+            columns: 2
+
+            Repeater {
+                model: root.paths
+
+                CachedImage {
+                    required property string modelData
+                    path: modelData
+
+                    width: root.width / 2
+                    height: 70
+                }
+            }
+        }
+
+        Loader {
+            id: scheme_loader
+
+            active: false
+            sourceComponent: SchemeDisplay {}
+        }
+
+        Process {
+            id: scraper
+            running: true
+            command: ["sh", "-c", "ls /home/desant/Pictures/pixiv+"]
+            stdout: StdioCollector {
+                onStreamFinished: root.paths = this.text.split("\n").filter(p => p != "").map(p => "/home/desant/Pictures/pixiv+/" + p)
             }
         }
     }
 
-    Process {
-        id: scraper
-        running: true
-        command: ["sh", "-c", "ls /home/desant/Pictures/pixiv+"]
-        stdout: StdioCollector {
-            onStreamFinished: root.paths = this.text.split("\n").filter(p => p != "").map(p => "/home/desant/Pictures/pixiv+/" + p)
+    component SchemeDisplay: MatugenWrapper {
+        id: schemeGen
+        path: root.focused?.modelData
+        property Column layout: schemes_layout
+
+        implicitHeight: childrenRect.height
+        implicitWidth: root.width
+
+        Column {
+            id: schemes_layout
+
+            spacing: 5
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            Repeater {
+                model: schemeGen.schemes
+
+                Rectangle {
+                    id: scheme_display
+                    required property MatugenWrapper.Scheme modelData
+
+                    implicitHeight: 60
+                    implicitWidth: schemeGen.width - 10
+                    color: modelData.background
+                    radius: 10
+
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Row {
+                        anchors.fill: parent
+                        spacing: 5
+
+                        Rectangle {
+                            color: scheme_display.modelData.primary
+                            radius: height / 2
+                            implicitHeight: scheme_display.height
+                            implicitWidth: scheme_display.height
+                        }
+                        Rectangle {
+                            color: scheme_display.modelData.secondary
+                            radius: height / 2
+                            implicitHeight: scheme_display.height
+                            implicitWidth: scheme_display.height
+                        }
+                        Rectangle {
+                            color: scheme_display.modelData.tertiary
+                            radius: height / 2
+                            implicitHeight: scheme_display.height
+                            implicitWidth: scheme_display.height
+                        }
+                    }
+                }
+            }
         }
     }
+    MouseArea {
+        id: mous
 
-    // Component.onCompleted: {
-    //     wpGrabber.running = true;
-    // }
+        anchors.fill: parent
+        propagateComposedEvents: true
+        property real pressX
+        property real pressY
 
-    // Process {
-    //     id: wpGrabber
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-    //     command: ["sh", "-c", `ls ${root.picPath}`]
-
-    //     stdout: StdioCollector {
-    //         onStreamFinished: {
-    //             print(this.text);
-    //             root.rawData = this.text;
-    //         }
-    //     }
-    // }
-
-    // Variants {
-    //     id: paperVariants
-    //     model: root.rawData.split("\n")
-
-    //     Wallpaper {}
-    // }
-
-    // // TODO: this is dirty and stupid
-    // component Wallpaper: QtObject {
-    //     id: wppl
-    //     required property string modelData
-
-    //     readonly property string path: `${root.picPath}/${modelData}`
-    //     property string cachedPath
-
-    //     property string hash
-
-    //     property string matugenDump
-    //     property string primary
-    //     property string secondary
-    //     property string tertiary
-
-    //     readonly property Image image: Image {
-    //         asynchronous: true
-    //         cache: false
-    //         fillMode: Image.PreserveAspectCrop
-    //     }
-    //     readonly property Process hashProc: Process {
-    //         property string h
-    //         stdout: StdioCollector {
-    //             onStreamFinished: {
-    //                 wppl.hash = this.text.split(" ")[0];
-    //                 print(wppl.modelData + " got hash " + wppl.hash);
-    //                 wppl.cachedPath = root.cachePath + "/" + wppl.hash + ".png";
-    //                 wppl.image.source = wppl.cachedPath;
-    //             }
-    //         }
-    //     }
-
-    //     readonly property var c: Connections {
-    //         target: wppl.image
-
-    //         function onStatusChanged() {
-    //             if (wppl.image.status === Image.Error && wppl.image.source == wppl.cachedPath) {
-    //                 print(wppl.modelData + " has no cache :(");
-    //                 wppl.image.source = wppl.path;
-    //             } else if (wppl.image.status === Image.Ready && wppl.image.source == wppl.path) {
-    //                 print(wppl.modelData + ": creating cache");
-    //                 wppl.image.grabToImage(i => i.saveToFile(wppl.cachedPath));
-    //                 wppl.image.source = wppl.cachedPath;
-    //             } else if (wppl.image.status === Image.Ready && wppl.image.source == wppl.cachedPath)
-    //                 wppl.matugenProc.exec(["matugen", "image", root.picPath, "--dry-run", "-j", "hex"]);
-    //         }
-    //     }
-
-    //     readonly property Process matugenProc: Process {
-    //         stdout: StdioCollector {
-    //             onStreamFinished: {
-    //                 wppl.matugenDump = this.text;
-    //             }
-    //         }
-    //     }
-
-    //     onMatugenDumpChanged: {
-    //         if (matugenDump && matugenDump != "")
-    //             parser.running = true;
-    //     }
-
-    //     readonly property Process parser: Process {
-    //         command: ["jq", "-r", "'.colors.dark' | .primary, .secondary, .tertiary", wppl.matugenDump]
-    //         stdout: StdioCollector {
-    //             onStreamFinished: {
-    //                 print("parser got:\n" + this.text);
-    //                 wppl.primary, wppl.secondary, wppl.tertiary = this.text.split("\n");
-    //             }
-    //         }
-    //     }
-
-    //     Component.onCompleted: {
-    //         // create cache dir
-    //         hashProc.exec(["sha256sum", path]);
-    //         Quickshell.execDetached(["mkdir", "-p", root.cachePath]);
-    //         // wppl.cachedPath = `${paff}/${wppl.hash}.png`;
-    //         // let the image handle caching
-    //         // wppl.image.source = wppl.cachedPath;
-    //         // grab colors
-    //         // matugenProc.exec(["matugen", "image", root.picPath, "--dry-run", "-j", "hex"]);
-
-    //         print(modelData + " completed");
-    //     }
-    // }
+        onClicked: event => {
+            if (event.button === Qt.LeftButton)
+                if (flickable.state == "wallpapers") {
+                    root.focused = grid.children.find(c => c.modelData && Helper.checkInBounds(c, event, -flickable.contentX, -flickable.contentY));
+                    flickable.state = "themes";
+                    flickable.contentX = 0;
+                    flickable.contentY = 0;
+                } else if (flickable.state == "themes") {
+                    let scheme = scheme_loader.item.layout.children.find(c => Helper.checkInBounds(c, event, -flickable.contentX, -flickable.contentY)).modelData;
+                    Quickshell.execDetached(["matugen", "image", "-t", `scheme-${scheme.modelData}`, scheme.pic]);
+                    root.exit();
+                }
+            if (event.button === Qt.RightButton)
+                if (flickable.state === "themes")
+                    flickable.state = "wallpapers";
+                else
+                    root.exit();
+            event.accepted = true;
+        }
+    }
+    function exit() {
+        root.stackview.pop();
+    }
 }
