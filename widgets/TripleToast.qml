@@ -31,10 +31,32 @@ Item { // container for margins, placement
     readonly property bool onCorner: secondAnchor != -1
     readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width
     readonly property bool overshadowed: {
+        // FIXME: optimize this, theres no need to do this like 8 times
         let ws = Hypr.workspacesForScreen(screen).find(w => w.active);
-        let windows = Hypr.windowsForWorkspace(ws);
+        let windows = Hypr.windowsForWorkspace(ws).map(w => w.lastIpcObject);
+        let pos = root.mapToItem(null, 0, 0);
 
-        return windows.length > 0; // TODO: get positions?
+        let intersects = windows.some(w => {
+            let l1 = w.at[0];
+            let r1 = w.at[0] + w.size[0];
+            let t1 = w.at[1];
+            let b1 = w.at[1] + w.size[1];
+
+            let l2 = pos.x + root.screen.x;
+            let r2 = pos.x + root.screen.x + compactLoader.width + root.marg * 2;
+            let t2 = pos.y + root.screen.y;
+            let b2 = pos.y + root.screen.y + compactLoader.height + root.marg * 2;
+
+            if (l1 > r2 || l2 > r1)
+                return false;
+
+            if (b1 < t2 || b2 < t1)
+                return false;
+
+            return true;
+        });
+
+        return intersects;
     }
 
     // I ASKED
