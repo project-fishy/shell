@@ -30,7 +30,6 @@ StackView {
         target: root.toast
 
         function onStateChanged() {
-            print(root.toast.state);
             if (root.toast.state == Config.toast.state_hidden)
                 while (root.depth != 1)
                     root.pop();
