@@ -21,7 +21,7 @@ CustomText {
             return "";
         else if (["Code", "code"].includes(modelData))
             return "󰨞";
-        else if (modelData == "kitty")
+        else if (["kitty", "floating-kitty".includes(modelData)])
             return "";
         else if (modelData == "thunar")
             return "";
