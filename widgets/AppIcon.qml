@@ -37,6 +37,8 @@ CustomText {
             return "󰍳";
         else if (["TradingView"].includes(modelData))
             return "";
+        else if (["com.usebottles.bottles"].includes(modelData))
+            return "";
         else
             return "";
     }
