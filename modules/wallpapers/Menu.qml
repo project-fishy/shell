@@ -25,8 +25,8 @@ ClippingRectangle {
         id: flickable
 
         anchors.fill: parent
-        contentWidth: grid.width
-        contentHeight: grid.height
+        // contentWidth: grid.width
+        // contentHeight: grid.height
         flickableDirection: Flickable.VerticalFlick
 
         states: [
@@ -35,8 +35,8 @@ ClippingRectangle {
                 PropertyChanges {
                     grid.opacity: 1
                     scheme_loader.active: false
-                    contentWidth: grid.width
-                    contentHeight: grid.height
+                    flickable.contentWidth: grid.width
+                    flickable.contentHeight: grid.height
                 }
             },
             State {
@@ -44,8 +44,8 @@ ClippingRectangle {
                 PropertyChanges {
                     grid.opacity: 0
                     scheme_loader.active: true
-                    contentHeight: scheme_loader.height
-                    contentWidth: scheme_loader.width
+                    flickable.contentHeight: scheme_loader.height
+                    flickable.contentWidth: scheme_loader.width
                 }
             },
             State {
