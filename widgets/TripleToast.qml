@@ -27,6 +27,8 @@ Item { // container for margins, placement
 
     readonly property int marg: Config.toast.margins
     readonly property MouseArea mouseArea: mous
+    readonly property Loader cLoader: compactLoader
+    readonly property Loader fLoader: fullLoader
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
     readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width

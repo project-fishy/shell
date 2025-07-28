@@ -1,23 +1,30 @@
 import QtQuick
 import Quickshell
+import Quickshell.Widgets
 import Quickshell.Services.SystemTray
 
 import "../../../../widgets"
 import "../../../../config"
+import "../../../../logic"
 
 // context menu loader
-// i think these are made in modules/sidebar/components/ContextMenus.qml
-// and wrapped in SlidingPanels or something similar
-Item {
+ClippingRectangle {
     id: root
 
     required property SystemTrayItem modelData
     required property bool shown // supposed to be used for cool animations
 
-    implicitHeight: layout.implicitHeight
-    implicitWidth: layout.implicitWidth
+    readonly property MouseArea mouseArea: mous
 
-    visible: shown
+    implicitHeight: shown || mous.containsMouse ? layout.implicitHeight : 0
+    implicitWidth: shown || mous.containsMouse ? layout.implicitWidth : 0
+
+    Behavior on implicitHeight {
+        NumberAnimation {}
+    }
+    Behavior on implicitWidth {
+        NumberAnimation {}
+    }
 
     // place next to sidebar
     x: Config.bar.width
@@ -34,9 +41,19 @@ Item {
     }
 
     // bg
-    CustomRect {
-        color: Colors.current.background
+    color: Colors.current.background
+
+    MouseArea {
+        id: mous
+
         anchors.fill: parent
+        hoverEnabled: true
+
+        // mouse events
+        onPressed: event => {
+            let entry = layout.children.find(c => Helper.checkInBounds(c, event, 0, 0));
+            entry.modelData.triggered();
+        }
     }
 
     // items
@@ -55,27 +72,8 @@ Item {
                 id: entry
                 required property QsMenuEntry modelData
 
-                color: Colors.current.tertiary
+                color: Colors.current.on_background
                 text: modelData.isSeparator ? "------" : modelData.text ?? "wtf"
-
-                // HACK: maybe don't make that many, just one per menu?
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-
-                    // mouse events
-                    onPressed: event => {
-                        entry.modelData.triggered();
-                    }
-
-                    onEntered: {
-                        parent.color = Colors.current.primary;
-                    }
-
-                    onExited: {
-                        parent.color = Colors.current.tertiary;
-                    }
-                }
             }
         }
     }
