@@ -39,6 +39,8 @@ CustomText {
             return "";
         else if (["com.usebottles.bottles"].includes(modelData))
             return "";
+        else if (modelData.includes("steam_app_"))
+            return "󰊗";
         else
             return "";
     }
