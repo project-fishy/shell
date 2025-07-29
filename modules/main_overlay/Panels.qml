@@ -66,6 +66,23 @@ Item {
                     workspaces.peek();
             }
         }
+
+        Connections {
+            target: workspaces.mouseArea
+
+            function onPressed(event) {
+                let layout = workspaces.cLoader.item?.layout;
+                let target = layout.children.find(c => {
+                    let top = c.y;
+                    let bot = top + c.height;
+
+                    return top < event.y && event.y < bot;
+                });
+
+                if (!target?.modelData.active ?? false)
+                    target?.modelData.activate();
+            }
+        }
     }
 
     // tray and stuff

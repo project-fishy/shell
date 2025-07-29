@@ -12,7 +12,7 @@ import "../../logic"
 // with window icons
 // [ ] animations?
 // [ ] better color?
-MouseArea {
+Item {
     id: root
 
     required property HyprlandWorkspace modelData
@@ -21,8 +21,6 @@ MouseArea {
 
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
-
-    onClicked: modelData.activate()
 
     // workspace icon
     CustomText {
