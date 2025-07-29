@@ -15,17 +15,33 @@ import "../../logic"
 Item {
     id: root
 
-    required property HyprlandWorkspace modelData
+    required property string modelData // workspace name
+    required property Item selected_bg
 
-    readonly property bool selected: modelData.active
+    property var workspace: Hyprland.workspaces.values.find(w => w.name == modelData)
+
+    readonly property bool selected: workspace?.active ?? false
 
     Layout.preferredWidth: childrenRect.width
     Layout.preferredHeight: childrenRect.height
 
+    onSelectedChanged: {
+        if (selected)
+            selected_bg.selected = root;
+    }
+
+    function activate() {
+        if (workspace && !workspace.active)
+            workspace.activate();
+        if (!workspace)
+            if (!modelData.startsWith("special:"))
+                Hyprland.dispatch(`workspace ${modelData}`);
+    }
+
     // workspace icon
     CustomText {
         id: wsIcon
-        text: 0 < root.modelData.id && root.modelData.id <= 10 ? "一二三四五六七八九十"[root.modelData.id - 1] : root.modelData.id
+        text: Config.workspaces.find(w => w.name == root.modelData)?.indicator ?? "."
 
         color: root.selected ? Colors.current.on_primary : Colors.current.on_background
 
@@ -51,10 +67,10 @@ Item {
 
         Repeater {
             id: wIcons
-            property var windows: Hypr.windowsForWorkspace(root.modelData)
+            property var windows: Hypr.windowsForWorkspace(root.workspace)
             property var classes: windows.map(w => w.lastIpcObject.class)
 
-            model: classes // TODO: inject more properties?
+            model: root.workspace ? Hypr.windowsForWorkspace(root.workspace).map(w => w.lastIpcObject.class) : [] // TODO: inject more properties?
 
             AppIcon {
                 color: wsIcon.color

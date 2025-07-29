@@ -1,3 +1,5 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -13,26 +15,18 @@ Item {
     required property ShellScreen screen
     property ColumnLayout layout: layout_ // expose for mouse clicks
 
-    readonly property list<HyprlandWorkspace> currentWorkspaces: Hypr.workspacesForScreen(screen).filter(w => w.name && w.name != "").sort((a, b) => a.id - b.id)
+    readonly property var workspaces: Config.workspaces.filter(w => w.monitor == root.screen.name)
     readonly property list<Indicator> indicators: layout_.children.filter(c => c instanceof Indicator).sort((a, b) => a.y - b.y)
 
     implicitHeight: layout.implicitHeight + Config.toast.protrusions
     implicitWidth: Config.toast.size
     anchors.centerIn: parent
 
-    // anchors.horizontalCenter: parent.horizontalCenter
-
     CustomRect {
         id: slider
 
-        property real marg: 5
-        // HACK: is this hacky? probably. does it work? hell yeah
-        property Item selected
-
-        Binding on selected {
-            when: root.currentWorkspaces.some(w => w.active)
-            value: root.indicators[root.currentWorkspaces.findIndex(w => w.active)]
-        }
+        property real marg: Config.spacing.small
+        property Item selected // is set by indicator
 
         y: selected?.y + marg ?? 0
         implicitWidth: selected?.width + marg * 2 ?? 0
@@ -66,10 +60,15 @@ Item {
 
         Repeater {
             model: ScriptModel {
-                values: [...root.currentWorkspaces]
+                property var configuredWorkspaces: workspaces.map(w => w.name)
+                property var otherWorkspaces: Hypr.workspacesForScreen(root.screen).filter(w => !configuredWorkspaces.includes(w.name)).map(w => w.name)
+
+                values: [...Helper.flatten([configuredWorkspaces, otherWorkspaces])]
             }
 
-            Indicator {}
+            Indicator {
+                selected_bg: slider
+            }
         }
     }
 
