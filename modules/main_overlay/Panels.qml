@@ -2,7 +2,9 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Services.SystemTray
+import Quickshell.Services.Notifications
 import QtQuick
+import QtQuick.Controls
 
 import "../../widgets"
 import "../../config"
@@ -28,19 +30,61 @@ Item {
         collapseTo: Config.toast.top
         anchors.horizontalCenter: parent.horizontalCenter
 
-        compactConponent: Item {
+        compactConponent: StackView {
+            id: clock
+
+            property Notification notification
+            readonly property Timer timer: flick_timer
+
             implicitHeight: Config.toast.size
             implicitWidth: 200
 
-            CustomText {
-                text: Time.format("ddd, dd MMM hh:mm")
-                color: Colors.current.on_background
-                anchors.fill: parent
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
+            initialItem: Clock {}
+
+            Timer {
+                id: flick_timer
+                interval: 1000
+                onTriggered: {
+                    while (clock.depth > 1)
+                        clock.pop();
+                }
             }
         }
-        fullComponent: Calendar {}
+
+        Connections {
+            target: Notifications.server
+            function onNotification(n) {
+                let clock = calendar.cLoader.item;
+                clock.notification = n;
+                clock.push(compactNotif);
+                calendar.peek();
+                clock.timer.restart();
+            }
+        }
+
+        Component {
+            id: compactNotif
+
+            CustomNotification {
+                modelData: calendar.cLoader.item?.notification
+                implicitWidth: 300
+                implicitHeight: 300
+            }
+        }
+
+        fullComponent: Calendar {
+            mous: calendar.mouseArea
+        }
+    }
+
+    component Clock: Item {
+        CustomText {
+            text: Time.format("ddd, dd MMM hh:mm")
+            color: Colors.current.on_background
+            anchors.fill: parent
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
     }
 
     // the workspaces
@@ -79,8 +123,7 @@ Item {
                     return top < event.y && event.y < bot;
                 });
 
-                if (!target?.modelData.active ?? false)
-                    target?.modelData.activate();
+                target?.activate();
             }
         }
     }
