@@ -3,17 +3,22 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import Quickshell
 import Quickshell.Services.SystemTray
-import "tray"
+
+import "../../widgets"
 
 // generates and contains context menus for the sidebar
 Item {
     id: root
 
-    required property Tray tray
-    required property string current // currently open menu, empty if none
+    // required property Tray tray
+    required property TripleToast toast
+    property Tray tray: toast.cLoader.item?.publicIcons
+    property string current: toast.cLoader.item?.current
+    // required property string current // currently open menu, empty if none
     property int yPos // vertical position of current menu
 
     // create mouse region for opened menu
+    // TODO: do we need this?
     property Region mouseRegion: Region {
         property Item target: root.children.find(t => t.modelData?.id == root.current) ?? null
 
@@ -34,7 +39,9 @@ Item {
             id: menu
 
             shown: this.modelData.id == root.current
-            y: root.yPos
+
+            x: root.toast.x
+            y: root.toast.y + root.tray.height
         }
     }
 }

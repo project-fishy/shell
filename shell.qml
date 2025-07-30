@@ -2,7 +2,7 @@
 
 import Quickshell
 import QtQuick
-import "modules/main_overlay"
+import "main_overlay"
 import "modules/desktop"
 
 ShellRoot {

@@ -3,9 +3,9 @@ import Quickshell
 import Quickshell.Widgets
 import Quickshell.Services.SystemTray
 
-import "../../../../widgets"
-import "../../../../config"
-import "../../../../logic"
+import "../../widgets"
+import "../../config"
+import "../../logic"
 
 // context menu loader
 ClippingRectangle {

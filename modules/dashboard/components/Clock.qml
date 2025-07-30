@@ -1,20 +1,15 @@
 import QtQuick
 
-import "../../../config"
 import "../../../widgets"
 import "../../../logic"
+import "../../../config"
 
-// sidebar clock
-Column {
-    id: root
-
-    property string text_color: Colors.current.tertiary
-    spacing: 10
-
+Item {
     CustomText {
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        text: Time.format("hh\nmm")
-        color: root.text_color
+        text: Time.format("ddd, dd MMM hh:mm")
+        color: Colors.current.on_background
+        anchors.fill: parent
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
     }
 }

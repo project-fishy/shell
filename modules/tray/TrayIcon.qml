@@ -1,5 +1,5 @@
-import "../../../../widgets"
-import "../../../../config"
+import "../../widgets"
+import "../../config"
 import Quickshell.Services.SystemTray
 import QtQuick
 import Quickshell

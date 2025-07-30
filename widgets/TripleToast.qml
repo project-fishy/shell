@@ -135,9 +135,13 @@ Item { // container for margins, placement
             state = Config.toast.state_hidden;
     }
 
-    function peek() {
+    function peek(ms) {
+        if (ms === undefined)
+            ms = 1000;
+
         if (state == Config.toast.state_hidden || peek_timer.running || !root.overshadowed) {
             state = Config.toast.state_peek;
+            peek_timer.interval = ms;
             peek_timer.restart();
         }
     }
