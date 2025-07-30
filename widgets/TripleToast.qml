@@ -25,10 +25,11 @@ Item { // container for margins, placement
     property bool hasSyncedTop: false
     property bool hasSyncedBottom: false
 
-    readonly property int marg: Config.toast.margins
     readonly property MouseArea mouseArea: mous
     readonly property Loader cLoader: compactLoader
     readonly property Loader fLoader: fullLoader
+
+    readonly property int marg: Config.spacing.smaller
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
     readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width
@@ -67,8 +68,8 @@ Item { // container for margins, placement
             // hidden
             name: Config.toast.state_hidden
             PropertyChanges {
-                root.implicitHeight: root.onHorizEdges ? Config.toast.interactible_size : compactLoader.height + root.marg * 2
-                root.implicitWidth: root.onHorizEdges ? compactLoader.width + root.marg * 2 : Config.toast.interactible_size
+                root.implicitHeight: root.onHorizEdges ? Config.spacing.smaller : compactLoader.height + root.marg * 2
+                root.implicitWidth: root.onHorizEdges ? compactLoader.width + root.marg * 2 : Config.spacing.smaller
                 fullLoader.opacity: 0
                 compactLoader.opacity: 1
             }
@@ -190,7 +191,7 @@ Item { // container for margins, placement
         }
 
         color: Colors.current.background
-        radius: 10
+        radius: Config.radius.normal
     }
 
     ContentLoader {
