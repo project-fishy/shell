@@ -21,8 +21,10 @@ CustomText {
             return "";
         else if (["Code", "code"].includes(modelData))
             return "󰨞";
+        else if (["dev.zed.Zed-Preview"].includes(modelData))
+            return "󱃖";
         else if (["kitty", "floating-kitty"].includes(modelData))
-            return "";
+            return "󰅭";
         else if (modelData == "thunar")
             return "";
         else if (modelData == "steam")
@@ -42,7 +44,7 @@ CustomText {
         else if (modelData.includes("steam_app_"))
             return "󰊗";
         else
-            return "";
+            return "";
     }
 }
 
