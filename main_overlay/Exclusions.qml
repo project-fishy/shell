@@ -2,8 +2,8 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import QtQuick
-import "../../widgets"
-import "../../config"
+import "../widgets"
+import "../config"
 
 // this reserves space for the borders and sidebar
 Scope {
