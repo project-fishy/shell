@@ -11,7 +11,16 @@ Singleton {
     NotificationServer {
         id: server_
 
-        // keepOnReload: false
+        keepOnReload: true
+
+        imageSupported: true
+        bodyHyperlinksSupported: true
+        bodyImagesSupported: true
+        bodyMarkupSupported: true
+        actionsSupported: true
+        inlineReplySupported: true
+        persistenceSupported: true
+        actionIconsSupported: true
 
         onNotification: notif => {
             notif.tracked = true;
