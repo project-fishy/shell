@@ -11,7 +11,7 @@ import "../../widgets"
 import "../../config"
 import "../../logic"
 
-// import "./components"
+import "components"
 
 // this is supposed to be the panel at the top of the screen
 // with a lot of controls.
@@ -38,7 +38,6 @@ ClippingRectangle {
         DashButton {
             id: button_home
 
-            text: "Home"
             icon: "home"
 
             function onClick() {
@@ -49,7 +48,6 @@ ClippingRectangle {
         DashButton {
             id: button_wallpapers
 
-            text: "Wallpapers"
             icon: "photo_frame"
 
             function onClick() {
@@ -59,7 +57,6 @@ ClippingRectangle {
         DashButton {
             id: button_player
 
-            text: "Music"
             icon: "home"
 
             function onClick() {
@@ -90,103 +87,9 @@ ClippingRectangle {
         }
     }
 
-    component DashButton: CustomRect {
-        id: dash_button
-
-        required property string icon
-        required property string text
-
-        implicitWidth: 100
-        implicitHeight: 50
-        radius: Config.radius.small
-
-        color: Colors.current.primary
-
-        TextIcon {
-            id: db_icon
-            text: dash_button.icon
-            color: Colors.current.on_primary
-            anchors.verticalCenter: parent.verticalCenter
-            x: y
-        }
-        CustomText {
-            id: db_text
-            text: dash_button.text
-            color: Colors.current.on_primary
-            anchors.verticalCenter: parent.verticalCenter
-            x: db_icon.x * 2 + db_icon.width
-        }
-    }
-
     Component {
         id: main_menu
-        Item {
-            // anchors.fill: parent
-
-            ClippingRectangle {
-                id: notifications
-
-                // property NotificationServer server: NotificationServer {}
-
-                implicitWidth: parent.width / 2
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-
-                color: Colors.current.surface_container
-                radius: Config.radius.small
-
-                Flickable {
-                    anchors.fill: parent
-                    contentHeight: notif_layout.height
-                    contentWidth: notif_layout.width
-                    flickableDirection: Flickable.VerticalFlick
-
-                    Column {
-                        id: notif_layout
-
-                        spacing: Config.spacing.small
-
-                        Repeater {
-                            model: Notifications.tracked
-
-                            CustomNotification {
-                                implicitWidth: notifications.width - Config.spacing.small * 2
-                                // anchors.horizontalCenter: notifications.horizontalCenter
-                                // implicitHeight: modelData.
-                            }
-                        }
-                    }
-
-                    Connections {
-                        target: root.mous
-
-                        function onPressed(event) {
-                            let selected = notif_layout.children.find(c => c instanceof CustomNotification && Helper.checkInBounds(c, event, 0, 0));
-                            if (selected)
-                                selected.modelData.dismiss();
-                        }
-                    }
-                }
-            }
-
-            CustomRect {
-                id: weather
-
-                anchors.left: notifications.right
-                anchors.right: parent.right
-                anchors.top: parent.top
-                implicitHeight: 50
-                anchors.leftMargin: Config.spacing.small
-
-                color: Colors.current.primary
-
-                TextIcon {
-                    text: "partly_cloudy_day"
-                    color: Colors.current.on_primary
-                }
-            }
-        }
+        MainMenu {}
     }
 
     Component {
