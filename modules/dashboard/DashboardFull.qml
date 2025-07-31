@@ -89,7 +89,9 @@ ClippingRectangle {
 
     Component {
         id: main_menu
-        MainMenu {}
+        MainMenu {
+            mous: root.mous
+        }
     }
 
     Component {

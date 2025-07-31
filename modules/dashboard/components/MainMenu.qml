@@ -9,6 +9,8 @@ import "../../../config"
 Item {
     id: root
 
+    required property MouseArea mous
+
     // notif column
     ClippingRectangle {
         id: notifications
