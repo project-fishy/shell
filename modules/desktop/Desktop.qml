@@ -45,6 +45,8 @@ Variants {
             CachedImage {
                 path: Config.saved.wallpaper
                 anchors.fill: parent
+
+                asynchronous: false
             }
 
             // HACK: make better align
