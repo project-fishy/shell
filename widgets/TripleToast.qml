@@ -40,6 +40,9 @@ Item { // container for margins, placement
         let pos = root.mapToItem(null, 0, 0);
 
         let intersects = windows.some(w => {
+            if (!w.at)
+                return false;
+
             let l1 = w.at[0];
             let r1 = w.at[0] + w.size[0];
             let t1 = w.at[1];
