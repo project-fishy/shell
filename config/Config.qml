@@ -1,4 +1,5 @@
 pragma Singleton
+pragma ComponentBehavior: Bound
 
 import Quickshell
 import Quickshell.Io
@@ -13,6 +14,7 @@ Singleton {
     readonly property Slider slider: Slider {}
     readonly property Toasts toast: Toasts {}
     property alias workspaces: json_adapter.workspaces
+    property alias saved: config_adapter
 
     component Toasts: QtObject {
         property int size: 35
@@ -66,6 +68,35 @@ Singleton {
         readonly property int top: 2
         readonly property int bottom: 3
         readonly property int outline: 1
+    }
+
+    FileView {
+        watchChanges: true
+        path: "/home/desant/.config/fishy/config.json"
+
+        onFileChanged: reload()
+        onAdapterUpdated: writeAdapter()
+
+        onLoadFailed: writeAdapter()
+
+        JsonAdapter {
+            id: config_adapter
+
+            property string wallpaper: "/home/desant/Pictures/pixiv+/blue_pain.jpg"
+            property string scheme: "content"
+        }
+    }
+
+    Connections {
+        target: config_adapter
+
+        function onWallpaperChanged() {
+            Quickshell.execDetached(["matugen", "image", "-t", `scheme-${saved.scheme}`, saved.wallpaper]);
+        }
+
+        function onSchemeChanged() {
+            Quickshell.execDetached(["matugen", "image", "-t", `scheme-${saved.scheme}`, saved.wallpaper]);
+        }
     }
 
     FileView {

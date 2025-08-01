@@ -100,6 +100,8 @@ ClippingRectangle {
     Component {
         id: wallpapers
 
-        Wallpapers {}
+        Wallpapers {
+            mous: root.mous
+        }
     }
 }

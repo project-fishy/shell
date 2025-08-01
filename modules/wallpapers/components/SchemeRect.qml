@@ -5,31 +5,35 @@ import "../../../widgets"
 import "../../../config"
 
 CustomRect {
-    id: scheme_rect
+    id: root
     required property MatugenWrapper.Scheme modelData
 
-    // implicitHeight: 50
     implicitWidth: childrenRect.width + Config.spacing.small * 2
     color: modelData.background
     radius: Config.radius.small
 
     Row {
+        id: layout
+
         anchors.verticalCenter: parent.verticalCenter
         x: Config.spacing.small
-        // implicitHeight: parent.height = Config.spacing.smaller * 2
+        spacing: Config.spacing.small
 
         Dot {
-            color: scheme_rect.modelData.primary
-            implicitHeight: scheme_rect.height - Config.spacing.small * 2
+            color: root.modelData.primary
         }
 
         Dot {
-            color: scheme_rect.modelData.secondary
+            color: root.modelData.secondary
+        }
+
+        Dot {
+            color: root.modelData.tertiary
         }
     }
 
     component Dot: CustomRect {
-        // implicitHeight: parent.height - Config.spacing.small * 2
+        implicitHeight: 20
         implicitWidth: implicitHeight
         radius: height / 2
     }

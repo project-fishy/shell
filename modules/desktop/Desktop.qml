@@ -42,49 +42,54 @@ Variants {
 
             //     sourceComponent: VideoBG {}
             // }
-
-            // clock
-            // HACK: make better align
-            Item {
-                implicitHeight: 300
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                CustomText {
-                    text: Time.format("hh:mm")
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
-
-                    font.pointSize: 100
-                    font.family: "Monaspace Krypron"
-                    color: Colors.current.background
-                }
+            CachedImage {
+                path: Config.saved.wallpaper
+                anchors.fill: parent
             }
+
+            // HACK: make better align
+            // Item {
+            //     implicitHeight: 300
+            //     anchors.top: parent.top
+            //     anchors.horizontalCenter: parent.horizontalCenter
+
+            // }
+            // clock
+            // CustomText {
+            //     text: Time.format("hh:mm")
+            //     anchors.horizontalCenter: parent.horizontalCenter
+            //     // anchors.bottom: parent.bottom
+            //     y: 200
+
+            //     font.pointSize: 100
+            //     font.family: "Monaspace Krypron"
+            //     color: Colors.current.background
+            // }
 
             // now playing
             // HACK: this is bad
-            Item {
+            // Item {
 
-                implicitHeight: 100
-                implicitWidth: 1700
+            //     implicitHeight: 100
+            //     implicitWidth: 1700
 
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
+            //     anchors.bottom: parent.bottom
+            //     anchors.horizontalCenter: parent.horizontalCenter
 
-                CustomText {
-                    readonly property list<MprisPlayer> plrs: Mpris.players.values
-                    readonly property MprisPlayer plr: plrs.find(p => p.identity === "Spotify") ?? plrs[0]
+            //     CustomText {
+            //         readonly property list<MprisPlayer> plrs: Mpris.players.values
+            //         readonly property MprisPlayer plr: plrs.find(p => p.identity === "Spotify") ?? plrs[0]
 
-                    text: plr?.trackTitle + "\n" + plr?.trackArtist ?? "ZXC Gnida"
-                    color: Colors.current.tertiary
+            //         text: plr?.trackTitle + "\n" + plr?.trackArtist ?? "ZXC Gnida"
+            //         color: Colors.current.tertiary
 
-                    font.pointSize: 15
-                    font.family: "Monaspace Radon"
+            //         font.pointSize: 15
+            //         font.family: "Monaspace Radon"
 
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                }
-            }
+            //         anchors.left: parent.left
+            //         anchors.top: parent.top
+            //     }
+            // }
         }
     }
 
