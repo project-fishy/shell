@@ -82,7 +82,7 @@ Singleton {
         JsonAdapter {
             id: config_adapter
 
-            property string wallpaper: "/home/desant/Pictures/pixiv+/blue_pain.jpg"
+            property string wallpaper: "/home/desant/Pictures/Wallpapers/blue_pain.jpg"
             property string scheme: "content"
         }
     }

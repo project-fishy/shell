@@ -128,9 +128,9 @@ Item {
             id: scraper
 
             running: true
-            command: ["sh", "-c", "ls /home/desant/Pictures/pixiv+"]
+            command: ["sh", "-c", "ls /home/desant/Pictures/Wallpapers"]
             stdout: StdioCollector {
-                onStreamFinished: wallpapers.paths = this.text.split("\n").filter(p => p != "").map(p => "/home/desant/Pictures/pixiv+/" + p)
+                onStreamFinished: wallpapers.paths = this.text.split("\n").filter(p => p != "").map(p => "/home/desant/Pictures/Wallpapers/" + p)
             }
         }
     }

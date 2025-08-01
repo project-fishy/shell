@@ -22,7 +22,7 @@ Item {
 
     required property MouseArea mous
 
-    implicitWidth: 640 // TODO: probably reverse idk
+    implicitWidth: 740 // TODO: probably reverse idk
     implicitHeight: 480
     // radius: Config.radius.normal
     // color: "transparent"

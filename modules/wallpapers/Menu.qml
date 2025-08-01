@@ -85,9 +85,9 @@ ClippingRectangle {
         Process {
             id: scraper
             running: true
-            command: ["sh", "-c", "ls /home/desant/Pictures/pixiv+"]
+            command: ["sh", "-c", "ls /home/desant/Pictures/Wallpapers"]
             stdout: StdioCollector {
-                onStreamFinished: root.paths = this.text.split("\n").filter(p => p != "").map(p => "/home/desant/Pictures/pixiv+/" + p)
+                onStreamFinished: root.paths = this.text.split("\n").filter(p => p != "").map(p => "/home/desant/Pictures/Wallpapers/" + p)
             }
         }
     }

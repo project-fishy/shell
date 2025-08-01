@@ -11,7 +11,7 @@ Singleton {
     property list<Wallpaper> wallpapers: wallpaperGenerator.instances
     property list<string> rawNames
 
-    property string dirPath: "/home/desant/Pictures/pixiv+/"
+    property string dirPath: "/home/desant/Pictures/Wallpapers/"
 
     Process {
         id: scraper
