@@ -17,15 +17,15 @@ import "components"
 
 // this is supposed to be the panel at the top of the screen
 // with a lot of controls.
-ClippingRectangle {
+Item {
     id: root
 
     required property MouseArea mous
 
     implicitWidth: 640 // TODO: probably reverse idk
     implicitHeight: 480
-    radius: Config.radius.normal
-    color: "transparent"
+    // radius: Config.radius.normal
+    // color: "transparent"
 
     Column {
         id: buttons
@@ -66,16 +66,23 @@ ClippingRectangle {
         }
     }
 
-    StackView {
-        id: menus
-
-        initialItem: main_menu
-
+    ClippingRectangle {
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         anchors.right: buttons.left
         anchors.margins: Config.spacing.small
+
+        color: "transparent"
+        radius: Config.radius.small
+
+        StackView {
+            id: menus
+
+            initialItem: main_menu
+
+            anchors.fill: parent
+        }
     }
 
     Connections {
