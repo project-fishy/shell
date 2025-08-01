@@ -1,10 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
-import Quickshell.Services.SystemTray
-import Quickshell.Services.Notifications
 import QtQuick
-import QtQuick.Controls
 
 import "../config"
 import "../modules/workspaces" as Workspaces

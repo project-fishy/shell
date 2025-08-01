@@ -1,13 +1,9 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
-import Quickshell.Services.SystemTray
 import Quickshell.Wayland
 import QtQuick
-import QtQuick.Effects
 import "../widgets"
-import "../logic"
-import "../config"
 
 // this holds most of the elements drawn above windows
 
@@ -53,9 +49,6 @@ Variants {
             anchors.right: true
             anchors.left: true
             anchors.bottom: true
-
-            // TODO: make a container that avoids the bar and put
-            // context menus and panels in it
 
             // sliding panels
             Panels {

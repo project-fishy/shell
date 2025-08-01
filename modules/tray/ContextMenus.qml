@@ -12,9 +12,9 @@ Item {
 
     // required property Tray tray
     required property TripleToast toast
+
     property Tray tray: toast.cLoader.item?.publicIcons
     property string current: toast.cLoader.item?.current
-    // required property string current // currently open menu, empty if none
     property int yPos // vertical position of current menu
 
     // create mouse region for opened menu

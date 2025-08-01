@@ -1,8 +1,6 @@
 import QtQuick
-import Quickshell
 
 import "../../widgets"
-import "../../config"
 import "../../logic"
 
 TripleToast {

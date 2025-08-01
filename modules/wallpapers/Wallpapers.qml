@@ -2,7 +2,6 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import QtQuick.Effects
-import QtQuick.Controls
 import Quickshell
 import Quickshell.Widgets
 import Quickshell.Io

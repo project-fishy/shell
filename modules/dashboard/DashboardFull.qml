@@ -24,8 +24,6 @@ Item {
 
     implicitWidth: 740 // TODO: probably reverse idk
     implicitHeight: 480
-    // radius: Config.radius.normal
-    // color: "transparent"
 
     Column {
         id: buttons

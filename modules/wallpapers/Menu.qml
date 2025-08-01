@@ -25,8 +25,6 @@ ClippingRectangle {
         id: flickable
 
         anchors.fill: parent
-        // contentWidth: grid.width
-        // contentHeight: grid.height
         flickableDirection: Flickable.VerticalFlick
 
         states: [

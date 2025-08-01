@@ -164,12 +164,6 @@ Singleton {
                     property string indicator: "十"
                 }
             ]
-            // JsonObject {
-            //     property string name: "asd"
-            //     property string monitor: "asdasd"
-            // }
-
-            // property list
         }
     }
 }

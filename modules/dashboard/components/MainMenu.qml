@@ -1,5 +1,4 @@
 import QtQuick
-import Quickshell
 import Quickshell.Widgets
 
 import "../../../logic"
@@ -64,11 +63,12 @@ Item {
     CustomRect {
         id: weather
 
-        anchors.left: notifications.right
+        implicitHeight: 50
         anchors.leftMargin: Config.spacing.small
+
+        anchors.left: notifications.right
         anchors.right: parent.right
         anchors.top: parent.top
-        implicitHeight: 50
 
         color: Colors.current.primary
 
@@ -89,9 +89,11 @@ Item {
 
         value: Volume.current
         onMoved: Volume.set(value)
+
         anchors.left: notifications.right
         anchors.top: weather.bottom
         anchors.right: parent.right
+
         anchors.margins: 5
     }
 
@@ -109,11 +111,11 @@ Item {
         onPressedChanged: {
             Brightness.suppressUpdates = pressed;
         }
-        // anchors.left: parent.left
+
         anchors.left: notifications.right
         anchors.top: slider_volume.bottom
         anchors.right: parent.right
-        // anchors.right: battery_rect.left
+
         anchors.margins: 5
     }
 }
