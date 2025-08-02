@@ -72,6 +72,7 @@ Item {
             flickableDirection: Flickable.HorizontalFlick
             contentHeight: grid.height
             contentWidth: grid.width
+            flickDeceleration: 4000
 
             Grid {
                 id: grid
@@ -90,6 +91,8 @@ Item {
                     }
                 }
             }
+
+            // TODO: add animation on contentX
 
             Selector {
                 target: grid.children.find(c => {
@@ -120,6 +123,11 @@ Item {
                 if (wallpaper) {
                     Config.saved.wallpaper = wallpaper.path;
                 }
+            }
+
+            function onWheel(event) {
+                // flickable.contentX -= event.angleDelta.y;
+                flickable.flick(event.angleDelta.y * 15, 0);
             }
         }
 
