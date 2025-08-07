@@ -41,8 +41,12 @@ Item {
     // workspace icon
     CustomText {
         id: wsIcon
-        text: Config.workspaces.find(w => w.name == root.modelData)?.indicator ?? "."
-
+        text: {
+            if (root.modelData.includes("special:"))
+                return "死";
+            else
+                return Config.workspaces.find(w => w.name == root.modelData)?.indicator ?? ".";
+        }
         color: root.selected ? Colors.current.on_primary : Colors.current.on_background
 
         anchors.horizontalCenter: parent.horizontalCenter
