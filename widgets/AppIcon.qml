@@ -1,11 +1,15 @@
 import QtQuick
+import Quickshell.Hyprland
 
 import "../config"
 
 // uses mono font because non-mono have weird alignment
 CustomText {
     id: root
-    required property string modelData
+    required property var modelData
+
+    property string cls: modelData.class
+    property string title: modelData.title
     property int size: 17
 
     font.family: "MesloLGL Nerd Font Mono"
@@ -16,31 +20,36 @@ CustomText {
     verticalAlignment: Text.AlignVCenter
 
     text: {
-        if (["Spotify", "spotify"].includes(modelData))
+        if (["Spotify", "spotify"].includes(cls))
             return "";
-        else if (["Code", "code"].includes(modelData))
+        else if (["Code", "code"].includes(cls))
             return "󰨞";
-        else if (["dev.zed.Zed-Preview"].includes(modelData))
+        else if (["dev.zed.Zed-Preview"].includes(cls))
             return "󱃖";
-        else if (["kitty", "floating-kitty"].includes(modelData))
-            return "󰅭";
-        else if (modelData == "thunar")
+        else if (["kitty", "floating-kitty"].includes(cls))
+            if (title.includes(" - Nvim"))
+                return "";
+            else if (title.includes("docker compose"))
+                return "";
+            else
+                return "󰅭";
+        else if (cls == "thunar")
             return "";
-        else if (modelData == "steam")
+        else if (cls == "steam")
             return "󰓓";
-        else if (["zen", "vivaldi-stable"].includes(modelData))
+        else if (["zen", "vivaldi-stable"].includes(cls))
             return "󰈹";
-        else if (modelData == "vesktop")
+        else if (cls == "vesktop")
             return "";
-        else if (["org.telegram.desktop"].includes(modelData))
+        else if (["org.telegram.desktop"].includes(cls))
             return "";
-        else if (["com-atlauncher-App"].includes(modelData))
+        else if (["com-atlauncher-App"].includes(cls))
             return "󰍳";
-        else if (["TradingView"].includes(modelData))
+        else if (["TradingView"].includes(cls))
             return "";
-        else if (["com.usebottles.bottles"].includes(modelData))
+        else if (["com.usebottles.bottles"].includes(cls))
             return "";
-        else if (modelData.includes("steam_app_"))
+        else if (cls.includes("steam_app_"))
             return "󰊗";
         else
             return "";

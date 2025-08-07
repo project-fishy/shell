@@ -67,10 +67,8 @@ Item {
 
         Repeater {
             id: wIcons
-            property var windows: Hypr.windowsForWorkspace(root.workspace)
-            property var classes: windows.map(w => w.lastIpcObject.class)
 
-            model: root.workspace ? Hypr.windowsForWorkspace(root.workspace).map(w => w.lastIpcObject.class) : [] // TODO: inject more properties?
+            model: root.workspace ? Hypr.windowsForWorkspace(root.workspace).map(w => w.lastIpcObject) : []
 
             AppIcon {
                 color: wsIcon.color
