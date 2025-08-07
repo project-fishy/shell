@@ -32,7 +32,7 @@ Variants {
             name: "widgets" // idk
 
             CachedImage {
-                path: Config.saved.wallpaper
+                path: root.screen.name == "eDP-1" ? Config.saved.wallpaper : "/home/desant/Pictures/Wallpapers/blue_second_monitor.jpg"
                 anchors.fill: parent
 
                 asynchronous: false
