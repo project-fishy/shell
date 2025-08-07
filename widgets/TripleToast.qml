@@ -276,23 +276,24 @@ Item { // container for margins, placement
     }
 
     component ContentLoader: Loader {
+        id: cl
         active: true
 
         Binding on anchors.top {
             when: root.collapseTo == Config.toast.bottom || root.secondAnchor == Config.toast.bottom
-            value: parent.top
+            value: cl.parent.top
         }
         Binding on anchors.bottom {
             when: root.collapseTo == Config.toast.top || root.secondAnchor == Config.toast.top
-            value: parent.bottom
+            value: cl.parent.bottom
         }
         Binding on anchors.left {
             when: root.collapseTo == Config.toast.right || root.secondAnchor == Config.toast.right
-            value: parent.left
+            value: cl.parent.left
         }
         Binding on anchors.right {
             when: root.collapseTo == Config.toast.left || root.secondAnchor == Config.toast.left
-            value: parent.right
+            value: cl.parent.right
         }
 
         Behavior on opacity {

@@ -59,7 +59,7 @@ Item {
 
         Repeater {
             model: ScriptModel {
-                property var configuredWorkspaces: workspaces.map(w => w.name)
+                property var configuredWorkspaces: root.workspaces.map(w => w.name)
                 property var otherWorkspaces: Hypr.workspacesForScreen(root.screen).filter(w => !configuredWorkspaces.includes(w.name)).map(w => w.name)
 
                 values: [...Helper.flatten([configuredWorkspaces, otherWorkspaces])]
