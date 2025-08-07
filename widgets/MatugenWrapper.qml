@@ -37,7 +37,6 @@ Item {
         path: `/home/desant/fishycache/${sc.hash}/schemes/${sc.scheme}.json`
 
         onPicChanged: {
-            print("pic changed to " + pic);
             hasher.exec(["sha256sum", pic]);
         }
 
@@ -70,7 +69,6 @@ Item {
 
             stdout: StdioCollector {
                 onStreamFinished: {
-                    print("generated scheme for " + sc.pic);
                     let lines = this.text.split("\n");
 
                     sc.primary = lines[0];

@@ -37,10 +37,6 @@ Item {
 
                 SchemeRect {
                     implicitHeight: schemesGen.height / schemesGen.schemes.length
-                    // implicitHeight: 59
-                    Component.onCompleted: {
-                        print("created rect for " + modelData.pic);
-                    }
                 }
             }
         }
