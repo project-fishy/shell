@@ -34,10 +34,15 @@ Item {
         property alias background: json_adapter.background
         property alias foreground: json_adapter.foreground
 
-        path: `/home/desant/fishycache/${sc.hash}/schemes/${sc.scheme}.json`
+        property string cahcedPath: `/home/desant/fishycache/${sc.hash}/schemes/${sc.scheme}.json`
 
         onPicChanged: {
             hasher.exec(["sha256sum", pic]);
+        }
+
+        onCahcedPathChanged: {
+            if (hash)
+                path = cahcedPath;
         }
 
         onLoadFailed: {
