@@ -40,8 +40,8 @@ Item {
             hasher.exec(["sha256sum", pic]);
         }
 
-        onPathChanged: {
-            if (hash && !loaded)
+        onLoadFailed: {
+            if (hash)
                 mat.running = true;
         }
 
