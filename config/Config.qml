@@ -7,6 +7,7 @@ import QtQuick
 
 // numbers regarding element placement
 Singleton {
+    id: root
     readonly property Bar bar: Bar {}
     readonly property Panel panel: Panel {}
     readonly property Spacings spacing: Spacings {}
@@ -71,6 +72,7 @@ Singleton {
     }
 
     FileView {
+        id: fileview
         watchChanges: true
         path: "/home/desant/.config/fishy/config.json"
 
@@ -87,15 +89,24 @@ Singleton {
         }
     }
 
+    // do callLater because rush conditions somehow idk
     Connections {
-        target: config_adapter
+        target: root.saved
+
+        function changeTheme() {
+            Quickshell.execDetached(["matugen", "image", "-t", `scheme-${root.saved.scheme}`, root.saved.wallpaper]);
+        }
 
         function onWallpaperChanged() {
-            Quickshell.execDetached(["matugen", "image", "-t", `scheme-${saved.scheme}`, saved.wallpaper]);
+            if (fileview.loaded) {
+                Qt.callLater(changeTheme);
+            }
         }
 
         function onSchemeChanged() {
-            Quickshell.execDetached(["matugen", "image", "-t", `scheme-${saved.scheme}`, saved.wallpaper]);
+            if (fileview.loaded) {
+                Qt.callLater(changeTheme);
+            }
         }
     }
 
