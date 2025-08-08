@@ -23,6 +23,7 @@ TripleToast {
 
     Connections {
         target: root.cLoader.item?.timer
+        enabled: root.cLoader.item ?? false
 
         function onRunningChanged() {
             if (root.cLoader.item?.timer.running)
