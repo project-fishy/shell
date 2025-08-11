@@ -92,7 +92,6 @@ Item {
 
             Selector {
                 target: grid.children.find(c => {
-                    // print(c.path);
                     return c instanceof CachedImage && c.path == Config.saved.wallpaper;
                 })
             }
