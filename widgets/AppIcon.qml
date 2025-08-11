@@ -8,8 +8,8 @@ CustomText {
     id: root
     required property var modelData
 
-    property string cls: modelData.class
-    property string title: modelData.title
+    property string cls: modelData.class ?? ""
+    property string title: modelData.title ?? ""
     property int size: 17
 
     font.family: "MesloLGL Nerd Font Mono"
