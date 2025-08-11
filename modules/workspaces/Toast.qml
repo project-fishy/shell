@@ -2,6 +2,7 @@ import QtQuick
 
 import "../../widgets"
 import "../../logic"
+import "../../config"
 
 TripleToast {
     id: workspaces
@@ -14,6 +15,7 @@ TripleToast {
 
     // override mouse behaviour
     ignoreClicks: true
+    radius: Config.toast.size / 2
 
     Connections {
         target: workspaces.mouseArea

@@ -30,6 +30,7 @@ Item { // container for margins, placement
     readonly property Loader fLoader: fullLoader
 
     readonly property int marg: Config.spacing.smaller
+    property real radius: Config.radius.normal
     readonly property bool onHorizEdges: collapseTo == Config.toast.top || collapseTo == Config.toast.bottom // on top/bottom?
     readonly property bool onCorner: secondAnchor != -1
     readonly property bool switchMouseAnchors: onHorizEdges ? height < compactLoader.height : width < compactLoader.width
@@ -198,7 +199,7 @@ Item { // container for margins, placement
         }
 
         color: Colors.current.background
-        radius: Config.radius.normal
+        radius: root.radius
     }
 
     ContentLoader {
