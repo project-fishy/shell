@@ -18,7 +18,15 @@ Singleton {
         let itemTop = offsetY + item.y;
         let itemBot = itemTop + item.height;
 
-        return itemLeft < pos.x && pos.x < itemRight && itemTop < pos.y && pos.y < itemBot;
+        return itemLeft < clickPos.x && clickPos.x < itemRight && itemTop < clickPos.y && clickPos.y < itemBot;
+    }
+
+    function msToTime(total: int): string {
+        let seconds = total % 60;
+        let minutes = (total - seconds) / 60 % 60;
+        let hours = ((total - seconds) / 60 - minutes) / 60;
+
+        return (hours > 0 ? `${hours}h ` : "") + `${minutes}m`;
     }
 
     function clamp(num: real, min: real, max: real): real {

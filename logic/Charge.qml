@@ -14,11 +14,7 @@ Singleton {
     readonly property string timeLeft: {
         let total = charging ? battery.timeToFull : battery.timeToEmpty;
 
-        let seconds = total % 60;
-        let minutes = (total - seconds) / 60 % 60;
-        let hours = ((total - seconds) / 60 - minutes) / 60;
-
-        return (hours > 0 ? `${hours}h ` : "") + `${minutes}m`;
+        return Helper.msToTime(total);
     }
 
     // draw/charge rate
