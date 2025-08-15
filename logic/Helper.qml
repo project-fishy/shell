@@ -11,11 +11,23 @@ Singleton {
         return [].concat.apply([], nested);
     }
 
-    function checkInBounds(item: Item, pos, offsetX = 0, offsetY = 0) {
+    function checkInBounds(item: Item, clickPos, offsetX = 0, offsetY = 0) {
         let itemLeft = offsetX + item.x;
         let itemRight = itemLeft + item.width;
 
         let itemTop = offsetY + item.y;
+        let itemBot = itemTop + item.height;
+
+        return itemLeft < clickPos.x && clickPos.x < itemRight && itemTop < clickPos.y && clickPos.y < itemBot;
+    }
+
+    function checkInMe(item: Item, clickPos, mous: MouseArea) {
+        let realPos = item.mapToItem(mous, 0, 0);
+
+        let itemLeft = realPos.x;
+        let itemRight = itemLeft + item.width;
+
+        let itemTop = realPos.y;
         let itemBot = itemTop + item.height;
 
         return itemLeft < clickPos.x && clickPos.x < itemRight && itemTop < clickPos.y && clickPos.y < itemBot;
