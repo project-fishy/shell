@@ -232,9 +232,11 @@ Item { // container for margins, placement
         }
         onPressed: event => {
             // TODO: hide shown (expanded/opened/full) synced
-            if (!root.ignoreClicks && event.button == root.expandOn)
+            if (!root.ignoreClicks && event.button == root.expandOn) {
                 root.state = Config.toast.state_shown;
-            event.accepted = false;
+                event.accepted = true;
+            } else
+                event.accepted = false;
         }
         onReleased: event => {
             event.accepted = false;
