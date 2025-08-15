@@ -51,7 +51,7 @@ Item {
                 target: root.mous
 
                 function onPressed(event) {
-                    let selected = notif_layout.children.find(c => c instanceof CustomNotification && Helper.checkInBounds(c, event, -flickable.contentX, -flickable.contentY));
+                    let selected = notif_layout.children.find(c => c instanceof CustomNotification && Helper.checkInMe(c, event, root.mous));
                     if (selected)
                         selected.modelData.dismiss();
                 }

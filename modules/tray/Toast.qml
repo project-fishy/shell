@@ -31,7 +31,7 @@ TripleToast {
                 function onPositionChanged(event) {
                     print(tray_container.current);
                     tray_container.current = icons.layout.children.filter(c => c instanceof TrayIcon).find(c => {
-                        return Helper.checkInBounds(c, event, icons.x, icons.y);
+                        return Helper.checkInMe(c, event, root.mouseArea);
                     })?.modelData.id ?? tray_container.current;
                 }
 

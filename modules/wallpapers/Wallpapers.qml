@@ -103,7 +103,7 @@ Item {
             function onPressed(event: MouseEvent) {
                 // within schemes
                 // TODO: offset
-                let scheme = layout.children.find(c => c instanceof SchemeRect && Helper.checkInBounds(c, event, 0, 0));
+                let scheme = layout.children.find(c => c instanceof SchemeRect && Helper.checkInMe(c, event, root.mous));
 
                 if (scheme) {
                     Config.saved.scheme = scheme.modelData.scheme;
@@ -113,7 +113,7 @@ Item {
 
                 //within wallpaper
                 let offsetX = wallpapers.x - flickable.contentX;
-                let wallpaper = grid.children.find(c => c instanceof CachedImage && Helper.checkInBounds(flickable, event, wallpapers.x, 0) && Helper.checkInBounds(c, event, offsetX, 0));
+                let wallpaper = grid.children.find(c => c instanceof CachedImage && Helper.checkInMe(flickable, event, root.mous) && Helper.checkInMe(c, event, root.mous));
 
                 if (wallpaper) {
                     Config.saved.wallpaper = wallpaper.path;

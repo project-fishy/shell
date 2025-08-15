@@ -87,7 +87,7 @@ Item {
         target: root.mous
 
         function onPressed(event) {
-            let pressed = buttons.children.find(c => Helper.checkInBounds(c, event, buttons.x, buttons.y));
+            let pressed = buttons.children.find(c => Helper.checkInMe(c, event, root.mous));
 
             pressed?.onClick();
             if (!pressed)
