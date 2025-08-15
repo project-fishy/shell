@@ -118,4 +118,44 @@ Item {
 
         anchors.margins: 5
     }
+
+    // TODO: spread them somehow
+    Row {
+        id: timers
+
+        anchors.top: slider_brightness.bottom
+        anchors.left: notifications.right
+
+        anchors.margins: Config.spacing.small
+        spacing: Config.spacing.small
+
+        TimerButton {
+            duration: 5 * 60 * 1000
+            mous: root.mous
+        }
+
+        TimerButton {
+            duration: 10 * 60 * 1000
+            mous: root.mous
+        }
+
+        TimerButton {
+            duration: 15 * 60 * 1000
+            mous: root.mous
+        }
+
+        TimerButton {
+            duration: 20 * 60 * 1000
+            mous: root.mous
+        }
+
+        TimerButton {
+            duration: 25 * 60 * 1000
+            mous: root.mous
+        }
+        TimerButton {
+            duration: 30 * 60 * 1000
+            mous: root.mous
+        }
+    }
 }
