@@ -20,9 +20,7 @@ import "components"
 Item {
     id: root
 
-    required property MouseArea mous
-
-    implicitWidth: 740 // TODO: probably reverse idk
+    implicitWidth: 740
     implicitHeight: 480
 
     Column {
@@ -40,7 +38,7 @@ Item {
 
             icon: "home"
 
-            function onClick() {
+            tapHandler.onTapped: {
                 print("clicked home");
                 menus.replaceCurrentItem(main_menu);
             }
@@ -50,17 +48,16 @@ Item {
 
             icon: "photo_frame"
 
-            function onClick() {
+            tapHandler.onTapped: {
                 menus.replaceCurrentItem(wallpapers);
             }
         }
         DashButton {
             id: button_player
 
-            icon: "home"
+            icon: "music_note"
 
-            function onClick() {
-            }
+            tapHandler.onTapped: {}
         }
     }
 
@@ -83,30 +80,15 @@ Item {
         }
     }
 
-    Connections {
-        target: root.mous
-
-        function onPressed(event) {
-            let pressed = buttons.children.find(c => Helper.checkInMe(c, event, root.mous));
-
-            pressed?.onClick();
-            if (!pressed)
-                event.accepted = false;
-        }
-    }
-
     Component {
         id: main_menu
-        MainMenu {
-            mous: root.mous
-        }
+
+        MainMenu {}
     }
 
     Component {
         id: wallpapers
 
-        Wallpapers {
-            mous: root.mous
-        }
+        Wallpapers {}
     }
 }

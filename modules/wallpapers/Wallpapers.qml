@@ -14,8 +14,6 @@ import "components"
 Item {
     id: root
 
-    required property MouseArea mous
-
     MatugenWrapper {
         id: schemesGen
 
@@ -37,6 +35,12 @@ Item {
 
                 SchemeRect {
                     implicitHeight: schemesGen.height / schemesGen.schemes.length
+
+                    TapHandler {
+                        onTapped: {
+                            Config.saved.scheme = parent.modelData.scheme;
+                        }
+                    }
                 }
             }
         }
@@ -84,6 +88,14 @@ Item {
 
                         height: wallpapers.height / grid.rows
                         width: height / 9 * 16
+
+                        TapHandler {
+                            onTapped: {
+                                let pos = parent.mapToItem(flickable, point.position);
+                                if (pos.y >= 0 && pos.y < flickable.height && pos.x >= 0 && pos.x < flickable.width)
+                                    Config.saved.wallpaper = parent.modelData;
+                            }
+                        }
                     }
                 }
             }
@@ -97,34 +109,15 @@ Item {
             }
         }
 
-        Connections {
-            target: root.mous
-
-            function onPressed(event: MouseEvent) {
-                // within schemes
-                // TODO: offset
-                let scheme = layout.children.find(c => c instanceof SchemeRect && Helper.checkInMe(c, event, root.mous));
-
-                if (scheme) {
-                    Config.saved.scheme = scheme.modelData.scheme;
-                    event.accepted = true;
-                    return;
-                }
-
-                //within wallpaper
-                let offsetX = wallpapers.x - flickable.contentX;
-                let wallpaper = grid.children.find(c => c instanceof CachedImage && Helper.checkInMe(flickable, event, root.mous) && Helper.checkInMe(c, event, root.mous));
-
-                if (wallpaper) {
-                    Config.saved.wallpaper = wallpaper.path;
-                }
-            }
-
-            function onWheel(event) {
-                // flickable.contentX -= event.angleDelta.y;
-                flickable.flick(event.angleDelta.y * 15, 0);
-            }
-        }
+        // TODO: scrolling
+        // Connections {
+        //     target: root.mous
+        //
+        //     function onWheel(event) {
+        //         // flickable.contentX -= event.angleDelta.y;
+        //         flickable.flick(event.angleDelta.y * 15, 0);
+        //     }
+        // }
 
         Process {
             id: scraper

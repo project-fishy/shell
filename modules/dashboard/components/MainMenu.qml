@@ -9,8 +9,6 @@ import "../../../config"
 Item {
     id: root
 
-    required property MouseArea mous
-
     // notif column
     ClippingRectangle {
         id: notifications
@@ -43,18 +41,11 @@ Item {
                     // TODO: add margins somehow
                     CustomNotification {
                         implicitWidth: notifications.width
+
+                        TapHandler {
+                            onTapped: parent.modelData.dismiss()
+                        }
                     }
-                }
-            }
-
-            // handle clicks
-            Connections {
-                target: root.mous
-
-                function onPressed(event) {
-                    let selected = notif_layout.children.find(c => c instanceof CustomNotification && Helper.checkInMe(c, event, root.mous));
-                    if (selected)
-                        selected.modelData.dismiss();
                 }
             }
         }
@@ -70,6 +61,8 @@ Item {
         anchors.left: notifications.right
         anchors.right: parent.right
         anchors.top: parent.top
+
+        radius: Config.radius.normal
 
         color: Colors.current.primary
 
@@ -138,36 +131,30 @@ Item {
 
         TimerButton {
             duration: 5 * 60 * 1000
-            mous: root.mous
             sound: timerSound
         }
 
         TimerButton {
             duration: 10 * 60 * 1000
-            mous: root.mous
             sound: timerSound
         }
 
         TimerButton {
             duration: 15 * 60 * 1000
-            mous: root.mous
             sound: timerSound
         }
 
         TimerButton {
             duration: 20 * 60 * 1000
-            mous: root.mous
             sound: timerSound
         }
 
         TimerButton {
             duration: 25 * 60 * 1000
-            mous: root.mous
             sound: timerSound
         }
         TimerButton {
             duration: 30 * 60 * 1000
-            mous: root.mous
             sound: timerSound
         }
     }

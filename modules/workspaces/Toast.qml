@@ -18,9 +18,10 @@ TripleToast {
     radius: Config.toast.size / 2
 
     Connections {
-        target: workspaces.mouseArea
+        target: workspaces.tapHandler
 
-        function onPressed(event) {
+        function onTapped() {
+            let event = workspaces.tapHandler.point.position;
             let layout = workspaces.cLoader.item?.layout;
 
             let target = layout.children.find(c => {

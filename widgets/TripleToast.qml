@@ -25,7 +25,8 @@ Item { // container for margins, placement
     property bool hasSyncedTop: false
     property bool hasSyncedBottom: false
 
-    readonly property MouseArea mouseArea: mous
+    readonly property HoverHandler hoverHandler: hh // need this for synced toasts
+    readonly property TapHandler tapHandler: th // need this for click overrides
     readonly property Loader cLoader: compactLoader
     readonly property Loader fLoader: fullLoader
 
@@ -94,8 +95,8 @@ Item { // container for margins, placement
             PropertyChanges {
                 root.implicitWidth: fullLoader.width
                 root.implicitHeight: fullLoader.height
-                mous.implicitWidth: root.width
-                mous.implicitHeight: root.height
+                hoverableArea.implicitWidth: root.width
+                hoverableArea.implicitHeight: root.height
                 compactLoader.opacity: 0
                 fullLoader.opacity: 1
             }
@@ -157,7 +158,7 @@ Item { // container for margins, placement
         repeat: false
 
         onTriggered: {
-            if (root.state == Config.toast.state_peek && !mous.containsMouse && root.overshadowed)
+            if (root.state == Config.toast.state_peek && !hoverableArea.containsMouse && root.overshadowed)
                 root.state = Config.toast.state_hidden;
         }
     }
@@ -171,12 +172,12 @@ Item { // container for margins, placement
 
         onTriggered: {
             // see if any synced toasts have the mouse
-            let hide = !mous.containsMouse;
+            let hide = !hoverableArea.containsMouse;
 
             if (root.syncWith) {
                 let crawl = root.syncWith;
                 while (crawl !== root) {
-                    if (crawl.mouseArea.containsMouse) {
+                    if (crawl.hoverHandler.hovered) {
                         hide = false;
                         break;
                     }
@@ -215,40 +216,31 @@ Item { // container for margins, placement
         sourceComponent: root.fullComponent
     }
 
-    MouseArea {
-        id: mous
+    Item {
+        id: hoverableArea
 
-        hoverEnabled: true
-        propagateComposedEvents: true
-        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        HoverHandler {
+            id: hh
 
-        // wacky woohoo event magic (makes children clickable and all that)
-        onEntered: {
-            root.state = Config.toast.state_peek;
+            onHoveredChanged: {
+                if (hovered)
+                    root.state = Config.toast.state_peek;
+                else
+                    hide_debounce_timer.restart();
+            }
         }
-        onExited: {
-            // HACK?: need to debounce because synced toasts take like 10ms to update
-            hide_debounce_timer.restart();
-        }
-        onPressed: event => {
-            // TODO: hide shown (expanded/opened/full) synced
-            if (!root.ignoreClicks && event.button == root.expandOn) {
-                root.state = Config.toast.state_shown;
-                event.accepted = true;
-            } else
-                event.accepted = false;
-        }
-        onReleased: event => {
-            event.accepted = false;
-        }
-        onClicked: event => {
-            event.accepted = false;
-        }
-        onPressAndHold: event => {
-            event.accepted = false;
-        }
-        onPositionChanged: event => {
-            event.accepted = false;
+
+        TapHandler {
+            id: th
+            enabled: root.state == Config.toast.state_peek
+
+            acceptedButtons: root.expandOn
+
+            onTapped: {
+                if (!root.ignoreClicks) {
+                    root.state = Config.toast.state_shown;
+                }
+            }
         }
 
         // wacky woohoo binding magic

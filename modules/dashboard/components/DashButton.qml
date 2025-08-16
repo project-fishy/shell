@@ -8,11 +8,18 @@ CustomRect {
 
     required property string icon
 
+    property TapHandler tapHandler: th
+
     implicitWidth: 50
     implicitHeight: 50
 
     radius: Config.radius.small
     color: Colors.current.primary
+
+    // onTapped gets overridden from elsewhere
+    TapHandler {
+        id: th
+    }
 
     TextIcon {
         id: db_icon

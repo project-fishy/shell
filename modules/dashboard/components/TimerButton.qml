@@ -9,7 +9,6 @@ import "../../../widgets"
 CustomRect {
     id: root
 
-    required property MouseArea mous
     required property int duration
     required property SoundEffect sound
 
@@ -19,11 +18,14 @@ CustomRect {
     radius: Config.radius.normal
     color: cooldownTimer.running ? Colors.current.secondary : Colors.current.primary
 
-    function onClick() {
-        if (cooldownTimer.running)
-            cooldownTimer.stop();
-        else
-            cooldownTimer.restart();
+    TapHandler {
+
+        onTapped: {
+            if (cooldownTimer.running)
+                cooldownTimer.stop();
+            else
+                cooldownTimer.restart();
+        }
     }
 
     CustomText {
@@ -31,17 +33,6 @@ CustomRect {
         text: Helper.msToTime(Math.floor(cooldownTimer.interval / 1000))
 
         anchors.centerIn: parent
-    }
-
-    Connections {
-        target: root.mous
-
-        function onPressed(event) {
-            if (Helper.checkInMe(root, event, mous))
-                root.onClick();
-            else
-                event.accepted = false;
-        }
     }
 
     Timer {

@@ -12,9 +12,7 @@ TripleToast {
         toast: root
     }
 
-    fullComponent: DashboardFull {
-        mous: root.mouseArea
-    }
+    fullComponent: DashboardFull {}
 
     Component.onCompleted: {
         print(root.cLoader.item);
