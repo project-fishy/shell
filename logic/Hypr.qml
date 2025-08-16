@@ -49,4 +49,8 @@ Singleton {
             }
         }
     }
+
+    component Shortcut: GlobalShortcut {
+        appid: "fishy"
+    }
 }

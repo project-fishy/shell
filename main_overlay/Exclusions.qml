@@ -1,34 +1,59 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell
+import Quickshell.Hyprland
 import QtQuick
+
 import "../widgets"
 import "../config"
+import "../logic"
 
 // this reserves space for the borders and sidebar
 Scope {
     id: root
+
     required property var screen
-    required property Item bar
+
+    property bool excludeTop: false
 
     // make windows avoid the left panel
-    ExclusionZone {
-        anchors.left: true
-        exclusiveZone: root.bar.implicitWidth
+    // ExclusionZone {
+    //     anchors.left: true
+    //     exclusiveZone: Config.toast.size + Config.spacing.smaller * 2
+    // }
+
+    Loader {
+        active: root.excludeTop
+
+        sourceComponent: ExclusionZone {
+            anchors.top: true
+            exclusiveZone: Config.toast.size + Config.spacing.smaller
+        }
+    }
+
+    Hypr.Shortcut {
+        name: "excludeTop"
+        description: "Toggle top exclusion zone"
+
+        onPressed: {
+            root.excludeTop = !root.excludeTop;
+            Qt.callLater(Hyprland.refreshToplevels());
+            // Hyprland.refreshToplevels();
+        }
     }
 
     // avoid the other borders
-    ExclusionZone {
-        anchors.right: true
-    }
-
-    ExclusionZone {
-        anchors.top: true
-    }
-
-    ExclusionZone {
-        anchors.bottom: true
-    }
+    // ExclusionZone {
+    //     anchors.right: true
+    // }
+    //
+    // ExclusionZone {
+    //     anchors.top: true
+    // }
+    //
+    // ExclusionZone {
+    //     anchors.bottom: true
+    // }
 
     component ExclusionZone: CustomWindow {
         screen: root.screen

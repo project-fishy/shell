@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Wayland
 import QtQuick
+
 import "../widgets"
 
 // this holds most of the elements drawn above windows
@@ -16,10 +17,9 @@ Variants {
         required property var modelData
 
         // reserve space
-        // Exclusions {
-        //     screen: scope.modelData
-        //     bar: bar
-        // }
+        Exclusions {
+            screen: scope.modelData
+        }
 
         // fullscreen container
         CustomWindow {
