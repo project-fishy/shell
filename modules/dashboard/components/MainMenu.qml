@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell.Widgets
+import QtMultimedia
 
 import "../../../logic"
 import "../../../widgets"
@@ -129,33 +130,45 @@ Item {
         anchors.margins: Config.spacing.small
         spacing: Config.spacing.small
 
+        SoundEffect {
+            id: timerSound
+
+            source: "root:/assets/timer.wav"
+        }
+
         TimerButton {
             duration: 5 * 60 * 1000
             mous: root.mous
+            sound: timerSound
         }
 
         TimerButton {
             duration: 10 * 60 * 1000
             mous: root.mous
+            sound: timerSound
         }
 
         TimerButton {
             duration: 15 * 60 * 1000
             mous: root.mous
+            sound: timerSound
         }
 
         TimerButton {
             duration: 20 * 60 * 1000
             mous: root.mous
+            sound: timerSound
         }
 
         TimerButton {
             duration: 25 * 60 * 1000
             mous: root.mous
+            sound: timerSound
         }
         TimerButton {
             duration: 30 * 60 * 1000
             mous: root.mous
+            sound: timerSound
         }
     }
 }

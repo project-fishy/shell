@@ -1,4 +1,5 @@
 import QtQuick
+import QtMultimedia
 import Quickshell
 
 import "../../../logic"
@@ -6,10 +7,11 @@ import "../../../config"
 import "../../../widgets"
 
 CustomRect {
-    id: timerButton
+    id: root
 
     required property MouseArea mous
     required property int duration
+    required property SoundEffect sound
 
     implicitWidth: 50
     implicitHeight: width
@@ -32,11 +34,11 @@ CustomRect {
     }
 
     Connections {
-        target: timerButton.mous
+        target: root.mous
 
         function onPressed(event) {
-            if (Helper.checkInMe(timerButton, event, mous))
-                timerButton.onClick();
+            if (Helper.checkInMe(root, event, mous))
+                root.onClick();
             else
                 event.accepted = false;
         }
@@ -51,7 +53,7 @@ CustomRect {
 
         onTriggered: {
             Quickshell.execDetached(["notify-send", `${Helper.msToTime(Math.floor(cooldownTimer.interval / 1000))} timer went off!)`]);
-            // TODO: sound
+            root.sound.play();
         }
     }
 }
