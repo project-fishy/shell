@@ -43,7 +43,7 @@ CustomRect {
         running: false
 
         onTriggered: {
-            Quickshell.execDetached(["notify-send", `${Helper.msToTime(Math.floor(cooldownTimer.interval / 1000))} timer went off!)`]);
+            Quickshell.execDetached(["notify-send", "-a", "Fishy", "Timer", `${Helper.msToTime(Math.floor(cooldownTimer.interval / 1000))} timer went off!)`]);
             root.sound.play();
         }
     }
