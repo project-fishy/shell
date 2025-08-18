@@ -158,7 +158,7 @@ Item { // container for margins, placement
         repeat: false
 
         onTriggered: {
-            if (root.state == Config.toast.state_peek && !hoverableArea.containsMouse && root.overshadowed)
+            if (root.state == Config.toast.state_peek && !hh.hovered && root.overshadowed)
                 root.state = Config.toast.state_hidden;
         }
     }
