@@ -1,11 +1,16 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
+import Quickshell
 
 import "../../widgets"
 import "../../logic"
 import "../../config"
 
 TripleToast {
-    id: workspaces
+    id: root
+
+    readonly property var activeWS: Hypr.workspacesForScreen(screen).filter(w => w.active)[0]
 
     compactConponent: WorkspacesCompact {
         screen: root.screen
@@ -18,11 +23,11 @@ TripleToast {
     radius: Config.toast.size / 2
 
     Connections {
-        target: workspaces.tapHandler
+        target: root.tapHandler
 
         function onTapped() {
-            let event = workspaces.tapHandler.point.position;
-            let layout = workspaces.cLoader.item?.layout;
+            let event = root.tapHandler.point.position;
+            let layout = root.cLoader.item?.layout;
 
             let target = layout.children.find(c => {
                 let top = c.y + layout.y - layout.spacing / 2;
@@ -36,11 +41,7 @@ TripleToast {
     }
 
     // peek on ws change
-    Connections {
-        target: Hypr
-        function onCurrentWorkspaceChanged() {
-            if (Hypr.currentWorkspace.monitor === Hypr.monitorFor(root.screen))
-                workspaces.peek();
-        }
+    onActiveWSChanged: {
+        root.peek();
     }
 }
