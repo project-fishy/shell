@@ -14,11 +14,6 @@ TripleToast {
 
     fullComponent: DashboardFull {}
 
-    Component.onCompleted: {
-        print(root.cLoader.item);
-        print(root.cLoader.item?.timer);
-    }
-
     Connections {
         target: root.cLoader.item?.timer
         enabled: root.cLoader.item ?? false
