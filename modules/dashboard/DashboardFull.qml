@@ -10,6 +10,7 @@ import Quickshell.Io
 import "../../widgets"
 import "../../config"
 import "../../logic"
+import "../player"
 
 import "../wallpapers"
 
@@ -57,7 +58,9 @@ Item {
 
             icon: "music_note"
 
-            tapHandler.onTapped: {}
+            tapHandler.onTapped: {
+                menus.replaceCurrentItem(player);
+            }
         }
     }
 
@@ -90,5 +93,11 @@ Item {
         id: wallpapers
 
         Wallpapers {}
+    }
+
+    Component {
+        id: player
+
+        PlayerFull {}
     }
 }
