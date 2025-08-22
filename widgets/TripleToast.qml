@@ -172,7 +172,7 @@ Item { // container for margins, placement
 
         onTriggered: {
             // see if any synced toasts have the mouse
-            let hide = !hoverableArea.containsMouse;
+            let hide = !hh.hovered;
 
             if (root.syncWith) {
                 let crawl = root.syncWith;
