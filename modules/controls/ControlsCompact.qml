@@ -13,7 +13,8 @@ Item {
         anchors.centerIn: parent
         spacing: 5
         TextIcon {
-            text: "network_wifi_3_bar"
+            // text: Network.active ?
+            text: Network.active ? Network.getNetworkIcon(Network.active.strength ?? 0) : "wifi_off"
         }
         TextIcon {
             text: "bluetooth"
