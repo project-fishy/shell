@@ -75,15 +75,40 @@ Variants {
                 anchors.leftMargin: 5
             }
 
+            // NOTE: if cava starts too soon it crashes immediately
             Timer {
                 id: visDebounce
 
                 running: true
                 repeat: false
 
+                interval: 2000
+
                 onTriggered: {
-                    visTop.active = true;
-                    visBot.active = true;
+                    if (Charge.charging) {
+                        visTop.active = true;
+                        visBot.active = true;
+                    } else {
+                        visTop.active = false;
+                        visBot.active = false;
+                    }
+                }
+            }
+
+            Connections {
+                target: Charge
+
+                function onChargingChanged() {
+                    if (visDebounce.running)
+                        return;
+
+                    if (Charge.charging) {
+                        visTop.active = true;
+                        visBot.active = true;
+                    } else {
+                        visTop.active = false;
+                        visBot.active = false;
+                    }
                 }
             }
 
