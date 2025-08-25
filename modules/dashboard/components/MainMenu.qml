@@ -158,4 +158,12 @@ Item {
             sound: timerSound
         }
     }
+
+    Calendar {
+        id: calendar
+
+        anchors.top: timers.bottom
+        anchors.left: notifications.right
+        anchors.right: parent.right
+    }
 }
