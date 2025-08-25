@@ -62,5 +62,77 @@ ClippingRectangle {
                 modelData: root.notification
             }
         }
+
+        pushEnter: Transition {
+            ParallelAnimation {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 100
+                }
+
+                PropertyAnimation {
+                    property: "y"
+                    from: Config.toast.size
+                    to: 0
+                    duration: 100
+                }
+            }
+        }
+
+        pushExit: Transition {
+            ParallelAnimation {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 100
+                }
+
+                PropertyAnimation {
+                    property: "y"
+                    from: 0
+                    to: -1 * Config.toast.size
+                    duration: 100
+                }
+            }
+        }
+
+        popEnter: Transition {
+            ParallelAnimation {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 100
+                }
+
+                PropertyAnimation {
+                    property: "y"
+                    from: -1 * Config.toast.size
+                    to: 0
+                    duration: 100
+                }
+            }
+        }
+
+        popExit: Transition {
+            ParallelAnimation {
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 100
+                }
+
+                PropertyAnimation {
+                    property: "y"
+                    from: 0
+                    to: Config.toast.size
+                    duration: 100
+                }
+            }
+        }
     }
 }
