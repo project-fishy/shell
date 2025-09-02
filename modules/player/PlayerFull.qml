@@ -1,15 +1,13 @@
 import QtQuick
-
 import "../../widgets"
 
 Item {
     Visualizer {
-        mirror: true
-
         anchors.top: parent.top
         anchors.bottom: controls_container.top
         anchors.left: parent.left
         anchors.right: eminem.left
+        flipH: true
     }
 
     Eminem {
@@ -23,8 +21,6 @@ Item {
     }
 
     Visualizer {
-        mirror: false
-
         anchors.top: parent.top
         anchors.bottom: controls_container.top
         anchors.left: eminem.right
