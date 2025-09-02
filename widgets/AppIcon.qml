@@ -43,6 +43,8 @@ CustomText {
             return "";
         else if (["org.telegram.desktop"].includes(cls))
             return "";
+        else if (["Signal"].includes(cls))
+            return "󰭹";
         else if (["com-atlauncher-App"].includes(cls))
             return "󰍳";
         else if (["TradingView"].includes(cls))
