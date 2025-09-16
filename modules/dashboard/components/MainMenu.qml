@@ -106,8 +106,8 @@ Item {
             anchors.topMargin: 5
 
             font.pointSize: 15
-            // font.family: "Maple Mono NL CN"
             font.bold: true
+            font.italic: true
         }
 
         CustomText {
@@ -116,16 +116,12 @@ Item {
             color: Colors.current.on_primary
             text: Weather.description
 
-            // anchors.bottom: wIcon.bottom
-            // anchors.bottomMargin: 10
             anchors.left: wIcon.right
             anchors.leftMargin: 10
 
             anchors.top: wTemp.bottom
             anchors.topMargin: -2
 
-            font.family: "Maple Mono NL CN"
-            font.bold: true
             font.italic: true
         }
     }

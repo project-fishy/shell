@@ -21,9 +21,7 @@ Item {
     CustomText {
         text: `${Weather.description}, ${Weather.tempC}`
         color: Colors.current.on_background
-        font.family: "Maple Mono NL CN"
         font.italic: true
-        font.pointSize: 11
         anchors.fill: parent
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
