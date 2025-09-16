@@ -18,11 +18,18 @@ ClippingRectangle {
     required property TripleToast toast
 
     readonly property Timer timer: flick_timer // expose for peeks
+    readonly property bool clockVisible: {
+        let ws = Hypr.workspacesForScreen(screen).find(w => w.active);
+        let windows = Hypr.windowsForWorkspace(ws).map(w => w.lastIpcObject);
+
+        // return windows.count() > 0;
+        return false;
+    }
 
     property Notification notification
 
     implicitHeight: flick_timer.running ? stackview.currentItem.desiredHeight : Config.toast.size
-    implicitWidth: 200
+    implicitWidth: root.toast.overshadowed ? 200 : 250
 
     color: "transparent"
 
@@ -31,7 +38,9 @@ ClippingRectangle {
 
         anchors.fill: parent
 
-        initialItem: Clock {}
+        initialItem: Clock {
+            showWeather: !root.toast.overshadowed
+        }
 
         Timer {
             id: flick_timer
@@ -53,6 +62,16 @@ ClippingRectangle {
                 flick_timer.restart();
             }
         }
+
+        // Connections {
+        //     target: root
+        //
+        //     function onClockVisibleChanged() {
+        //         if (!root.clockVisible) {
+        //             stackview.replace()
+        //         }
+        //     }
+        // }
 
         // for destruction
         Component {

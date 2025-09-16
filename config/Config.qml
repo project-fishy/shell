@@ -86,6 +86,7 @@ Singleton {
 
             property string wallpaper: "/home/desant/Pictures/Wallpapers/blue_pain.jpg"
             property string scheme: "content"
+            property string weatherLocation: "" // city name or coords
         }
     }
 

@@ -1,10 +1,11 @@
 import QtQuick
 import Quickshell.Widgets
-import QtMultimedia
+// import QtMultimedia
 
 import "../../../logic"
 import "../../../widgets"
 import "../../../config"
+import "../../player"
 
 Item {
     id: root
@@ -56,20 +57,89 @@ Item {
         id: weather
 
         implicitHeight: 50
-        anchors.leftMargin: Config.spacing.small
+        implicitWidth: parent.width / 4
 
         anchors.left: notifications.right
-        anchors.right: parent.right
+        anchors.leftMargin: Config.spacing.small
         anchors.top: parent.top
 
         radius: Config.radius.normal
 
         color: Colors.current.primary
 
-        TextIcon {
-            text: "partly_cloudy_day"
-            color: Colors.current.on_primary
+        TapHandler {
+            onTapped: Weather.refreshWeather()
         }
+
+        TextIcon {
+            id: wRefresh
+            text: "autorenew"
+            color: Colors.current.on_primary
+
+            anchors.right: parent.right
+            anchors.top: parent.top
+
+            visible: Weather.loading
+        }
+
+        TextIcon {
+            id: wIcon
+            text: Weather.icon
+            color: Colors.current.on_primary
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+
+            font.pointSize: 30
+        }
+
+        CustomText {
+            id: wTemp
+
+            color: Colors.current.on_primary
+            text: Weather.tempC
+
+            anchors.left: wIcon.right
+            anchors.leftMargin: 10
+            anchors.top: wIcon.top
+            anchors.topMargin: 5
+
+            font.pointSize: 15
+            // font.family: "Maple Mono NL CN"
+            font.bold: true
+        }
+
+        CustomText {
+            id: wDesc
+
+            color: Colors.current.on_primary
+            text: Weather.description
+
+            // anchors.bottom: wIcon.bottom
+            // anchors.bottomMargin: 10
+            anchors.left: wIcon.right
+            anchors.leftMargin: 10
+
+            anchors.top: wTemp.bottom
+            anchors.topMargin: -2
+
+            font.family: "Maple Mono NL CN"
+            font.bold: true
+            font.italic: true
+        }
+    }
+
+    CustomRect {
+        id: placeholder
+
+        implicitHeight: weather.height
+
+        anchors.left: weather.right
+        anchors.right: parent.right
+
+        color: Colors.current.surface_container
+        radius: weather.radius
     }
 
     // volume
@@ -114,56 +184,65 @@ Item {
     }
 
     // TODO: spread them somehow
-    Row {
-        id: timers
-
-        anchors.top: slider_brightness.bottom
-        anchors.left: notifications.right
-
-        anchors.margins: Config.spacing.small
-        spacing: Config.spacing.small
-
-        SoundEffect {
-            id: timerSound
-
-            source: "root:/assets/timer.wav"
-        }
-
-        TimerButton {
-            duration: 5 * 60 * 1000
-            sound: timerSound
-        }
-
-        TimerButton {
-            duration: 10 * 60 * 1000
-            sound: timerSound
-        }
-
-        TimerButton {
-            duration: 15 * 60 * 1000
-            sound: timerSound
-        }
-
-        TimerButton {
-            duration: 20 * 60 * 1000
-            sound: timerSound
-        }
-
-        TimerButton {
-            duration: 25 * 60 * 1000
-            sound: timerSound
-        }
-        TimerButton {
-            duration: 30 * 60 * 1000
-            sound: timerSound
-        }
-    }
+    // Row {
+    //     id: timers
+    //
+    //     anchors.top: slider_brightness.bottom
+    //     anchors.left: notifications.right
+    //
+    //     anchors.margins: Config.spacing.small
+    //     spacing: Config.spacing.small
+    //
+    //     SoundEffect {
+    //         id: timerSound
+    //
+    //         // source: "root:/assets/timer.wav"
+    //     }
+    //
+    //     TimerButton {
+    //         duration: 5 * 60 * 1000
+    //         sound: timerSound
+    //     }
+    //
+    //     TimerButton {
+    //         duration: 10 * 60 * 1000
+    //         sound: timerSound
+    //     }
+    //
+    //     TimerButton {
+    //         duration: 15 * 60 * 1000
+    //         sound: timerSound
+    //     }
+    //
+    //     TimerButton {
+    //         duration: 20 * 60 * 1000
+    //         sound: timerSound
+    //     }
+    //
+    //     TimerButton {
+    //         duration: 25 * 60 * 1000
+    //         sound: timerSound
+    //     }
+    //     TimerButton {
+    //         duration: 30 * 60 * 1000
+    //         sound: timerSound
+    //     }
+    // }
 
     Calendar {
         id: calendar
 
-        anchors.top: timers.bottom
+        anchors.top: slider_brightness.bottom
         anchors.left: notifications.right
         anchors.right: parent.right
+    }
+
+    MiniPlayer {
+        id: player
+
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.left: notifications.right
+        anchors.top: calendar.bottom
     }
 }
