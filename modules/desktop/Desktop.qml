@@ -99,16 +99,7 @@ Variants {
                 target: Charge
 
                 function onChargingChanged() {
-                    if (visDebounce.running)
-                        return;
-
-                    if (Charge.charging) {
-                        visTop.active = true;
-                        visBot.active = true;
-                    } else {
-                        visTop.active = false;
-                        visBot.active = false;
-                    }
+                    visDebounce.start();
                 }
             }
 

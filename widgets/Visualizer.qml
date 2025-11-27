@@ -72,5 +72,17 @@ Item {
                 root.volumes = root.flipH ? vols.reverse() : vols;
             }
         }
+
+        stderr: StdioCollector {
+            onDataChanged: cava.running = false
+        }
+
+        onRunningChanged: {
+            if (root.active && !running)
+                running = true;
+
+            if (!running)
+                root.volumes = [0];
+        }
     }
 }
