@@ -56,6 +56,8 @@ Variants {
 
                 text: Time.format("dddd, dd MMMM")
                 font.pointSize: 12
+                font.italic: true
+                font.bold: true
 
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: clock.bottom
@@ -157,6 +159,6 @@ Variants {
     component ClockText: CustomText {
         color: Colors.current.on_background
 
-        font.family: "Maple Mono NF CN"
+        font.family: "Maple Mono CN"
     }
 }
