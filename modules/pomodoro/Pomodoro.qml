@@ -75,7 +75,7 @@ Item {
 
             Binding on text {
                 when: gif.state != "idle"
-                value: `${timer.minutes}:${timer.seconds}`
+                value: `${timer.minutes}:${String(timer.seconds).padStart(2, '0')}`
             }
         }
 
