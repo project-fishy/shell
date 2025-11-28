@@ -11,6 +11,7 @@ import "../../widgets"
 import "../../config"
 import "../../logic"
 import "../player"
+import "../pomodoro"
 
 import "../wallpapers"
 
@@ -62,6 +63,15 @@ Item {
                 menus.replaceCurrentItem(player);
             }
         }
+        DashButton {
+            id: button_pomodoro
+
+            icon: "timer"
+
+            tapHandler.onTapped: {
+                menus.replaceCurrentItem(pomodoro);
+            }
+        }
     }
 
     ClippingRectangle {
@@ -99,5 +109,11 @@ Item {
         id: player
 
         PlayerFull {}
+    }
+
+    Component {
+        id: pomodoro
+
+        Pomodoro {}
     }
 }
