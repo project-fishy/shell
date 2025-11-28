@@ -12,7 +12,9 @@ TripleToast {
         toast: root
     }
 
-    fullComponent: DashboardFull {}
+    fullComponent: DashboardFull {
+        toast: root
+    }
 
     Connections {
         target: root.cLoader.item?.timer

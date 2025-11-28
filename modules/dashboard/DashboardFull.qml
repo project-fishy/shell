@@ -22,6 +22,8 @@ import "components"
 Item {
     id: root
 
+    required property TripleToast toast
+
     implicitWidth: 740
     implicitHeight: 480
 
@@ -114,6 +116,8 @@ Item {
     Component {
         id: pomodoro
 
-        Pomodoro {}
+        Pomodoro {
+            toast: root.toast
+        }
     }
 }

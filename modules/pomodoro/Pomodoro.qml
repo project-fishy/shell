@@ -13,33 +13,38 @@ import "../../logic"
 Item {
     id: root
 
-    Timer {
-        id: timer
+    required property TripleToast toast
 
-        property int minutes: 0
-        property int seconds: 0
+    readonly property bool isObserved: toast.state == Config.toast.state_shown
+    readonly property Timer timer: PersistentTimer.timer
 
-        running: false
-        repeat: true
-
-        onTriggered: {
-            if (seconds <= 0 && minutes > 0) {
-                minutes--;
-                seconds = 59;
-            }
-
-            if (seconds <= 0 && minutes == 0) {
-                timer.stop();
-                if (Player.current && Player.current.isPlaying)
-                    Player.current.stop();
-
-                Quickshell.execDetached(["notify-send", "-a", "Fishy", "Timer", `Pomodoro timer went off!`]);
-                return;
-            }
-
-            seconds--;
-        }
-    }
+    // Timer {
+    //     id: timer
+    //
+    //     property int minutes: 0
+    //     property int seconds: 0
+    //
+    //     running: false
+    //     repeat: true
+    //
+    //     onTriggered: {
+    //         if (seconds <= 0 && minutes > 0) {
+    //             minutes--;
+    //             seconds = 59;
+    //         }
+    //
+    //         if (seconds <= 0 && minutes == 0) {
+    //             timer.stop();
+    //             if (Player.current && Player.current.isPlaying)
+    //                 Player.current.stop();
+    //
+    //             Quickshell.execDetached(["notify-send", "-a", "Fishy", "Timer", `Pomodoro timer went off!`]);
+    //             return;
+    //         }
+    //
+    //         seconds--;
+    //     }
+    // }
 
     Item {
         id: timer_container
@@ -81,6 +86,8 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: timer_text.bottom
 
+            playing: root.isObserved
+
             Behavior on opacity {
                 NumberAnimation {
                     duration: 300
@@ -96,6 +103,8 @@ Item {
 
             bars: timer_container.numBars
             framerate: 120
+
+            active: root.isObserved
         }
 
         Shape {
@@ -175,10 +184,12 @@ Item {
             onTapped: {
                 if (gif.state == "work") {
                     gif.state = "rest";
+                    PersistentTimer.comment = "Rest";
                     timer.minutes = 5;
                     timer.seconds = 0;
                 } else {
                     gif.state = "work";
+                    PersistentTimer.comment = "Work";
                     timer.minutes = 25;
                     timer.seconds = 0;
                     if (Player.current && !Player.current?.isPlaying) {
@@ -246,6 +257,8 @@ Item {
         AnimatedImage {
             anchors.fill: parent
             source: paths[randomness % paths.length] ?? ""
+
+            playing: root.isObserved
         }
 
         property list<string> paths
@@ -255,7 +268,21 @@ Item {
             randomness = Math.floor(Math.random() * 100);
         }
 
-        Component.onCompleted: regen()
+        Component.onCompleted: {
+            regen();
+
+            // restore on recreation
+            if (!root.timer.running)
+                return;
+
+            if (PersistentTimer.comment == "Work") {
+                cg.state = "work";
+            }
+
+            if (PersistentTimer.comment == "Rest") {
+                cg.state = "rest";
+            }
+        }
 
         onStateChanged: {
             print("collecting paths for " + state);
