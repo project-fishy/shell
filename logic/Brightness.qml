@@ -11,7 +11,7 @@ Singleton {
 
     property int current // get from here
     property bool suppressUpdates: false // fixes slider jitter
-    property string device: "amdgpu_bl1" // TODO: load from config
+    property string device: "nvidia_0" // TODO: load from config
     readonly property int exponent: 2
 
     readonly property list<string> commandStart: device ? ["brightnessctl", "-d", root.device] : ["brightnessctl"]

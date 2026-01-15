@@ -22,6 +22,17 @@ Item {
     property list<int> volumes // cava values
     property bool mirror: false
 
+    readonly property list<Rectangle> rects: rectangles.children
+
+    // on creation set running to active
+    Component.onCompleted: {
+        cava.running = root.active;
+    }
+
+    onActiveChanged: {
+        cava.running = active;
+    }
+
     // the bars are stored in a row.
     Row {
         id: row
@@ -64,7 +75,7 @@ Item {
         id: cava
 
         command: ["sh", "-c", `printf '[general]\nframerate=${root.framerate}\nbars=${root.bars}\nsleep_timer=3\n[output]\nchannels=mono\nmethod=raw\nraw_target=/dev/stdout\ndata_format=ascii\nascii_max_range=100' | cava -p /dev/stdin`]
-        running: root.active
+        running: false
 
         stdout: SplitParser {
             onRead: text => {
@@ -73,13 +84,15 @@ Item {
             }
         }
 
-        stderr: StdioCollector {
-            onDataChanged: cava.running = false
+        stderr: SplitParser {
+            onRead: text => cava.running = false
         }
 
+        // on crash restart
         onRunningChanged: {
-            if (root.active && !running)
+            if (root.active && !running) {
                 running = true;
+            }
 
             if (!running)
                 root.volumes = [0];

@@ -26,6 +26,8 @@ Singleton {
         MWrapper {}
     }
 
+    // FIXME: does not detect on startup
+
     component MWrapper: QtObject {
         required property MprisPlayer modelData
         readonly property bool isPlaying: modelData.isPlaying

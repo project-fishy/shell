@@ -225,7 +225,10 @@ Item {
         text: "Stop"
 
         TapHandler {
-            onTapped: gif.state = "idle"
+            onTapped: {
+                gif.state = "idle";
+                PersistentTimer.comment = "";
+            }
         }
     }
 
