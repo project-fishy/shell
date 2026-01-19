@@ -3,4 +3,8 @@
 import Quickshell
 import QtQuick
 
-ShellRoot {}
+import qs.ui.windows
+
+ShellRoot {
+    BackgroundWindow {}
+}
