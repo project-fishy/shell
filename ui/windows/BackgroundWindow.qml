@@ -3,6 +3,7 @@ import Quickshell
 import Quickshell.Wayland
 
 import qs.ui.custom
+import qs.ui.widgets
 
 Variants {
     model: Quickshell.screens
@@ -13,10 +14,10 @@ Variants {
 
         CustomWindow {
             id: win
-            name: "desktop"
 
             screen: scope.modelData
             aboveWindows: false
+            name: `desktop-${scope.modelData.name}`
 
             anchors.top: true
             anchors.bottom: true
