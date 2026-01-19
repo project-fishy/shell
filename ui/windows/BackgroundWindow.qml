@@ -27,9 +27,10 @@ Variants {
 
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
-            CustomRect {
-                color: Colors.background
+            CachedImage {
                 anchors.fill: parent
+                // TODO: load from config
+                path: "/home/desant/Pictures/Wallpapers/102808319_p0.png"
             }
 
             DesktopClock {
