@@ -34,7 +34,8 @@ Variants {
             }
 
             DesktopClock {
-                anchors.centerIn: parent
+                y: 170
+                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
     }
