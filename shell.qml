@@ -2,13 +2,5 @@
 
 import Quickshell
 import QtQuick
-import "main_overlay"
-import "modules/desktop"
 
-ShellRoot {
-    // wallpaper, widgets, anything else under windows
-    Desktop {}
-
-    // panels and other stuff above windows
-    MainOverlay {}
-}
+ShellRoot {}
