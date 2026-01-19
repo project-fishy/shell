@@ -29,6 +29,10 @@ Variants {
                 color: "#333333"
                 anchors.fill: parent
             }
+
+            DesktopClock {
+                anchors.centerIn: parent
+            }
         }
     }
 }
