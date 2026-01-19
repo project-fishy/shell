@@ -1,7 +1,6 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import "../config"
 
 // wrapper for Text, adds animations and whatnot
 Text {
@@ -9,7 +8,7 @@ Text {
 
     renderType: Text.NativeRendering
     textFormat: Text.PlainText
-    color: ""
+    color: "#ffffff"
     font.family: "Monaspace Argon"
     font.pointSize: 10
 
