@@ -3,6 +3,7 @@ import QtQuick.Layouts
 
 import qs.ui.custom
 import qs.services
+import qs.config
 
 ColumnLayout {
     id: layout
@@ -33,7 +34,7 @@ ColumnLayout {
     }
 
     component ClockText: CustomText {
-        color: "#ffffff"
+        color: Colors.on_background
         font.bold: true
         font.family: "Maple Mono CN"
     }

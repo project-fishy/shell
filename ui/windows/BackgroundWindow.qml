@@ -4,6 +4,7 @@ import Quickshell.Wayland
 
 import qs.ui.custom
 import qs.ui.widgets
+import qs.config
 
 Variants {
     model: Quickshell.screens
@@ -27,7 +28,7 @@ Variants {
             WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
             CustomRect {
-                color: "#333333"
+                color: Colors.background
                 anchors.fill: parent
             }
 
