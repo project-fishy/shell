@@ -29,8 +29,8 @@ Variants {
 
             CachedImage {
                 anchors.fill: parent
-                // TODO: load from config
-                path: "/home/desant/Pictures/Wallpapers/102808319_p0.png"
+                // TODO: multihead
+                path: Config.theme.wallpaper
             }
 
             DesktopClock {

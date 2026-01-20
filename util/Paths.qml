@@ -2,6 +2,8 @@ pragma Singleton
 
 import Quickshell
 
+import qs.config
+
 // heavy inspo from Caelestia
 Singleton {
     readonly property string home: Quickshell.env("HOME")
@@ -11,5 +13,7 @@ Singleton {
     readonly property string cache: `${Quickshell.env("XDG_CACHE_HOME") || `${home}/.cache`}/fishy`
     readonly property string config: `${Quickshell.env("XDG_CONFIG_HOME") || `${home}/.config`}/fishy`
 
+    readonly property string pictures: `${home}/Pictures`
+    readonly property string wallpapers: Config.paths.wallpapers
     readonly property string imageCache: `${cache}/imagecache`
 }
