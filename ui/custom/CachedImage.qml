@@ -2,12 +2,13 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
+import qs.util
+
 // HACK: this is probably not the best approach
 Image {
     id: root
     required property string path
-    // TODO: pathing
-    property string cachedPath: `/home/desant/fishycache/${root.hash}/${root.width}x${root.height}.png`
+    property string cachedPath: `${Paths.imageCache}/${root.hash}/${root.width}x${root.height}.png`
 
     property string hash
 
@@ -34,7 +35,7 @@ Image {
             source = path;
             // save resized
         } else if (source == path && status == Image.Ready) {
-            let p = `/home/desant/fishycache/${hash}`;
+            let p = `${Paths.imageCache}/${hash}`;
             Quickshell.execDetached(["mkdir", "-p", p]);
             root.grabToImage(i => i.saveToFile(cachedPath));
             // can't switch to cached, it breaks

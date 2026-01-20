@@ -5,6 +5,8 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
+import qs.util
+
 Singleton {
     // HACK: surely theres a better way right
     property alias background: autoloaded.background
@@ -60,8 +62,7 @@ Singleton {
 
     FileView {
         watchChanges: true
-        // TODO: do dynamic pathing
-        path: "/home/desant/.config/fishy/colors.json"
+        path: `${Paths.config}/colors.json`
 
         onFileChanged: reload()
         onAdapterUpdated: writeAdapter()
