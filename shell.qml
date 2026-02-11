@@ -7,4 +7,5 @@ import qs.ui.windows
 
 ShellRoot {
     BackgroundWindow {}
+    OverlayWindow {}
 }
