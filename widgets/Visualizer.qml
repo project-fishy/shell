@@ -19,19 +19,7 @@ Item {
     property bool flipH: false
     property bool flipV: false
 
-    property list<int> volumes // cava values
-    property bool mirror: false
-
     readonly property list<Rectangle> rects: rectangles.children
-
-    // on creation set running to active
-    Component.onCompleted: {
-        cava.running = root.active;
-    }
-
-    onActiveChanged: {
-        cava.running = active;
-    }
 
     // the bars are stored in a row.
     Row {
@@ -43,7 +31,7 @@ Item {
         Repeater {
             id: rectangles
 
-            model: root.volumes
+            model: Cava.volumes
 
             anchors.fill: parent
 
@@ -67,35 +55,6 @@ Item {
                 color: root.color
                 radius: implicitWidth / 2
             }
-        }
-    }
-
-    // cava process
-    Process {
-        id: cava
-
-        command: ["sh", "-c", `printf '[general]\nframerate=${root.framerate}\nbars=${root.bars}\nsleep_timer=3\n[output]\nchannels=mono\nmethod=raw\nraw_target=/dev/stdout\ndata_format=ascii\nascii_max_range=100' | cava -p /dev/stdin`]
-        running: false
-
-        stdout: SplitParser {
-            onRead: text => {
-                let vols = text.split(";").map(v => Helper.clamp(parseInt(v), 1, 100));
-                root.volumes = root.flipH ? vols.reverse() : vols;
-            }
-        }
-
-        stderr: SplitParser {
-            onRead: text => cava.running = false
-        }
-
-        // on crash restart
-        onRunningChanged: {
-            if (root.active && !running) {
-                running = true;
-            }
-
-            if (!running)
-                root.volumes = [0];
         }
     }
 }
