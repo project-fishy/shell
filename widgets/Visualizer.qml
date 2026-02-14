@@ -31,7 +31,7 @@ Item {
         Repeater {
             id: rectangles
 
-            model: Cava.volumes
+            model: root.flipH ? Cava.volumes_reverse : Cava.volumes
 
             anchors.fill: parent
 
