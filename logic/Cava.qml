@@ -14,18 +14,33 @@ Singleton {
     property bool flipV: false
 
     property list<int> volumes // cava values
-
-    onVolumesChanged: {
-        print(volumes);
-    }
+    property list<int> volumes_reverse
 
     // on creation set running to active
     Component.onCompleted: {
         cava.running = root.active;
+        restartFixTimer.start();
     }
 
     onActiveChanged: {
         cava.running = active;
+        restartFixTimer.start();
+    }
+
+    Timer {
+        id: restartFixTimer
+
+        interval: 10000
+
+        running: false
+
+        onTriggered: {
+            if (root.active && root.volumes.length < root.bars) {
+                cava.running = false;
+                cava.running = true;
+                restart();
+            }
+        }
     }
 
     // cava process
@@ -37,8 +52,9 @@ Singleton {
 
         stdout: SplitParser {
             onRead: text => {
-                root.volumes = text.split(";").map(v => Helper.clamp(parseInt(v), 1, 100));
-            // root.volumes = root.flipH ? vols.reverse() : vols;
+                let volumes = text.split(";").map(v => Helper.clamp(parseInt(v), 1, 100));
+                root.volumes = volumes;
+                root.volumes_reverse = volumes.reverse();
             }
         }
 
