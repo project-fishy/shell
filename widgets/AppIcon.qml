@@ -1,38 +1,60 @@
 import QtQuick
-import Quickshell
+import Quickshell.Hyprland
 
 import "../config"
 
 // uses mono font because non-mono have weird alignment
 CustomText {
-    required property string modelData
+    id: root
+    required property var modelData
+
+    property string cls: modelData.class ?? ""
+    property string title: modelData.title ?? ""
     property int size: 17
 
     font.family: "MesloLGL Nerd Font Mono"
     font.pointSize: size
-    color: Colors.current.text
+    color: Colors.current.on_background
 
-    anchors.horizontalCenter: parent.horizontalCenter
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
 
     text: {
-        if (modelData == "Spotify")
+        if (["Spotify", "spotify"].includes(cls))
             return "";
-        else if (modelData == "Code")
+        else if (["Code", "code"].includes(cls))
             return "󰨞";
-        else if (modelData == "kitty")
-            return "";
-        else if (modelData == "thunar")
+        else if (["dev.zed.Zed-Preview"].includes(cls))
+            return "󱃖";
+        else if (["kitty", "floating-kitty"].includes(cls))
+            if (title.includes(" - Nvim"))
+                return "";
+            else if (title.includes("docker compose"))
+                return "";
+            else
+                return "󰅭";
+        else if (cls == "thunar")
             return "";
-        else if (modelData == "steam")
+        else if (cls == "steam")
             return "󰓓";
-        else if (modelData == "zen")
+        else if (["zen", "vivaldi-stable"].includes(cls))
             return "󰈹";
-        else if (modelData == "vesktop")
+        else if (cls == "vesktop")
             return "";
+        else if (["org.telegram.desktop"].includes(cls))
+            return "";
+        else if (["Signal"].includes(cls))
+            return "󰭹";
+        else if (["com-atlauncher-App"].includes(cls))
+            return "󰍳";
+        else if (["TradingView"].includes(cls))
+            return "";
+        else if (["com.usebottles.bottles"].includes(cls))
+            return "";
+        else if (cls.includes("steam_app_"))
+            return "󰊗";
         else
-            return "";
+            return "";
     }
 }
 

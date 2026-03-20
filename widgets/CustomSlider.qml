@@ -1,7 +1,5 @@
 import QtQuick
 import QtQuick.Controls
-import Quickshell
-import Quickshell.Io
 
 import "../widgets"
 import "../config"
@@ -27,13 +25,13 @@ Slider {
 
         x: root.visualPosition * (root.availableWidth - width)
 
-        color: Colors.current.text_color
+        color: Colors.current.primary
 
         radius: root.height / 2
 
         CustomText {
             text: root.pressed ? Math.floor(root.value * 100 / (root.to - root.from)) : root.text
-            color: Colors.current.background
+            color: Colors.current.on_primary
 
             font.family: !root.pressed ? "Material Symbols Rounded" : "Monaspace Argon"
             font.pointSize: root.pressed ? 10 : 20
@@ -49,7 +47,7 @@ Slider {
         CommonRect {
             id: filled
 
-            color: Colors.current.accent
+            color: Colors.current.primary
 
             anchors.left: parent.left
 
@@ -63,7 +61,7 @@ Slider {
         CommonRect {
             id: bar
 
-            color: Colors.current.dull
+            color: Colors.current.inverse_on_surface
 
             anchors.right: parent.right
             anchors.left: filled.right
@@ -76,8 +74,8 @@ Slider {
     component CommonRect: CustomRect {
         anchors.verticalCenter: parent.verticalCenter
 
-        implicitHeight: root.height
+        implicitHeight: root.height / 2
 
-        radius: Config.slider.thickness / 2
+        radius: implicitHeight / 2
     }
 }

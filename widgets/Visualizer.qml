@@ -1,9 +1,10 @@
 pragma ComponentBehavior: Bound
 
 import QtQuick
-import Quickshell
 import Quickshell.Io
+
 import "../config"
+import "../logic"
 
 // jumping bars thing.
 // FIXME: bars at 0 volume disappear?
@@ -11,18 +12,14 @@ Item {
     id: root
 
     property int bars: 5 // how many of bars there will be
-    property list<int> volumes // cava values
+    property bool active: true
+    property string color: Colors.current.primary
+    property int framerate: 30
 
-    // stops cava to clear the output
-    // HACK: theres better ways to clear probably
-    // TODO: make it stop when audio is paused for some time
-    onHeightChanged: {
-        let running = height > 0;
-        cava.running = running;
-        if (!running)
-            for (var i = 0; i < volumes.length; i++)
-                volumes[i] = 0;
-    }
+    property bool flipH: false
+    property bool flipV: false
+
+    readonly property list<Rectangle> rects: rectangles.children
 
     // the bars are stored in a row.
     Row {
@@ -34,7 +31,7 @@ Item {
         Repeater {
             id: rectangles
 
-            model: root.volumes
+            model: root.flipH ? Cava.volumes_reverse : Cava.volumes
 
             anchors.fill: parent
 
@@ -42,34 +39,21 @@ Item {
             Rectangle {
                 required property int modelData
 
-                anchors.bottom: parent.bottom
+                Binding on anchors.bottom {
+                    value: rectangles.bottom
+                    when: !root.flipV
+                }
+
+                Binding on anchors.top {
+                    value: rectangles.top
+                    when: root.flipV
+                }
+
                 implicitWidth: (root.width - row.spacing * (root.bars - 1)) / root.bars
                 implicitHeight: modelData * root.height / 100
 
-                color: Colors.current.accent
+                color: root.color
                 radius: implicitWidth / 2
-
-                Behavior on implicitHeight {
-                    NumberAnimation {}
-                }
-            }
-        }
-    }
-
-    // cava process
-    Process {
-        id: cava
-
-        command: ["sh", "-c", `printf '[general]\nframerate=30\nbars=${root.bars}\nsleep_timer=3\n[output]\nchannels=mono\nmethod=raw\nraw_target=/dev/stdout\ndata_format=ascii\nascii_max_range=100' | cava -p /dev/stdin`]
-        running: false
-
-        stdout: StdioCollector {
-            waitForEnd: false
-            onDataChanged: {
-                let splits = text.split("\n");
-                let new_vals = splits[splits.length - 2];
-                // print(splits[splits.length - 2]);
-                volumes = new_vals.split(";").map(v => parseInt(v));
             }
         }
     }

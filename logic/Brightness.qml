@@ -11,9 +11,13 @@ Singleton {
 
     property int current // get from here
     property bool suppressUpdates: false // fixes slider jitter
+    property string device: "nvidia_0" // TODO: load from config
+    readonly property int exponent: 2
+
+    readonly property list<string> commandStart: device ? ["brightnessctl", "-d", root.device] : ["brightnessctl"]
 
     function set(value: int): void { // set here
-        Quickshell.execDetached(["brightnessctl", "s", value + "%", "-q"]);
+        Quickshell.execDetached(Helper.flatten([root.commandStart, [`-e${root.exponent}`, "s", value + "%", "-q"]]));
     }
 
     // watches for brightness changes
@@ -38,11 +42,11 @@ Singleton {
 
         running: true // run once to set initial value
 
-        command: ["brightnessctl", "g", "-m"]
+        command: Helper.flatten([root.commandStart, ["i", "-m", `-e${root.exponent}`]])
 
         stdout: StdioCollector {
             onStreamFinished: {
-                root.current = parseInt(this.text);
+                root.current = this.text.split(",")[3].replace(/%/, "");
             }
         }
     }

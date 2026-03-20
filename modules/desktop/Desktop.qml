@@ -1,14 +1,11 @@
 import Quickshell
 import Quickshell.Wayland
-import Quickshell.Services.Mpris
 
 import QtQuick
-import QtQuick.Effects
-import QtMultimedia
 
 import "../../widgets"
-import "../../logic"
 import "../../config"
+import "../../logic"
 
 // this is a background window that holds
 // the wallpaper and widgets (if any)
@@ -35,70 +32,133 @@ Variants {
 
             name: "widgets" // idk
 
-            // animated wallpaper
-            Loader {
-                active: Charge.charging && !Hypr.hasFullscreen(scope.modelData)
+            CachedImage {
+                path: root.screen.name == "eDP-1" ? Config.saved.wallpaper : "/home/desant/Pictures/Wallpapers/blue_second_monitor.jpg"
                 anchors.fill: parent
 
-                sourceComponent: VideoBG {}
+                asynchronous: false
             }
 
-            // clock
-            // HACK: make better align
-            Item {
-                implicitHeight: 300
-                anchors.top: parent.top
+            ClockText {
+                id: clock
+
+                text: Time.format("hh:mm")
+                font.pointSize: 50
+                font.bold: true
+
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                CustomText {
-                    text: Time.format("hh:mm")
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    anchors.bottom: parent.bottom
+                y: 170
+            }
 
-                    font.pointSize: 100
-                    font.family: "Monaspace Krypron"
-                    color: Colors.current.background
+            ClockText {
+                id: day
+
+                text: Time.format("dddd, dd MMMM")
+                font.pointSize: 12
+                font.italic: true
+                font.bold: true
+
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: clock.bottom
+                anchors.topMargin: -13
+            }
+
+            ClockText {
+                id: ampm
+
+                text: Time.format("A")
+                font.pointSize: 13
+                font.bold: true
+
+                anchors.left: clock.right
+                anchors.top: clock.top
+                anchors.topMargin: 30
+                anchors.leftMargin: 5
+            }
+
+            // NOTE: if cava starts too soon it crashes immediately
+            Timer {
+                id: visDebounce
+
+                running: true
+                repeat: false
+
+                interval: 2000
+
+                onTriggered: {
+                    if (Charge.charging) {
+                        visTop.active = true;
+                        visBot.active = true;
+                    } else {
+                        visTop.active = false;
+                        visBot.active = false;
+                    }
                 }
             }
 
-            // now playing
-            // HACK: this is bad
-            Item {
+            Connections {
+                target: Charge
 
-                implicitHeight: 100
-                implicitWidth: 1700
-
-                anchors.bottom: parent.bottom
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                CustomText {
-                    readonly property list<MprisPlayer> plrs: Mpris.players.values
-                    readonly property MprisPlayer plr: plrs.find(p => p.identity === "Spotify") ?? plrs[0]
-
-                    text: plr.trackTitle + "\n" + plr.trackArtist || "ZXC Gnida"
-                    color: Colors.current.text
-
-                    font.pointSize: 15
-                    font.family: "Monaspace Radon"
-
-                    anchors.left: parent.left
-                    anchors.top: parent.top
+                function onChargingChanged() {
+                    visDebounce.start();
                 }
+            }
+
+            Item {
+                id: clockRect
+
+                anchors.top: clock.top
+                anchors.bottom: day.bottom
+                width: clock.width
+                anchors.horizontalCenter: clock.horizontalCenter
+            }
+
+            Item {
+                id: visContainer
+
+                anchors.centerIn: clockRect
+
+                width: clock.width
+                height: clock.height + 75
+            }
+
+            Vis {
+                id: visTop
+
+                anchors.top: visContainer.top
+                anchors.bottom: clock.top
+                anchors.horizontalCenter: visContainer.horizontalCenter
+                anchors.bottomMargin: Config.spacing.small
+
+                flipV: true
+                flipH: true
+
+                width: clock.width
+            }
+
+            Vis {
+                id: visBot
+
+                anchors.top: day.bottom
+                anchors.topMargin: Config.spacing.small
+                anchors.bottom: visContainer.bottom
+                anchors.horizontalCenter: visContainer.horizontalCenter
+                width: clock.width
             }
         }
     }
 
-    component VideoBG: Video {
-        id: vid
+    component Vis: Visualizer {
+        color: Colors.current.on_background
+        active: false
+        bars: 15
+        framerate: 60
+    }
 
-        anchors.fill: parent
+    component ClockText: CustomText {
+        color: Colors.current.on_background
 
-        source: "root:/assets/elden-cut.mp4"
-        loops: MediaPlayer.Infinite
-        muted: true
-
-        Component.onCompleted: {
-            play();
-        }
+        font.family: "Maple Mono CN"
     }
 }

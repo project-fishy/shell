@@ -14,11 +14,7 @@ Singleton {
     readonly property string timeLeft: {
         let total = charging ? battery.timeToFull : battery.timeToEmpty;
 
-        let seconds = total % 60;
-        let minutes = (total - seconds) / 60 % 60;
-        let hours = ((total - seconds) / 60 - minutes) / 60;
-
-        return (hours > 0 ? `${hours}h ` : "") + `${minutes}m`;
+        return Helper.msToTime(total);
     }
 
     // draw/charge rate
@@ -26,9 +22,9 @@ Singleton {
     readonly property string draw: {
         let cr = Math.floor(battery.changeRate);
         if (cr > 0)
-            return `Charging: ${cr}W`;
+            return `${cr}W`;
         else
-            return `Draw: ${cr * -1}W`;
+            return `${cr * -1}W`;
     }
 
     // for use with TextIcon
